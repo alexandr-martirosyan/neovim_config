@@ -1,7 +1,8 @@
 local M = {}
 
 M.opts = {
-	ensure_installed = require "alexander.package-settings.nvim-treesitter",
+	ensure_installed = "all",
+
 	highlight = {
 		enable = true,
 		use_languagetree = true,

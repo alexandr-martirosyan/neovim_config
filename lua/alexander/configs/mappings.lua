@@ -3,8 +3,8 @@
 local map = vim.keymap.set
 local nomap = vim.keymap.del
 
-map("i", "<C-b>", "<ESC>^i", { desc = "move beginning of line" })
-map("i", "<C-e>", "<End>", { desc = "move end of line" })
+-- map("i", "<C-b>", "<ESC>^i", { desc = "move beginning of line" })
+-- map("i", "<C-e>", "<End>", { desc = "move end of line" })
 map("i", "<C-h>", "<Left>", { desc = "move left" })
 map("i", "<C-l>", "<Right>", { desc = "move right" })
 map("i", "<C-j>", "<Down>", { desc = "move down" })
@@ -25,7 +25,10 @@ map("n", "<leader>rn", "<cmd>set rnu!<CR>", { desc = "toggle relative number" })
 map("n", "<leader>ch", "<cmd>NvCheatsheet<CR>", { desc = "toggle nvcheatsheet" })
 
 map("n", "<leader>fm", function()
-  require("conform").format { lsp_fallback = true }
+  require("conform").format {
+    lsp_format = "fallback",
+    stop_after_first = true
+  }
 end, { desc = "general format file" })
 
 -- global lsp mappings
@@ -121,6 +124,7 @@ map("n", "<leader>fz", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { desc = 
 map("n", "<leader>cm", "<cmd>Telescope git_commits<CR>", { desc = "telescope git commits" })
 map("n", "<leader>gt", "<cmd>Telescope git_status<CR>", { desc = "telescope git status" })
 map("n", "<leader>pt", "<cmd>Telescope terms<CR>", { desc = "telescope pick hidden term" })
+map("n", "<leader>fg", "<cmd>lua require('telescope').extensions.lazygit.lazygit()<CR>", { desc = "telescope lazygit" })
 
 map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "telescope find files" })
 map(
@@ -183,6 +187,48 @@ map("n", "<leader>sd", "<cmd>split<CR>", { desc = "Split window horizontally" })
 -- Insert new line without entering insert mode
 map("n", "<leader>o", 'o<ESC>0"_D', { desc = "New line without insert mode" })
 map("n", "<leader>O", 'O<ESC>0"_D', { desc = "New line without insert mode" })
+
+-- gitsigns
+map('n', ']c', function()
+  if vim.wo.diff then
+    vim.cmd.normal({ ']c', bang = true })
+  else
+    require("gitsigns").nav_hunk('next')
+  end
+end, { desc = "Gitsigns prev hunk" })
+
+map('n', '[c', function()
+  if vim.wo.diff then
+    vim.cmd.normal({ '[c', bang = true })
+  else
+    require("gitsigns").nav_hunk('prev')
+  end
+end, { desc = "Gitsigns prev hunk" })
+
+-- Actions
+map('n', '<leader>hs', ':Gitsigns stage_hunk<CR>', { desc = "Gitsigns stage hunk [n]" })
+map('n', '<leader>hr', ':Gitsigns reset_hunk<CR>', { desc = "Gitsigns reset hunk [n]" })
+map('v', '<leader>hs', function()
+  require("gitsigns").stage_hunk { vim.fn.line('.'), vim.fn.line('v') }
+end, { desc = "Gitsigns stage hunk [v]" })
+map('v', '<leader>hr', function()
+  require("gitsigns").reset_hunk { vim.fn.line('.'), vim.fn.line('v') }
+end, { desc = "Gitsigns reset hunk [v]" })
+map('n', '<leader>hS', '<cmd>Gitsigns stage_buffer<CR>', { desc = "Gitsigns stage buffer" })
+map('n', '<leader>hu', '<cmd>Gitsigns undo_stage_hunk<CR>', { desc = "Gitsigns undo stake hunk" })
+map('n', '<leader>hR', '<cmd>Gitsigns reset_buffer<CR>', { desc = "Gitsigns reset buffer" })
+map('n', '<leader>hp', '<cmd>Gitsigns preview_hunk<CR>', { desc = "Gitsigns preview hunk" })
+map('n', '<leader>hb', '<cmd>lua require"gitsigns".blame_line{full=true}<CR>', { desc = "Gitsigns blame line" })
+map('n', '<leader>tb', '<cmd>Gitsigns toggle_current_line_blame<CR>', { desc = "Gitsigns toggle current line blame" })
+map('n', '<leader>hd', '<cmd>Gitsigns diffthis<CR>', { desc = "Gitsigns Gitsigns diff this" })
+map('n', '<leader>hD', '<cmd>lua require"gitsigns".diffthis("~")<CR>', { desc = "Gitsigns diff this" })
+map('n', '<leader>td', '<cmd>Gitsigns toggle_deleted<CR>', { desc = "Gitsigns toggle deleted" })
+-- Text object
+map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>', { desc = "Gitsigns select hunk" })
+-- LazyGit
+map('n', "<leader>lg", "<cmd>LazyGit<cr>", { desc = "LazyGit Toggle" })
+-- LazyDocker
+map("n", "<leader>ld", "<cmd>LazyDocker<CR>", { desc = "LazyDocker Toggle" })
 
 
 -- function DeepPrint(e)

@@ -3,7 +3,8 @@ local conform = require "alexander.configs.plugins.conform"
 local M = {
 	{
 		'stevearc/conform.nvim',
-		opts = {},
+		opts = conform.opts,
+		config = conform.config
 	}
 }
 
