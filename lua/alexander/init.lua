@@ -5,7 +5,7 @@ end
 
 require("alexander.configs.lazy")
 require("alexander.configs.options")
-require("alexander.configs.diagnostics")
+require("lua.alexander.configs.diagnostics-commands")
 vim.schedule(function()
 	require("alexander.configs.mappings")
 end)

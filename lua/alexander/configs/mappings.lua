@@ -254,6 +254,9 @@ map("n", "<leader>cl", "<cmd>Trouble lsp toggle focus=false win.position=right<c
 map("n", "<leader>zL", "<cmd>Trouble loclist toggle<cr>", { desc = "Location List (Trouble)" })
 map("n", "<leader>zQ", "<cmd>Trouble qflist toggle<cr>", { desc = "Quickfix List (Trouble)" })
 
+-- Oil
+map("n", "-", "<CMD>Oil --float<CR>", { desc = "Open parent directory" })
+
 
 -- function DeepPrint(e)
 --   -- if e is a table, we should iterate over its elements
