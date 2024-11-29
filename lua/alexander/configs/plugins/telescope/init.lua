@@ -1,6 +1,12 @@
 local M = {}
 
-M.opts = function()
+M.opts = function(_, opts)
+	local actions = require("telescope.actions")
+	local open_with_trouble = require("trouble.sources.telescope").open
+
+	-- Use this to add more results without clearing the trouble list
+	local add_to_trouble = require("trouble.sources.telescope").add
+
 	return {
 		defaults = {
 			prompt_prefix = "   ",
@@ -15,7 +21,11 @@ M.opts = function()
 				height = 0.80,
 			},
 			mappings = {
-				n = { ["q"] = require("telescope.actions").close },
+				i = { ["<c-t>"] = open_with_trouble },
+				n = {
+					["<c-t>"] = open_with_trouble,
+					["q"] = require("telescope.actions").close
+				},
 			},
 		},
 
@@ -35,6 +45,7 @@ end
 M.config = function(_, opts)
 	require('telescope').setup(opts)
 	require('telescope').load_extension('fzf')
+
 	-- TODO: configure when configuring debugger
 	-- Run the `configurations` picker from nvim-dap
 	-- require('telescope').extensions.dap.configurations()

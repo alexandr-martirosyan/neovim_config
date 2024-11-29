@@ -1,9 +1,12 @@
+local lualine = require('alexander.configs.plugins.lualine')
+
 local M = {
 	{
 		'nvim-lualine/lualine.nvim',
 		lazy = false,
 		dependencies = { 'nvim-tree/nvim-web-devicons' },
-		opts = require('alexander.configs.plugins.lualine').opts
+		opts = lualine.opts,
+		-- config = lualine.config,
 	}
 }
 
