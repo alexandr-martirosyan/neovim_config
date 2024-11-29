@@ -125,6 +125,7 @@ map("n", "<leader>cm", "<cmd>Telescope git_commits<CR>", { desc = "telescope git
 map("n", "<leader>gt", "<cmd>Telescope git_status<CR>", { desc = "telescope git status" })
 map("n", "<leader>pt", "<cmd>Telescope terms<CR>", { desc = "telescope pick hidden term" })
 map("n", "<leader>fg", "<cmd>lua require('telescope').extensions.lazygit.lazygit()<CR>", { desc = "telescope lazygit" })
+map("n", "<leader>ft", "<cmd>TodoTelescope<CR>", { desc = 'telescope find "TODO"-s' })
 
 map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "telescope find files" })
 map(
@@ -147,7 +148,7 @@ end, { desc = "whichkey query lookup" })
 -------------------------------------- User ------------------------------------------
 
 -- added maps
-map("n", "<leader>l", function()
+map("n", "<leader>ll", function()
   require("lint").try_lint()
 end, { desc = "Trigger linting for current file" })
 map("n", "<leader>dh", vim.diagnostic.open_float, { desc = "Open diagnostic window" })
@@ -229,6 +230,21 @@ map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>', { desc = "Gitsigns sel
 map('n', "<leader>lg", "<cmd>LazyGit<cr>", { desc = "LazyGit Toggle" })
 -- LazyDocker
 map("n", "<leader>ld", "<cmd>LazyDocker<CR>", { desc = "LazyDocker Toggle" })
+
+-- WhichKey
+map('n', "<leader>?", function()
+  require("which-key").show()
+end, { desc = "Buffer Local Keymaps (which-key)", })
+
+-- TodoComments
+map("n", "]t", function()
+  require("todo-comments").jump_next()
+end, { desc = "Next todo comment" })
+
+map("n", "[t", function()
+  require("todo-comments").jump_prev()
+end, { desc = "Previous todo comment" })
+
 
 
 -- function DeepPrint(e)
