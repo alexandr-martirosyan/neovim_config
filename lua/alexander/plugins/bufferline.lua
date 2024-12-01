@@ -1,10 +1,12 @@
+local bufferline = require "alexander.configs.plugins.bufferline"
+
 local M = {
 	{
 		'akinsho/bufferline.nvim',
 		version = "*",
 		lazy = false,
 		dependencies = 'nvim-tree/nvim-web-devicons',
-		opts = require("alexander.configs.plugins.bufferline").opts,
+		opts = bufferline.opts,
 		enabled = false,
 	}
 }

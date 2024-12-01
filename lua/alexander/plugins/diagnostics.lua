@@ -26,15 +26,18 @@ local M = {
 		config = mason.config,
 	},
 	{
-		"williamboman/mason-lspconfig.nvim",
-		event = "BufEnter",
-	},
-	{
 		"neovim/nvim-lspconfig",
 		event = "BufEnter",
-		-- config = function()
-		-- 	require("nvchad.configs.lspconfig").defaults()
-		-- end,
+		config = lspconfig.config,
+	},
+	{
+		"williamboman/mason-lspconfig.nvim",
+		event = "BufEnter",
+		dependencies = {
+			"neovim/nvim-lspconfig",
+			"williamboman/mason.nvim",
+		},
+		config = mason_lspconfig.config
 	},
 }
 

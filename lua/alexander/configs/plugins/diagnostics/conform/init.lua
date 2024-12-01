@@ -26,16 +26,17 @@ M.opts = {
 
 M.config = function(_, opts)
 	local conform = require("conform")
-	conform.setup(opts)
 
 	local lfs = require("lfs")
-	local path = vim.fn.expand("~/.config/nvim/lua/alexander/configs/plugins/conform/formatters")
+	local path = vim.fn.expand("~/.config/nvim/lua/alexander/configs/plugins/diagnostics/conform/formatters")
 	for file in lfs.dir(path) do
 		if file:match("%.lua$") then             -- Check if the file ends with `.lua`
 			local formatter = file:gsub("%.lua$", "") -- Remove `.lua`
-			conform.formatters[formatter] = require("alexander.configs.plugins.conform.formatters." .. formatter)
+			conform.formatters[formatter] = require("alexander/configs/plugins/diagnostics/conform/formatters." .. formatter)
 		end
 	end
+
+	conform.setup(opts)
 end
 
 return M
