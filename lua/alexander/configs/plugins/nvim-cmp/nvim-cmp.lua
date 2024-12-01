@@ -3,57 +3,46 @@ local M = {}
 M.opts = function()
 	local cmp = require "cmp"
 
-	local cmp_ui = require "alexander.configs.plugins.nvim-cmp.nvchad-cmp-ui"
-	local cmp_style = cmp_ui.style
-	local format_kk = require "alexander.configs.plugins.nvim-cmp.format"
-
-	local atom_styled = cmp_style == "atom" or cmp_style == "atom_colored"
-	local fields = (atom_styled or cmp_ui.icons_left) and { "kind", "abbr", "menu" } or { "abbr", "kind", "menu" }
 	return {
-		-- NVChad options
-		formatting = {
-			format = function(entry, item)
-				local icons = require "alexander.configs.nvchad.icons.lspkind"
-
-				item.abbr = item.abbr .. " "
-				item.menu = cmp_ui.lspkind_text and item.kind or ""
-				item.menu_hl_group = atom_styled and "LineNr" or "CmpItemKind" .. (item.kind or "")
-				item.kind = (icons[item.kind] or "") .. " "
-
-				if not cmp_ui.icons_left then
-					item.kind = " " .. item.kind
-				end
-
-				if cmp_ui.format_colors.tailwind then
-					format_kk.tailwind(entry, item)
-				end
-
-				return item
-			end,
-
-			fields = fields,
-		},
-
-		window = {
-			completion = {
-				scrollbar = false,
-				side_padding = atom_styled and 0 or 1,
-				winhighlight = "Normal:CmpPmenu,CursorLine:CmpSel,Search:None,FloatBorder:CmpBorder",
-				border = atom_styled and "none" or "single",
-			},
-
-			documentation = {
-				border = "single",
-				winhighlight = "Normal:CmpDoc,FloatBorder:CmpDocBorder",
-			},
-		},
-		-- Other configs
 		completion = { completeopt = "menu,menuone" },
 
 		snippet = {
 			expand = function(args)
 				require("luasnip").lsp_expand(args.body)
 			end,
+		},
+
+		window = {
+			completion = {
+				border = 'rounded',
+				winhighlight = 'Normal:Pmenu,FloatBorder:Pmenu,Search:None,CursorLine:PmenuSel',
+				scrollbar = true,
+				-- max_width = 60, -- Set the maximum width of the completion window
+				max_height = 10, -- Set the maximum height of the completion window
+			},
+			documentation = {
+				border = 'rounded',
+				winhighlight = 'Normal:CmpDoc,FloatBorder:CmpDocBorder,CursorLine:CmpDocSel',
+				scrollbar = true,
+				-- max_width = 60, -- Documentation window width
+				max_height = 10, -- Documentation window height
+			},
+		},
+		formatting = {
+			fields = { 'abbr', 'kind', 'menu' },
+			format = function(entry, vim_item)
+				vim_item.kind = string.format('%s %s', require('lspkind').presets.default[vim_item.kind], vim_item.kind)
+				vim_item.menu = ({
+					nvim_lsp = '[LSP]',
+					luasnip = '[Snippet]',
+					buffer = '[Buffer]',
+					path = '[Path]',
+				})[entry.source.name]
+				return vim_item
+			end,
+		},
+		experimental = {
+			ghost_text = true, -- Show ghost text for better inline completion visualization
 		},
 
 		mapping = {

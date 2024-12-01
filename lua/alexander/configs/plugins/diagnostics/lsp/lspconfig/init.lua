@@ -36,6 +36,7 @@ M.on_init = function(client, _)
 end
 
 M.capabilities = vim.lsp.protocol.make_client_capabilities()
+-- M.capabilities = require("cmp_nvim_lsp").default_capabilities(M.capabilities)
 
 M.capabilities.textDocument.completion.completionItem = {
 	documentationFormat = { "markdown", "plaintext" },
@@ -80,7 +81,15 @@ M.diagnostic_config = function()
 end
 
 M.config = function(_, opts)
-	M.diagnostic_config()
+	local x = vim.diagnostic.severity
+	vim.diagnostic.config {
+		virtual_text = { prefix = "" },
+		signs = { text = { [x.ERROR] = "󰅙", [x.WARN] = "", [x.INFO] = "󰋼", [x.HINT] = "󰌵" } },
+		underline = true,
+		float = { border = "single" },
+	}
+	-- M.diagnostic_config()
+	M.capabilities = require("cmp_nvim_lsp").default_capabilities(M.capabilities)
 end
 
 -- M.handlers = {

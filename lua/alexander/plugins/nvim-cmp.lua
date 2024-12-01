@@ -4,6 +4,9 @@ local cmp = require("alexander.configs.plugins.nvim-cmp.nvim-cmp")
 
 local M = {
 	{
+		"onsails/lspkind.nvim"
+	},
+	{
 		"hrsh7th/nvim-cmp",
 		event = "InsertEnter",
 		dependencies = {

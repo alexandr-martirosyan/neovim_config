@@ -28,6 +28,10 @@ local M = {
 	{
 		"neovim/nvim-lspconfig",
 		event = "BufEnter",
+		dependencies = {
+			'hrsh7th/nvim-cmp',
+			'hrsh7th/cmp-nvim-lsp'
+		},
 		config = lspconfig.config,
 	},
 	{

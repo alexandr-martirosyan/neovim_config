@@ -70,3 +70,6 @@ o.relativenumber = true
 o.wrap = false
 -- o.spelllang = "en_us"
 -- o.spell = true
+
+opt.pumheight = 12 -- Limit the popup menu height to 5 rows
+
