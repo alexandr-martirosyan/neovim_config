@@ -1,4 +1,4 @@
-local lualine = require('alexander.configs.plugins.lualine')
+local lualine = require 'alexander.configs.plugins.lualine'
 
 local M = {
 	{
