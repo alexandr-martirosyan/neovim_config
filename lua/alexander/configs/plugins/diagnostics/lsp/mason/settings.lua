@@ -25,6 +25,8 @@ M.ensure_installed = {
 	-- docker
 	"dockerfile-language-server",
 	"hadolint",
+  -- zk
+  "circom-lsp"
 }
 
 return M

@@ -3,9 +3,9 @@ local M = {}
 M.opts = {}
 
 M.config = function(_, opts)
-	local lspconfig = require "lspconfig"
+	local lspconfig = require("lspconfig")
 
-	local lsp_settings = require "alexander.configs.plugins.diagnostics.lsp.lspconfig"
+	local lsp_settings = require("alexander.configs.plugins.diagnostics.lsp.lspconfig")
 
 	local on_attach = lsp_settings.on_attach
 	local on_init = lsp_settings.on_init
@@ -15,7 +15,7 @@ M.config = function(_, opts)
 
 	require("mason-lspconfig").setup()
 
-	require("mason-lspconfig").setup_handlers {
+	require("mason-lspconfig").setup_handlers({
 		-- The first entry (without a key) will be the default handler
 		-- and will be called for each installed server that doesn't have
 		-- a dedicated handler.
@@ -34,15 +34,36 @@ M.config = function(_, opts)
 			}
 			server_name = vim.split(server_name, "@")[1]
 
-			local require_ok, conf_opts = pcall(require, "alexander.configs.plugins.diagnostics.lsp.lspconfig." .. server_name)
+			local require_ok, conf_opts =
+				pcall(require, "alexander.configs.plugins.diagnostics.lsp.lspconfig." .. server_name)
 			if require_ok then
 				options = vim.tbl_deep_extend("force", conf_opts, options)
 			end
 
 			lspconfig[server_name].setup(options)
 			print(server_name .. " is installed")
-		end
+		end,
+	})
+
+	M.setup_circom(lspconfig, on_attach, on_init, capabilities, handlers)
+end
+
+M.setup_circom = function(lspconfig, on_attach, on_init, capabilities, handlers)
+	local options = {
+		on_attach = on_attach,
+		on_init = on_init,
+		capabilities = capabilities,
+		handlers = handlers,
 	}
+	local server_name = "circom-lsp"
+
+	local require_ok, conf_opts = pcall(require, "alexander.configs.plugins.diagnostics.lsp.lspconfig." .. server_name)
+	if require_ok then
+		options = vim.tbl_deep_extend("force", conf_opts, options)
+	end
+
+	lspconfig[server_name].setup(options)
+	print(server_name .. " is installed")
 end
 
 return M

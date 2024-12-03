@@ -30,7 +30,7 @@ o.numberwidth = 2
 o.ruler = false
 
 -- disable nvim intro
-opt.shortmess:append "sI"
+opt.shortmess:append("sI")
 
 o.signcolumn = "yes"
 o.splitbelow = true
@@ -43,7 +43,7 @@ o.updatetime = 250
 
 -- go to previous/next line with h,l,left arrow and right arrow
 -- when cursor reaches end/beginning of line
-opt.whichwrap:append "<>[]hl"
+opt.whichwrap:append("<>[]hl")
 
 -- disable some default providers
 g.loaded_node_provider = 0
@@ -57,13 +57,14 @@ g.loaded_ruby_provider = 0
 -- local delim = is_windows and ";" or ":"
 -- vim.env.PATH = table.concat({ vim.fn.stdpath "data", "mason", "bin" }, sep) .. delim .. vim.env.PATH
 
-
 -------------------------------------- User ------------------------------------------
 
-
 -- disable comments
-vim.cmd "autocmd BufEnter * set formatoptions-=cro"
-vim.cmd "autocmd BufEnter * setlocal formatoptions-=cro"
+vim.cmd("autocmd BufEnter * set formatoptions-=cro")
+vim.cmd("autocmd BufEnter * setlocal formatoptions-=cro")
+
+-- Ensure Neovim treats .circom files as the "circom" filetype
+vim.cmd("autocmd BufRead,BufNewFile *.circom set filetype=circom")
 
 -- some options
 o.relativenumber = true
@@ -72,4 +73,3 @@ o.wrap = false
 -- o.spell = true
 
 opt.pumheight = 12 -- Limit the popup menu height to 5 rows
-
