@@ -12,6 +12,7 @@ M.ensure_installed = {
 	-- python
 	"pyright",
 	"flake8",
+  "black",
 	-- deno
 	"deno",
 	-- formatters

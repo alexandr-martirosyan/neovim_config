@@ -7,6 +7,7 @@ M.opts = {
 		["*"] = { "typos" },
 		solidity = { "solhint" },
 		dockerfile = { "hadolint" },
+		python = { "flake8" },
 		-- javascript = { "eslint" },
 		-- typescript = { "eslint" },
 		-- html = { "eslint" },

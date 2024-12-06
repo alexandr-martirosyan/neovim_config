@@ -7,6 +7,7 @@ M.opts = {
 		html = { "prettier" },
 		javascript = { "prettier" },
 		typescript = { "prettier" },
+		python = { "black" },
 		rust = { "rustfmt" },
 		-- dockerfile = { "dockerls" },
 		-- Use the "*" filetype to run formatters on all filetypes.
