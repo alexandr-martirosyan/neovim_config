@@ -1,7 +1,7 @@
 -------------------------------------- NvChad ------------------------------------------
 
 local map = vim.keymap.set
-local nomap = vim.keymap.del
+-- local nomap = vim.keymap.del
 
 -- map("i", "<C-b>", "<ESC>^i", { desc = "move beginning of line" })
 -- map("i", "<C-e>", "<End>", { desc = "move end of line" })
@@ -20,7 +20,7 @@ map("n", "<Esc>", "<cmd>noh<CR>", { desc = "general clear highlights" })
 map("n", "<C-s>", "<cmd>w<CR>", { desc = "general save file" })
 map("n", "<C-c>", "<cmd>%y+<CR>", { desc = "general copy whole file" })
 
-map("n", "<leader>n", "<cmd>set nu!<CR>", { desc = "toggle line number" })
+map("n", "<leader>ln", "<cmd>set nu!<CR>", { desc = "toggle line number" })
 map("n", "<leader>rn", "<cmd>set rnu!<CR>", { desc = "toggle relative number" })
 map("n", "<leader>ch", "<cmd>NvCheatsheet<CR>", { desc = "toggle nvcheatsheet" })
 
@@ -256,6 +256,9 @@ map("n", "<leader>zQ", "<cmd>Trouble qflist toggle<cr>", { desc = "Quickfix List
 
 -- Oil
 map("n", "-", "<CMD>Oil --float<CR>", { desc = "Open parent directory" })
+
+-- Neogit
+map("n", "<leader>ng", "<CMD>:Neogit<CR>", { desc = "Open Neogit tab" })
 
 
 -- function DeepPrint(e)
