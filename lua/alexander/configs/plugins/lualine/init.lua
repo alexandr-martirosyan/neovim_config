@@ -20,21 +20,47 @@ M.opts = function(_, opts)
 			-- globalstatus = false, -- Separate statusline for each window
 			-- component_separators = "|",
 			-- section_separators = "",
+			disabled_filetypes = {
+				winbar = { "oil", "neo-tree", "NvimTree", "startify", "dashboard" }, -- Disable winbar for Neotree, NvimTree, and others
+			},
 		},
 		-- sections = {
 		-- 	lualine_c = { "filename" }, -- Display file name in the statusline
 		-- },
 		winbar = {
-			lualine_a = {}, -- Left section (empty to avoid clutter)
-			lualine_b = { "%=%t", "filetype" }, -- Additional space before centering
-			lualine_c = {}, -- Center the file name
+			-- Add space on the left
+			lualine_a = {
+				function()
+					return " "
+				end,
+			},
+			lualine_b = {
+				{
+					"filename",
+					path = 4, -- Dynamically adjusts based on duplicate files (smart resolution)
+					shorting_target = 30, -- Limits the path length (optional)
+				},
+				"filetype",
+			},
+			lualine_c = {},
 			lualine_x = {}, -- Additional space after centering
 			lualine_y = {}, -- Right section (empty to avoid clutter)
 			lualine_z = {}, -- Keep the right side empty
 		},
 		inactive_winbar = {
-			lualine_a = {}, -- Left section (empty to avoid clutter)
-			lualine_b = { "%=%t", "filetype" }, -- Additional space before centering
+			lualine_a = {
+				function()
+					return " "
+				end,
+			},
+			lualine_b = {
+				{
+					"filename",
+					path = 4, -- Dynamically adjusts based on duplicate files (smart resolution)
+					shorting_target = 30, -- Limits the path length (optional)
+				},
+				"filetype",
+			},
 			lualine_c = {}, -- Center the file name
 			lualine_x = {}, -- Additional space after centering
 			lualine_y = {}, -- Right section (empty to avoid clutter)
@@ -43,8 +69,8 @@ M.opts = function(_, opts)
 		sections = {
 			lualine_x = {
 				{
-					require("noice").api.statusline.mode.get,
-					cond = require("noice").api.statusline.mode.has,
+					require("noice").api.status.mode.get,
+					cond = require("noice").api.status.mode.has,
 					color = { fg = "#ff9e64" },
 				},
 			},
@@ -55,6 +81,12 @@ M.opts = function(_, opts)
 				},
 			},
 		},
+		-- extensions = {
+		-- 	"lazy",
+		-- 	"oil",
+		-- 	"neo-tree",
+		-- 	"trouble",
+		-- },
 	}
 end
 
