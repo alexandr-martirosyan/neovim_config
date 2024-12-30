@@ -29,42 +29,42 @@ M.opts = function(_, opts)
 		-- },
 		winbar = {
 			-- Add space on the left
-			lualine_a = {
-				function()
-					return " "
-				end,
-			},
-			lualine_b = {
-				{
-					"filename",
-					path = 4, -- Dynamically adjusts based on duplicate files (smart resolution)
-					shorting_target = 30, -- Limits the path length (optional)
-				},
-				"filetype",
-			},
+			lualine_a = {},
+			lualine_b = {},
 			lualine_c = {},
 			lualine_x = {}, -- Additional space after centering
-			lualine_y = {}, -- Right section (empty to avoid clutter)
-			lualine_z = {}, -- Keep the right side empty
-		},
-		inactive_winbar = {
-			lualine_a = {
-				function()
-					return " "
-				end,
-			},
-			lualine_b = {
+			lualine_y = {
 				{
 					"filename",
 					path = 4, -- Dynamically adjusts based on duplicate files (smart resolution)
 					shorting_target = 30, -- Limits the path length (optional)
 				},
 				"filetype",
-			},
+			}, -- Right section (empty to avoid clutter)
+			lualine_z = {
+				function()
+					return " "
+				end,
+			}, -- Keep the right side empty
+		},
+		inactive_winbar = {
+			lualine_a = {},
+			lualine_b = {},
 			lualine_c = {}, -- Center the file name
 			lualine_x = {}, -- Additional space after centering
-			lualine_y = {}, -- Right section (empty to avoid clutter)
-			lualine_z = {}, -- Keep the right side empty
+			lualine_y = {
+				{
+					"filename",
+					path = 4, -- Dynamically adjusts based on duplicate files (smart resolution)
+					shorting_target = 30, -- Limits the path length (optional)
+				},
+				"filetype",
+			}, -- Right section (empty to avoid clutter)
+			lualine_z = {
+				function()
+					return " "
+				end,
+			}, -- Keep the right side empty
 		},
 		sections = {
 			lualine_x = {
