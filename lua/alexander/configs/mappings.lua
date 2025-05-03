@@ -1,5 +1,3 @@
--------------------------------------- NvChad ------------------------------------------
-
 local map = vim.keymap.set
 -- local nomap = vim.keymap.del
 
@@ -87,28 +85,6 @@ map({ "n", "t" }, "<A-v>", "<cmd>ToggleTerm direction=vertical<cr>", { desc = "t
 map({ "n", "t" }, "<A-h>", "<cmd>ToggleTerm direction=horizontal<cr>", { desc = "terminal toggleable horizontal term" })
 map({ "n", "t" }, "<A-i>", "<cmd>ToggleTerm direction=float<cr>", { desc = "terminal toggleable float term" })
 map({ "n", "t" }, "<A-t>", "<cmd>ToggleTerm direction=tab<cr>", { desc = "terminal toggleable tab term" })
-
--- -- new terminals
--- map("n", "<leader>h", function()
---   require("nvchad.term").new { pos = "sp" }
--- end, { desc = "terminal new horizontal term" })
-
--- map("n", "<leader>v", function()
---   require("nvchad.term").new { pos = "vsp" }
--- end, { desc = "terminal new vertical term" })
-
--- new terminals
--- map("n", "<A-S-h>", function()
---   require("nvchad.term").new { pos = "sp" }
--- end, { desc = "terminal new horizontal term" })
-
--- map("n", "<A-S-v>", function()
---   require("nvchad.term").new { pos = "vsp" }
--- end, { desc = "terminal new vertical window" })
-
--- map("n", "<A-S-i>", function()
---   require("nvchad.term").new { pos = "float" }
--- end, { desc = "terminal new float window" })
 
 -- neotree
 map("n", "<C-n>", "<cmd>Neotree toggle<CR>", { desc = "neotree toggle window" })
@@ -259,21 +235,3 @@ map("n", "-", "<CMD>Oil --float<CR>", { desc = "Open parent directory" })
 
 -- Neogit
 map("n", "<leader>ng", "<CMD>:Neogit<CR>", { desc = "Open Neogit tab" })
-
-
--- function DeepPrint(e)
---   -- if e is a table, we should iterate over its elements
---   if type(e) == "table" then
---     for k, v in pairs(e) do -- for every element in the table
---       print(k)
---       DeepPrint(v) -- recursively repeat the same procedure
---     end
---   else -- if not, we can just print it
---     print(e)
---   end
--- end
---
--- local ens_ins = require "package-settings.st-mason"
--- local ret_tools = require("nvchad.mason").get_pkgs(ens_ins)
---
--- DeepPrint(ret_tools)

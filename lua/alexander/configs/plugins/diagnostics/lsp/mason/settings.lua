@@ -12,7 +12,7 @@ M.ensure_installed = {
 	-- python
 	"pyright",
 	"flake8",
-  "black",
+	"black",
 	-- deno
 	"deno",
 	-- formatters
@@ -20,14 +20,16 @@ M.ensure_installed = {
 	"eslint-lsp",
 	-- js, ts
 	"typescript-language-server",
+	-- kulala rest service
+	"kulala-fmt",
 	-- spell
 	"codespell",
 	"typos",
 	-- docker
 	"dockerfile-language-server",
 	"hadolint",
-  -- zk
-  "circom-lsp"
+	-- zk
+	"circom-lsp",
 }
 
 return M

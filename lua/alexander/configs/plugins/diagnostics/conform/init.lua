@@ -1,6 +1,13 @@
 local M = {}
 
 M.opts = {
+	formatters = {
+		kulala = {
+			command = "kulala-fmt",
+			args = { "format", "$FILENAME" },
+			stdin = false,
+		},
+	},
 	formatters_by_ft = {
 		lua = { "stylua" },
 		css = { "prettier" },
@@ -9,6 +16,7 @@ M.opts = {
 		typescript = { "prettier" },
 		python = { "black" },
 		rust = { "rustfmt" },
+		http = { "kulala" },
 		-- dockerfile = { "dockerls" },
 		-- Use the "*" filetype to run formatters on all filetypes.
 		["*"] = { "codespell" },

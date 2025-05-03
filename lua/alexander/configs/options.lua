@@ -63,8 +63,17 @@ g.loaded_ruby_provider = 0
 vim.cmd("autocmd BufEnter * set formatoptions-=cro")
 vim.cmd("autocmd BufEnter * setlocal formatoptions-=cro")
 
+-- the same as below
+vim.filetype.add({
+  extension = {
+    ['circom'] = 'circom',
+    ['http'] = 'http',
+  },
+})
 -- Ensure Neovim treats .circom files as the "circom" filetype
 vim.cmd("autocmd BufRead,BufNewFile *.circom set filetype=circom")
+-- Ensure Neovim treats .http files as the "http" filetype
+vim.cmd("autocmd BufRead,BufNewFile *.http set filetype=http")
 
 -- some options
 o.relativenumber = true

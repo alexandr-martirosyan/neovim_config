@@ -6,7 +6,7 @@ M.opts = {
 		if term.direction == "horizontal" then
 			return 15
 		elseif term.direction == "vertical" then
-			return vim.o.columns * 0.4
+			return math.floor(vim.o.columns * 0.4)
 		end
 	end,
 	hide_numbers = false, -- hide the number column in toggleterm buffers
@@ -16,10 +16,18 @@ M.opts = {
 		-- see :h nvim_open_win for details on borders however
 		-- the 'curved' border is a custom border type
 		-- not natively supported but implemented in this plugin.
-		border = 'curved',
+		border = "curved",
 		-- like `size`, width, height, row, and col can be a number or function which is passed the current terminal
-		width = math.floor(vim.o.columns * 0.6),             -- 60% of the window width
-		height = math.floor(vim.o.lines * 0.6)
+		-- width = math.floor(vim.o.columns * 0.6), -- 60% of the window width
+		width = function(term)
+			if term.direction == "horizontal" then
+				return math.floor(vim.o.columns * 0.6) 
+			elseif term.direction == "vertical" then
+				return math.floor(vim.o.columns * 0.8) 
+			end
+		end,
+
+		height = math.floor(vim.o.lines * 0.6),
 		-- row = <value>,
 		-- col = <value>,
 		-- winblend = 3,
