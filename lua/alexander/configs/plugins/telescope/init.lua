@@ -49,6 +49,9 @@ M.opts = function(_, opts)
 				case_mode = "smart_case", -- or "ignore_case" or "respect_case"
 				-- the default case_mode is "smart_case"
 			},
+			["ui-select"] = {
+				require("telescope.themes").get_dropdown({}),
+			},
 		},
 	}
 end
@@ -59,6 +62,7 @@ M.config = function(_, opts)
 	telescope.load_extension("fzf")
 	telescope.load_extension("frecency")
 	telescope.load_extension("media_files")
+	telescope.load_extension("ui-select")
 
 	-- TODO: configure when configuring debugger
 	-- Run the `configurations` picker from nvim-dap

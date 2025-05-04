@@ -3,6 +3,7 @@ if vim.loader then
 	vim.loader.enable()
 end
 
+require("alexander.configs.autocmds")
 require("alexander.configs.lazy")
 require("alexander.configs.options")
 require("alexander.configs.diagnostics-commands")

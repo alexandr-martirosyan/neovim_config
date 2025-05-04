@@ -23,10 +23,10 @@ map("n", "<leader>rn", "<cmd>set rnu!<CR>", { desc = "toggle relative number" })
 map("n", "<leader>ch", "<cmd>NvCheatsheet<CR>", { desc = "toggle nvcheatsheet" })
 
 map("n", "<leader>fm", function()
-  require("conform").format {
-    lsp_format = "fallback",
-    stop_after_first = true
-  }
+	require("conform").format({
+		lsp_format = "fallback",
+		stop_after_first = true,
+	})
 end, { desc = "general format file" })
 
 -- global lsp mappings
@@ -36,14 +36,14 @@ map("n", "<leader>ds", vim.diagnostic.setloclist, { desc = "LSP diagnostic locli
 -- Move to previous/next
 -- map('n', '<A-,>', '<Cmd>BufferPrevious<CR>', { desc = "buffer goto previous" })
 -- map('n', '<A-.>', '<Cmd>BufferNext<CR>', { desc = "buffer goto next" })
-map("n", "<S-h>", '<Cmd>BufferPrevious<CR>', { desc = "buffer goto previous" })
-map("n", "<S-l>", '<Cmd>BufferNext<CR>', { desc = "buffer goto next" })
+map("n", "<S-h>", "<Cmd>BufferPrevious<CR>", { desc = "buffer goto previous" })
+map("n", "<S-l>", "<Cmd>BufferNext<CR>", { desc = "buffer goto next" })
 -- Re-order to previous/next
-map('n', '<A-,>', '<Cmd>BufferMovePrevious<CR>', { desc = "buffer move previous" })
-map('n', '<A-.>', '<Cmd>BufferMoveNext<CR>', { desc = "buffer move next" })
+map("n", "<A-,>", "<Cmd>BufferMovePrevious<CR>", { desc = "buffer move previous" })
+map("n", "<A-.>", "<Cmd>BufferMoveNext<CR>", { desc = "buffer move next" })
 -- Goto buffer in position...
-map('n', '<A-1>', '<Cmd>BufferGoto 1<CR>', { desc = "buffer goto 1" })
-map('n', '<A-0>', '<Cmd>BufferLast<CR>', { desc = "buffer goto last" })
+map("n", "<A-1>", "<Cmd>BufferGoto 1<CR>", { desc = "buffer goto 1" })
+map("n", "<A-0>", "<Cmd>BufferLast<CR>", { desc = "buffer goto last" })
 -- map('n', '<A-2>', '<Cmd>BufferGoto 2<CR>', opts)
 -- map('n', '<A-3>', '<Cmd>BufferGoto 3<CR>', opts)
 -- map('n', '<A-4>', '<Cmd>BufferGoto 4<CR>', opts)
@@ -53,12 +53,12 @@ map('n', '<A-0>', '<Cmd>BufferLast<CR>', { desc = "buffer goto last" })
 -- map('n', '<A-8>', '<Cmd>BufferGoto 8<CR>', opts)
 -- map('n', '<A-9>', '<Cmd>BufferGoto 9<CR>', opts)
 -- Pin/unpin buffer
-map('n', '<A-p>', '<Cmd>BufferPin<CR>', { desc = "buffer pin" })
+map("n", "<A-p>", "<Cmd>BufferPin<CR>", { desc = "buffer pin" })
 -- Goto pinned/unpinned buffer
 --                 :BufferGotoPinned
 --                 :BufferGotoUnpinned
 -- Close buffer
-map('n', '<leader>x', '<Cmd>BufferClose<CR>', { desc = "buffer close" })
+map("n", "<leader>x", "<Cmd>BufferClose<CR>", { desc = "buffer close" })
 -- Wipeout buffer
 --                 :BufferWipeout
 -- Close commands
@@ -68,13 +68,13 @@ map('n', '<leader>x', '<Cmd>BufferClose<CR>', { desc = "buffer close" })
 --                 :BufferCloseBuffersLeft
 --                 :BufferCloseBuffersRight
 -- Magic buffer-picking mode
-map('n', '<A-S-p>', '<Cmd>BufferPick<CR>', { desc = "buffer pick" })
+map("n", "<A-S-p>", "<Cmd>BufferPick<CR>", { desc = "buffer pick" })
 -- Sort automatically by...
-map('n', '<leader>bb', '<Cmd>BufferOrderByBufferNumber<CR>', { desc = "buffer order by buffer number" })
-map('n', '<leader>bn', '<Cmd>BufferOrderByName<CR>', { desc = "buffer order by name" })
-map('n', '<leader>bd', '<Cmd>BufferOrderByDirectory<CR>', { desc = "buffer order by directory" })
-map('n', '<leader>bl', '<Cmd>BufferOrderByLanguage<CR>', { desc = "buffer order by language" })
-map('n', '<leader>bw', '<Cmd>BufferOrderByWindowNumber<CR>', { desc = "buffer order by window number" })
+map("n", "<leader>bb", "<Cmd>BufferOrderByBufferNumber<CR>", { desc = "buffer order by buffer number" })
+map("n", "<leader>bn", "<Cmd>BufferOrderByName<CR>", { desc = "buffer order by name" })
+map("n", "<leader>bd", "<Cmd>BufferOrderByDirectory<CR>", { desc = "buffer order by directory" })
+map("n", "<leader>bl", "<Cmd>BufferOrderByLanguage<CR>", { desc = "buffer order by language" })
+map("n", "<leader>bw", "<Cmd>BufferOrderByWindowNumber<CR>", { desc = "buffer order by window number" })
 
 -- Other:
 -- :BarbarEnable - enables barbar (enabled by default)
@@ -105,10 +105,10 @@ map("n", "<leader>ft", "<cmd>TodoTelescope<CR>", { desc = 'telescope find "TODO"
 
 map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "telescope find files" })
 map(
-  "n",
-  "<leader>fa",
-  "<cmd>Telescope find_files follow=true no_ignore=true hidden=true<CR>",
-  { desc = "telescope find all files" }
+	"n",
+	"<leader>fa",
+	"<cmd>Telescope find_files follow=true no_ignore=true hidden=true<CR>",
+	{ desc = "telescope find all files" }
 )
 
 -- terminal
@@ -118,14 +118,14 @@ map("t", "<C-x>", "<C-\\><C-N>", { desc = "terminal escape terminal mode" })
 map("n", "<leader>wK", "<cmd>WhichKey <CR>", { desc = "whichkey all keymaps" })
 
 map("n", "<leader>wk", function()
-  vim.cmd("WhichKey " .. vim.fn.input "WhichKey: ")
+	vim.cmd("WhichKey " .. vim.fn.input("WhichKey: "))
 end, { desc = "whichkey query lookup" })
 
 -------------------------------------- User ------------------------------------------
 
 -- added maps
 map("n", "<leader>ll", function()
-  require("lint").try_lint()
+	require("lint").try_lint()
 end, { desc = "Trigger linting for current file" })
 map("n", "<leader>dh", vim.diagnostic.open_float, { desc = "Open diagnostic window" })
 map("n", "<leader>dt", "<cmd>DiagnosticsToggleVirtualText<CR>", { desc = "Toggle inline diagnostics" })
@@ -166,67 +166,70 @@ map("n", "<leader>o", 'o<ESC>0"_D', { desc = "New line without insert mode" })
 map("n", "<leader>O", 'O<ESC>0"_D', { desc = "New line without insert mode" })
 
 -- gitsigns
-map('n', ']c', function()
-  if vim.wo.diff then
-    vim.cmd.normal({ ']c', bang = true })
-  else
-    require("gitsigns").nav_hunk('next')
-  end
+map("n", "]c", function()
+	if vim.wo.diff then
+		vim.cmd.normal({ "]c", bang = true })
+	else
+		require("gitsigns").nav_hunk("next")
+	end
 end, { desc = "Gitsigns prev hunk" })
 
-map('n', '[c', function()
-  if vim.wo.diff then
-    vim.cmd.normal({ '[c', bang = true })
-  else
-    require("gitsigns").nav_hunk('prev')
-  end
+map("n", "[c", function()
+	if vim.wo.diff then
+		vim.cmd.normal({ "[c", bang = true })
+	else
+		require("gitsigns").nav_hunk("prev")
+	end
 end, { desc = "Gitsigns prev hunk" })
 
 -- Actions
-map('n', '<leader>hs', ':Gitsigns stage_hunk<CR>', { desc = "Gitsigns stage hunk [n]" })
-map('n', '<leader>hr', ':Gitsigns reset_hunk<CR>', { desc = "Gitsigns reset hunk [n]" })
-map('v', '<leader>hs', function()
-  require("gitsigns").stage_hunk { vim.fn.line('.'), vim.fn.line('v') }
+map("n", "<leader>hs", ":Gitsigns stage_hunk<CR>", { desc = "Gitsigns stage hunk [n]" })
+map("n", "<leader>hr", ":Gitsigns reset_hunk<CR>", { desc = "Gitsigns reset hunk [n]" })
+map("v", "<leader>hs", function()
+	require("gitsigns").stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
 end, { desc = "Gitsigns stage hunk [v]" })
-map('v', '<leader>hr', function()
-  require("gitsigns").reset_hunk { vim.fn.line('.'), vim.fn.line('v') }
+map("v", "<leader>hr", function()
+	require("gitsigns").reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
 end, { desc = "Gitsigns reset hunk [v]" })
-map('n', '<leader>hS', '<cmd>Gitsigns stage_buffer<CR>', { desc = "Gitsigns stage buffer" })
-map('n', '<leader>hu', '<cmd>Gitsigns undo_stage_hunk<CR>', { desc = "Gitsigns undo stake hunk" })
-map('n', '<leader>hR', '<cmd>Gitsigns reset_buffer<CR>', { desc = "Gitsigns reset buffer" })
-map('n', '<leader>hp', '<cmd>Gitsigns preview_hunk<CR>', { desc = "Gitsigns preview hunk" })
-map('n', '<leader>hb', '<cmd>lua require"gitsigns".blame_line{full=true}<CR>', { desc = "Gitsigns blame line" })
-map('n', '<leader>tb', '<cmd>Gitsigns toggle_current_line_blame<CR>', { desc = "Gitsigns toggle current line blame" })
-map('n', '<leader>hd', '<cmd>Gitsigns diffthis<CR>', { desc = "Gitsigns Gitsigns diff this" })
-map('n', '<leader>hD', '<cmd>lua require"gitsigns".diffthis("~")<CR>', { desc = "Gitsigns diff this" })
-map('n', '<leader>td', '<cmd>Gitsigns toggle_deleted<CR>', { desc = "Gitsigns toggle deleted" })
+map("n", "<leader>hS", "<cmd>Gitsigns stage_buffer<CR>", { desc = "Gitsigns stage buffer" })
+map("n", "<leader>hu", "<cmd>Gitsigns undo_stage_hunk<CR>", { desc = "Gitsigns undo stake hunk" })
+map("n", "<leader>hR", "<cmd>Gitsigns reset_buffer<CR>", { desc = "Gitsigns reset buffer" })
+map("n", "<leader>hp", "<cmd>Gitsigns preview_hunk<CR>", { desc = "Gitsigns preview hunk" })
+map("n", "<leader>hb", '<cmd>lua require"gitsigns".blame_line{full=true}<CR>', { desc = "Gitsigns blame line" })
+map("n", "<leader>tb", "<cmd>Gitsigns toggle_current_line_blame<CR>", { desc = "Gitsigns toggle current line blame" })
+map("n", "<leader>hd", "<cmd>Gitsigns diffthis<CR>", { desc = "Gitsigns Gitsigns diff this" })
+map("n", "<leader>hD", '<cmd>lua require"gitsigns".diffthis("~")<CR>', { desc = "Gitsigns diff this" })
+map("n", "<leader>td", "<cmd>Gitsigns toggle_deleted<CR>", { desc = "Gitsigns toggle deleted" })
 -- Text object
-map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>', { desc = "Gitsigns select hunk" })
--- LazyGit
-map('n', "<leader>lg", "<cmd>LazyGit<cr>", { desc = "LazyGit Toggle" })
+map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "Gitsigns select hunk" })
+-- LazyGit map("n", "<leader>lg", "<cmd>LazyGit<cr>", { desc = "LazyGit Toggle" })
 -- LazyDocker
 map("n", "<leader>ld", "<cmd>LazyDocker<CR>", { desc = "LazyDocker Toggle" })
 
 -- WhichKey
-map('n', "<leader>?", function()
-  require("which-key").show()
-end, { desc = "Buffer Local Keymaps (which-key)", })
+map("n", "<leader>?", function()
+	require("which-key").show()
+end, { desc = "Buffer Local Keymaps (which-key)" })
 
 -- TodoComments
 map("n", "]t", function()
-  require("todo-comments").jump_next()
+	require("todo-comments").jump_next()
 end, { desc = "Next todo comment" })
 
 map("n", "[t", function()
-  require("todo-comments").jump_prev()
+	require("todo-comments").jump_prev()
 end, { desc = "Previous todo comment" })
 
 -- Trouble
 map("n", "<leader>zx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnostics (Trouble)" })
 map("n", "<leader>zX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", { desc = "Buffer Diagnostics (Trouble)" })
 map("n", "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", { desc = "Symbols (Trouble)" })
-map("n", "<leader>cl", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
-  { desc = "LSP Definitions / references / ... (Trouble)" })
+map(
+	"n",
+	"<leader>cl",
+	"<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+	{ desc = "LSP Definitions / references / ... (Trouble)" }
+)
 map("n", "<leader>zL", "<cmd>Trouble loclist toggle<cr>", { desc = "Location List (Trouble)" })
 map("n", "<leader>zQ", "<cmd>Trouble qflist toggle<cr>", { desc = "Quickfix List (Trouble)" })
 
@@ -234,4 +237,13 @@ map("n", "<leader>zQ", "<cmd>Trouble qflist toggle<cr>", { desc = "Quickfix List
 map("n", "-", "<CMD>Oil --float<CR>", { desc = "Open parent directory" })
 
 -- Neogit
-map("n", "<leader>ng", "<CMD>:Neogit<CR>", { desc = "Open Neogit tab" })
+map("n", "<leader>ng", "<CMD>Neogit<CR>", { desc = "Open Neogit tab" })
+
+-- winshift
+map("n", "<C-W><C-M>", "<Cmd>WinShift<CR>", { desc = "Activate WinShift" })
+map("n", "<C-W>m", "<Cmd>WinShift<CR>", { desc = "Activate WinShift" })
+map("n", "<C-W>X", "<Cmd>WinShift swap<CR>", { desc = "Activate WinShift SWAP" })
+
+-- folding
+map("n", "zR", require("ufo").openAllFolds, { desc = "Open all folds" })
+map("n", "zM", require("ufo").closeAllFolds, { desc = "Close all folds" })

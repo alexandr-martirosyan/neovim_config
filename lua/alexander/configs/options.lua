@@ -65,10 +65,10 @@ vim.cmd("autocmd BufEnter * setlocal formatoptions-=cro")
 
 -- the same as below
 vim.filetype.add({
-  extension = {
-    ['circom'] = 'circom',
-    ['http'] = 'http',
-  },
+	extension = {
+		["circom"] = "circom",
+		["http"] = "http",
+	},
 })
 -- Ensure Neovim treats .circom files as the "circom" filetype
 vim.cmd("autocmd BufRead,BufNewFile *.circom set filetype=circom")
@@ -82,3 +82,4 @@ o.wrap = false
 -- o.spell = true
 
 opt.pumheight = 12 -- Limit the popup menu height to 5 rows
+opt.equalalways = false

@@ -15,6 +15,7 @@ local M = {
 			"mfussenegger/nvim-dap",
 			"nvim-telescope/telescope-fzf-native.nvim",
 			"nvim-telescope/telescope-media-files.nvim",
+			"nvim-telescope/telescope-ui-select.nvim",
 		},
 		opts = telescope.opts,
 		config = telescope.config,
