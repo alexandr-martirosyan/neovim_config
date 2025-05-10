@@ -3,6 +3,7 @@ local neo_tree = require("alexander.configs.plugins.neo-tree")
 local M = {
 	{
 		"nvim-neo-tree/neo-tree.nvim",
+    event = "VeryLazy",
 		branch = "v3.x",
 		cmd = { "Neotree" },
 		dependencies = {

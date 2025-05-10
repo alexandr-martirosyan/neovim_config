@@ -202,7 +202,8 @@ map("n", "<leader>hD", '<cmd>lua require"gitsigns".diffthis("~")<CR>', { desc = 
 map("n", "<leader>td", "<cmd>Gitsigns toggle_deleted<CR>", { desc = "Gitsigns toggle deleted" })
 -- Text object
 map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "Gitsigns select hunk" })
--- LazyGit map("n", "<leader>lg", "<cmd>LazyGit<cr>", { desc = "LazyGit Toggle" })
+-- LazyGit 
+map("n", "<leader>lg", "<cmd>LazyGit<cr>", { desc = "LazyGit Toggle" })
 -- LazyDocker
 map("n", "<leader>ld", "<cmd>LazyDocker<CR>", { desc = "LazyDocker Toggle" })
 
