@@ -205,7 +205,7 @@ map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "Gitsigns sel
 -- LazyGit 
 map("n", "<leader>lg", "<cmd>LazyGit<cr>", { desc = "LazyGit Toggle" })
 -- LazyDocker
-map("n", "<leader>ld", "<cmd>LazyDocker<CR>", { desc = "LazyDocker Toggle" })
+map("n", "<leader>ld", "<cmd>lua LazyDocker.toggle()<CR>", { desc = "LazyDocker Toggle" })
 
 -- WhichKey
 map("n", "<leader>?", function()
