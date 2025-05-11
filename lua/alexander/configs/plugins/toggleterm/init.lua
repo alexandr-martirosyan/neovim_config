@@ -23,7 +23,6 @@ M.opts = {
 			local ui = vim.api.nvim_list_uis()[1]
 			local is_vertical = ui.width < (ui.height * 1.8)
 			-- local is_vertical = vim.o.columns > vim.o.lines
-			print(is_vertical)
 			if is_vertical then
 				return math.floor(vim.o.columns * 0.81)
 			else

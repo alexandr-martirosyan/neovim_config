@@ -1,10 +1,12 @@
+local toggleterm = require("alexander.configs.plugins.toggleterm")
+
 local M = {
 	{
-		'akinsho/toggleterm.nvim',
+		"akinsho/toggleterm.nvim",
 		version = "*",
-		cmd = { 'ToggleTerm' },
-		opts = require("alexander.configs.plugins.toggleterm").opts
-	}
+		cmd = { "ToggleTerm" },
+		opts = toggleterm.opts,
+	},
 }
 
 return M

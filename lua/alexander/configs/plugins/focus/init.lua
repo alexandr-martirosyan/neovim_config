@@ -1,7 +1,7 @@
 local M = {}
 
-local ignore_filetypes = { "neo-tree" }
-local ignore_buftypes = { "nofile", "prompt", "popup" }
+local ignore_filetypes = { "neo-tree", "toggleterm" }
+local ignore_buftypes = { "nofile", "prompt", "popup", "terminal" }
 
 local augroup = vim.api.nvim_create_augroup("FocusDisable", { clear = true })
 

@@ -3,7 +3,6 @@ local M = {}
 M.opts = {}
 
 M.config = function(_, opts)
-	local lspconfig = require("lspconfig")
 	local mason_lspconfig = require("mason-lspconfig")
 
 	local lsp_settings = require("alexander.configs.plugins.diagnostics.lsp.lspconfig")
@@ -21,14 +20,14 @@ M.config = function(_, opts)
 	local all_servers = mason_lspconfig.get_installed_servers()
 
 	for _, server_name in ipairs(all_servers) do
-		M.setup_server(lspconfig, on_attach, on_init, capabilities, handlers, disabled_servers, server_name)
+		M.setup_server(on_attach, on_init, capabilities, handlers, disabled_servers, server_name)
 	end
 
 	-- setup circom as it is not in repo
-	M.setup_server(lspconfig, on_attach, on_init, capabilities, handlers, disabled_servers, "circom-lsp")
+	M.setup_server(on_attach, on_init, capabilities, handlers, disabled_servers, "circom-lsp")
 end
 
-M.setup_server = function(lspconfig, on_attach, on_init, capabilities, handlers, disabled_servers, server_name)
+M.setup_server = function(on_attach, on_init, capabilities, handlers, disabled_servers, server_name)
 	-- disable if lsp was disabled
 	if disabled_servers[server_name] then
 		print(server_name .. " is disabled")
@@ -41,14 +40,15 @@ M.setup_server = function(lspconfig, on_attach, on_init, capabilities, handlers,
 		capabilities = capabilities,
 		handlers = handlers,
 	}
-	-- local server_name = "circom-lsp"
 
 	local require_ok, conf_opts = pcall(require, "alexander.configs.plugins.diagnostics.lsp.lspconfig." .. server_name)
 	if require_ok then
 		options = vim.tbl_deep_extend("force", conf_opts, options)
 	end
 
-	lspconfig[server_name].setup(options)
+	vim.lsp.config(server_name, options)
+	vim.lsp.enable(server_name)
+	-- lspconfig[server_name].setup(options)
 	print(server_name .. " is installed")
 end
 
