@@ -45,6 +45,11 @@ o.updatetime = 250
 -- when cursor reaches end/beginning of line
 opt.whichwrap:append("<>[]hl")
 
+-- Allow project-local config files
+opt.exrc = true
+-- Prevent unsafe commands in local configs
+opt.secure = true
+
 -- disable some default providers
 g.loaded_node_provider = 0
 g.loaded_python3_provider = 0
