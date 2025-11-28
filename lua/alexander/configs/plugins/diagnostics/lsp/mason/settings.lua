@@ -24,7 +24,6 @@ M.ensure_installed = {
 	"kulala-fmt",
 	-- spell
 	"codespell",
-	"typos",
 	-- docker
 	"dockerfile-language-server",
 	"hadolint",
