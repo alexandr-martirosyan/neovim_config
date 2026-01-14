@@ -15,9 +15,6 @@ map("n", "<C-k>", "<C-w>k", { desc = "switch window up" })
 
 map("n", "<Esc>", "<cmd>noh<CR>", { desc = "general clear highlights" })
 
-map("n", "<C-s>", "<cmd>w<CR>", { desc = "general save file" })
-map("n", "<C-c>", "<cmd>%y+<CR>", { desc = "general copy whole file" })
-
 map("n", "<leader>ln", "<cmd>set nu!<CR>", { desc = "toggle line number" })
 map("n", "<leader>rn", "<cmd>set rnu!<CR>", { desc = "toggle relative number" })
 map("n", "<leader>ch", "<cmd>NvCheatsheet<CR>", { desc = "toggle nvcheatsheet" })
@@ -81,10 +78,17 @@ map("n", "<leader>bw", "<Cmd>BufferOrderByWindowNumber<CR>", { desc = "buffer or
 -- :BarbarDisable - very bad command, should never be used
 
 -- Terminal
-map({ "n", "t" }, "<A-v>", "<cmd>ToggleTerm direction=vertical<cr>", { desc = "terminal toggleable vertical term" })
-map({ "n", "t" }, "<A-h>", "<cmd>ToggleTerm direction=horizontal<cr>", { desc = "terminal toggleable horizontal term" })
-map({ "n", "t" }, "<A-i>", "<cmd>ToggleTerm direction=float<cr>", { desc = "terminal toggleable float term" })
-map({ "n", "t" }, "<A-t>", "<cmd>ToggleTerm direction=tab<cr>", { desc = "terminal toggleable tab term" })
+map("t", "<C-x>", "<C-\\><C-N>", { desc = "terminal escape terminal mode" })
+map({ "n", "t" }, "<A-v>", "<cmd>1ToggleTerm direction=vertical<cr>", { desc = "terminal vertical term" })
+map({ "n", "t" }, "<A-h>", "<cmd>1ToggleTerm direction=horizontal<cr>", { desc = "terminal horizontal term" })
+map({ "n", "t" }, "<A-i>", "<cmd>1ToggleTerm direction=float<cr>", { desc = "terminal float term" })
+map({ "n", "t" }, "<A-t>", "<cmd>1ToggleTerm direction=tab<cr>", { desc = "terminal tab term" })
+map({ "n", "t" }, "<A-1>", function()
+	require("alexander.configs.plugins.toggleterm").toggle_exclusive(2)
+end, { desc = "tab terminal #2" })
+map({ "n", "t" }, "<A-2>", function()
+	require("alexander.configs.plugins.toggleterm").toggle_exclusive(3)
+end, { desc = "tab terminal #3" })
 
 -- neotree
 map("n", "<C-n>", "<cmd>Neotree toggle<CR>", { desc = "neotree toggle window" })
@@ -110,9 +114,6 @@ map(
 	"<cmd>Telescope find_files follow=true no_ignore=true hidden=true<CR>",
 	{ desc = "telescope find all files" }
 )
-
--- terminal
-map("t", "<C-x>", "<C-\\><C-N>", { desc = "terminal escape terminal mode" })
 
 -- whichkey
 map("n", "<leader>wK", "<cmd>WhichKey <CR>", { desc = "whichkey all keymaps" })
@@ -202,7 +203,7 @@ map("n", "<leader>hD", '<cmd>lua require"gitsigns".diffthis("~")<CR>', { desc = 
 map("n", "<leader>td", "<cmd>Gitsigns toggle_deleted<CR>", { desc = "Gitsigns toggle deleted" })
 -- Text object
 map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "Gitsigns select hunk" })
--- LazyGit 
+-- LazyGit
 map("n", "<leader>lg", "<cmd>LazyGit<cr>", { desc = "LazyGit Toggle" })
 -- LazyDocker
 map("n", "<leader>ld", "<cmd>lua LazyDocker.toggle()<CR>", { desc = "LazyDocker Toggle" })

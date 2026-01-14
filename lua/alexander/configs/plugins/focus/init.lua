@@ -29,6 +29,8 @@ vim.api.nvim_create_autocmd("FileType", {
 	desc = "Disable focus autoresize for FileType",
 })
 
+vim.g.focus_disable = true
+
 M.opts = {
 	-- ui = {
 	-- 	winhighlight = true,

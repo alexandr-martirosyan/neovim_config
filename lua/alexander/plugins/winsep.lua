@@ -4,10 +4,9 @@ local M = {
 	{
 		"nvim-zh/colorful-winsep.nvim",
 		event = { "WinLeave" },
-		opts = winsep.opts
+		opts = winsep.opts,
+		-- enabled = false,
 	},
 }
 
 return M
-
--- return {}

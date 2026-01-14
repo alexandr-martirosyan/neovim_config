@@ -31,17 +31,24 @@ M.opts = {
 	-- },
 }
 
+-- lua/alexander/configs/plugins/diagnostics/conform/init.lua
+
+-- TODO: this is Gemini suggested code so I need to look to it 
 M.config = function(_, opts)
 	local conform = require("conform")
 
-	local lfs = require("lfs")
-	local path = vim.fn.expand("~/.config/nvim/lua/alexander/configs/plugins/diagnostics/conform/formatters")
-	for file in lfs.dir(path) do
-		if file:match("%.lua$") then -- Check if the file ends with `.lua`
-			local formatter = file:gsub("%.lua$", "") -- Remove `.lua`
-			conform.formatters[formatter] =
-				require("alexander/configs/plugins/diagnostics/conform/formatters." .. formatter)
-		end
+	-- IMPROVEMENT: Use native Neovim API instead of "lfs" and hardcoded paths
+	-- This searches your runtime path for the formatters folder
+	local formatter_files =
+		vim.api.nvim_get_runtime_file("lua/alexander/configs/plugins/diagnostics/conform/formatters/*.lua", true)
+
+	for _, filepath in ipairs(formatter_files) do
+		-- Extract the filename (formatter name) without extension
+		local formatter = vim.fn.fnamemodify(filepath, ":t:r")
+
+		-- Require it safely
+		conform.formatters[formatter] =
+			require("alexander.configs.plugins.diagnostics.conform.formatters." .. formatter)
 	end
 
 	conform.setup(opts)
