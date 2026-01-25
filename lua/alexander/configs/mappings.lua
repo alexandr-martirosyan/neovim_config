@@ -92,10 +92,10 @@ map({ "n", "t" }, "<A-h>", "<cmd>1ToggleTerm direction=horizontal<cr>", { desc =
 map({ "n", "t" }, "<A-i>", "<cmd>1ToggleTerm direction=float<cr>", { desc = "terminal float term" })
 map({ "n", "t" }, "<A-t>", "<cmd>1ToggleTerm direction=tab<cr>", { desc = "terminal tab term" })
 map({ "n", "t" }, "<A-1>", function()
-	require("alexander.configs.plugins.toggleterm").toggle_exclusive(2)
+	require("alexander.plugins.toggleterm.toggleterm").toggle_exclusive(2)
 end, { desc = "tab terminal #2" })
 map({ "n", "t" }, "<A-2>", function()
-	require("alexander.configs.plugins.toggleterm").toggle_exclusive(3)
+	require("alexander.plugins.toggleterm.toggleterm").toggle_exclusive(3)
 end, { desc = "tab terminal #3" })
 
 -- neotree
