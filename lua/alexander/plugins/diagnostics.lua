@@ -8,7 +8,7 @@ local M = {
 	-- lint
 	{
 		"mfussenegger/nvim-lint",
-		event = "BufEnter",
+		event = "BufReadPre",
 		opts = nvim_lint.opts,
 		config = nvim_lint.config,
 	},
@@ -27,7 +27,7 @@ local M = {
 	},
 	{
 		"neovim/nvim-lspconfig",
-		event = "BufEnter",
+		event = "BufReadPre",
 		dependencies = {
 			'hrsh7th/nvim-cmp',
 			'hrsh7th/cmp-nvim-lsp'
@@ -36,7 +36,7 @@ local M = {
 	},
 	{
 		"williamboman/mason-lspconfig.nvim",
-		event = "BufEnter",
+		event = "BufReadPre",
 		dependencies = {
 			"neovim/nvim-lspconfig",
 			"williamboman/mason.nvim",

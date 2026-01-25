@@ -3,7 +3,7 @@ local neogit = require("alexander.configs.plugins.neogit")
 local M = {
 	{
 		"NeogitOrg/neogit",
-		event = "BufEnter",
+    cmd = "Neogit",
 		dependencies = {
 			"nvim-lua/plenary.nvim", -- required
 			"sindrets/diffview.nvim", -- optional - Diff integration

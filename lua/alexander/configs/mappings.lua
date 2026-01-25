@@ -8,16 +8,24 @@ map("i", "<C-l>", "<Right>", { desc = "move right" })
 map("i", "<C-j>", "<Down>", { desc = "move down" })
 map("i", "<C-k>", "<Up>", { desc = "move up" })
 
-map("n", "<C-h>", "<C-w>h", { desc = "switch window left" })
-map("n", "<C-l>", "<C-w>l", { desc = "switch window right" })
-map("n", "<C-j>", "<C-w>j", { desc = "switch window down" })
-map("n", "<C-k>", "<C-w>k", { desc = "switch window up" })
+map({ "n", "v" }, "<C-h>", "<C-w>h", { desc = "switch window left" })
+map({ "n", "v" }, "<C-l>", "<C-w>l", { desc = "switch window right" })
+map({ "n", "v" }, "<C-j>", "<C-w>j", { desc = "switch window down" })
+map({ "n", "v" }, "<C-k>", "<C-w>k", { desc = "switch window up" })
 
 map("n", "<Esc>", "<cmd>noh<CR>", { desc = "general clear highlights" })
 
 map("n", "<leader>ln", "<cmd>set nu!<CR>", { desc = "toggle line number" })
 map("n", "<leader>rn", "<cmd>set rnu!<CR>", { desc = "toggle relative number" })
-map("n", "<leader>ch", "<cmd>NvCheatsheet<CR>", { desc = "toggle nvcheatsheet" })
+-- copilot
+map({ "n", "v" }, "<leader>cc", "<cmd>CopilotChatOpen<CR>", { desc = "open copilot chat" })
+map({ "n", "v" }, "<leader>cpc", "<cmd>CopilotChatToggle<CR>", { desc = "toggle copilot chat" })
+map({ "n", "v" }, "<leader>cpo", "<cmd>CopilotChatOpen<CR>", { desc = "open copilot chat" })
+map({ "n", "v" }, "<leader>cpr", "<cmd>CopilotChatReset<CR>", { desc = "Reset copilot chat" })
+-- map({ "n", "v" }, "<leader>ccc", "<cmd>CopilotChatToggle<CR>", { desc = "toggle copilot chat" })
+-- map({ "n", "v" }, "<leader>ccc", "<cmd>CopilotChatToggle<CR>", { desc = "toggle copilot chat" })
+-- map({ "n", "v" }, "<leader>ccc", "<cmd>CopilotChatToggle<CR>", { desc = "toggle copilot chat" })
+-- map({ "n", "v" }, "<leader>ccc", "<cmd>CopilotChatToggle<CR>", { desc = "toggle copilot chat" })
 
 map("n", "<leader>fm", function()
 	require("conform").format({
@@ -249,3 +257,6 @@ map("n", "<C-W>X", "<Cmd>WinShift swap<CR>", { desc = "Activate WinShift SWAP" }
 -- folding
 map("n", "zR", require("ufo").openAllFolds, { desc = "Open all folds" })
 map("n", "zM", require("ufo").closeAllFolds, { desc = "Close all folds" })
+
+-- db
+map("n", "<leader>db", "<cmd>Dbee<cr>", { desc = "Open Dbee window" })

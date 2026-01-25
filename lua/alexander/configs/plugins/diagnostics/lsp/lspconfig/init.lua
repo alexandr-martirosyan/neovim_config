@@ -55,6 +55,7 @@ M.capabilities.textDocument.completion.completionItem = {
 		},
 	},
 }
+M.capabilities.general.positionEncodings = { "utf-16" }
 
 M.disabled_servers = {
 	-- lua_ls = true,
