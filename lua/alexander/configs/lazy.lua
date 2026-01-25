@@ -66,12 +66,6 @@ vim.opt.termguicolors = true
 
 -- Setup lazy.nvim
 require("lazy").setup({
-	-- spec = {
-	-- 	-- import your plugins
-	-- 	{ import = user .. ".plugins" },
-	-- },
-	-- Configure any other settings here. See the documentation for more details.
-	-- automatically check for plugin updates
 	import = "alexander.plugins",
 	checker = { enabled = true },
 	install = { colorscheme = { "habamax" } },
