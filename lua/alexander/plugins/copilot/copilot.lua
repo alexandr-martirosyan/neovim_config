@@ -2,8 +2,6 @@ local M = {}
 
 vim.g.copilot_nes_debounce = 500
 
-M.cmd = { "Copilot" }
-M.event = { "InsertEnter" }
 M.opts = {
 	suggestion = {
 		enabled = false,

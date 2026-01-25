@@ -6,8 +6,8 @@ local M = {
 	{
 		"zbirenbaum/copilot.lua",
 		dependencies = { "copilotlsp-nvim/copilot-lsp" },
-		event = copilot.event, -- Load Copilot when entering Insert mode for the first time
-		cmd = copilot.cmd, -- Also allow manual `:Copilot` command to trigger it
+		cmd = { "Copilot" },
+		event = { "InsertEnter" },
 		opts = copilot.opts,
 	},
 	{
