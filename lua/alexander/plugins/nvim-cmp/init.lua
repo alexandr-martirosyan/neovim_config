@@ -4,7 +4,7 @@ local cmp = require("alexander.plugins.nvim-cmp.nvim-cmp")
 
 local M = {
 	{
-		"onsails/lspkind.nvim"
+		"onsails/lspkind.nvim",
 	},
 	{
 		"hrsh7th/nvim-cmp",
@@ -19,7 +19,7 @@ local M = {
 			"hrsh7th/cmp-path",
 			"hrsh7th/cmp-cmdline",
 		},
-		opts = cmp.opts
+		opts = cmp.opts,
 	},
 	{
 		"L3MON4D3/LuaSnip",
@@ -36,7 +36,7 @@ local M = {
 		"windwp/nvim-autopairs",
 		dependencies = { "hrsh7th/nvim-cmp" },
 		opts = autopairs.opts,
-		config = autopairs.config
+		config = autopairs.config,
 	},
 }
 

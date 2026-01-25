@@ -8,13 +8,13 @@ vim.fn.sign_define("DiagnosticSignHint", { text = "󰌵", texthl = "DiagnosticSi
 
 M.opts = {
 	filesystem = {
-    -- This is the key setting to keep neo-tree in sync with your active buffer
-    follow_current_file = {
-      enabled = true,               -- This enables the "hover" behavior
-      leave_dirs_open = false,      -- Optional: closes other folders when you switch files
-    },
-    use_libuv_file_watcher = true,  -- Optional: automatically refreshes the tree on file changes
-  },
+		-- This is the key setting to keep neo-tree in sync with your active buffer
+		follow_current_file = {
+			enabled = true, -- This enables the "hover" behavior
+			leave_dirs_open = false, -- Optional: closes other folders when you switch files
+		},
+		use_libuv_file_watcher = true, -- Optional: automatically refreshes the tree on file changes
+	},
 	window = {
 		mappings = {
 			["w"] = "noop",

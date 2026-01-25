@@ -83,7 +83,7 @@ map("n", "<leader>bl", "<Cmd>BufferOrderByLanguage<CR>", { desc = "buffer order 
 map("n", "<leader>bw", "<Cmd>BufferOrderByWindowNumber<CR>", { desc = "buffer order by window number" })
 
 -- NOTE: Bufferline test mappings
--- 
+--
 -- -- Navigation: Move between tabs
 -- map("n", "<S-h>", "<Cmd>BufferLineCyclePrev<CR>", { desc = "buffer goto previous" })
 -- map("n", "<S-l>", "<Cmd>BufferLineCycleNext<CR>", { desc = "buffer goto next" })
@@ -109,7 +109,6 @@ map("n", "<leader>bw", "<Cmd>BufferOrderByWindowNumber<CR>", { desc = "buffer or
 -- map("n", "<leader>bb", "<Cmd>BufferLineSortByTabs<CR>", { desc = "buffer order by number" })
 -- map("n", "<leader>bn", "<Cmd>BufferLineSortByExtension<CR>", { desc = "buffer order by extension" })
 -- map("n", "<leader>bd", "<Cmd>BufferLineSortByDirectory<CR>", { desc = "buffer order by directory" })
-
 
 -- Terminal
 map("t", "<C-x>", "<C-\\><C-N>", { desc = "terminal escape terminal mode" })

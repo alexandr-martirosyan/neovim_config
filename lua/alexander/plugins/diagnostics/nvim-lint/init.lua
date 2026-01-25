@@ -21,7 +21,7 @@ M.opts = {
 }
 
 M.config = function(_, opts)
-	local lint = require "lint"
+	local lint = require("lint")
 
 	lint.linters_by_ft = opts.linters_by_ft
 

@@ -6,8 +6,8 @@ local M = {
 		dependencies = {
 			"MunifTanjim/nui.nvim",
 		},
-    -- lazy = false,
---		cmd = dbee.cmd,
+		-- lazy = false,
+		--		cmd = dbee.cmd,
 		opts = dbee.opts,
 		build = dbee.build,
 		config = dbee.config,

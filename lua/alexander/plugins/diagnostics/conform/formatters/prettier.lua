@@ -25,7 +25,7 @@ local M = {
 		ext_parsers = {
 			qmd = "markdown",
 		},
-	}
+	},
 }
 
 return M

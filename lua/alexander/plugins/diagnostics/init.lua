@@ -1,8 +1,8 @@
-local nvim_lint = require "alexander.plugins.diagnostics.nvim-lint"
-local conform = require "alexander.plugins.diagnostics.conform"
-local mason = require "alexander.plugins.diagnostics.lsp.mason"
-local lspconfig = require "alexander.plugins.diagnostics.lsp.lspconfig"
-local mason_lspconfig = require "alexander.plugins.diagnostics.lsp.mason-lspconfig"
+local nvim_lint = require("alexander.plugins.diagnostics.nvim-lint")
+local conform = require("alexander.plugins.diagnostics.conform")
+local mason = require("alexander.plugins.diagnostics.lsp.mason")
+local lspconfig = require("alexander.plugins.diagnostics.lsp.lspconfig")
+local mason_lspconfig = require("alexander.plugins.diagnostics.lsp.mason-lspconfig")
 
 local M = {
 	-- lint
@@ -14,9 +14,9 @@ local M = {
 	},
 	-- conform
 	{
-		'stevearc/conform.nvim',
+		"stevearc/conform.nvim",
 		opts = conform.opts,
-		config = conform.config
+		config = conform.config,
 	},
 	-- lsp stuff
 	{
@@ -29,8 +29,8 @@ local M = {
 		"neovim/nvim-lspconfig",
 		event = "BufReadPre",
 		dependencies = {
-			'hrsh7th/nvim-cmp',
-			'hrsh7th/cmp-nvim-lsp'
+			"hrsh7th/nvim-cmp",
+			"hrsh7th/cmp-nvim-lsp",
 		},
 		config = lspconfig.config,
 	},
@@ -41,7 +41,7 @@ local M = {
 			"neovim/nvim-lspconfig",
 			"williamboman/mason.nvim",
 		},
-		config = mason_lspconfig.config
+		config = mason_lspconfig.config,
 	},
 }
 

@@ -1,7 +1,7 @@
 local M = {
 	{
-		"rcarriga/nvim-notify"
-	}
+		"rcarriga/nvim-notify",
+	},
 }
 
 return M

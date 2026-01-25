@@ -1,7 +1,7 @@
 local M = {
 	{
-		"MunifTanjim/nui.nvim"
-	}
+		"MunifTanjim/nui.nvim",
+	},
 }
 
 return M

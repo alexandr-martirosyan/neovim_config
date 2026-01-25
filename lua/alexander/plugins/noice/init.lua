@@ -1,4 +1,4 @@
-local noice = require "alexander.plugins.noice.noice"
+local noice = require("alexander.plugins.noice.noice")
 
 local M = {
 	{
@@ -8,8 +8,8 @@ local M = {
 			"MunifTanjim/nui.nvim",
 			"rcarriga/nvim-notify",
 		},
-		opts = noice.opts
-	}
+		opts = noice.opts,
+	},
 }
 
 return M
