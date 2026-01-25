@@ -14,6 +14,8 @@ M.opts = {
 		html = { "prettier" },
 		javascript = { "prettier" },
 		typescript = { "prettier" },
+		json = { "prettier" },
+		jsonc = { "prettier" },
 		python = { "black" },
 		rust = { "rustfmt" },
 		http = { "kulala" },
@@ -33,7 +35,7 @@ M.opts = {
 
 -- lua/alexander/plugins/diagnostics/conform/init.lua
 
--- TODO: this is Gemini suggested code so I need to look to it 
+-- TODO: this is Gemini suggested code so I need to look to it
 M.config = function(_, opts)
 	local conform = require("conform")
 
@@ -47,8 +49,7 @@ M.config = function(_, opts)
 		local formatter = vim.fn.fnamemodify(filepath, ":t:r")
 
 		-- Require it safely
-		conform.formatters[formatter] =
-			require("alexander.plugins.diagnostics.conform.formatters." .. formatter)
+		conform.formatters[formatter] = require("alexander.plugins.diagnostics.conform.formatters." .. formatter)
 	end
 
 	conform.setup(opts)
