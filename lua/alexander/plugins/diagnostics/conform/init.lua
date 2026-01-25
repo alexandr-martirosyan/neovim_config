@@ -20,6 +20,7 @@ M.opts = {
 		rust = { "rustfmt" },
 		http = { "kulala" },
 		dockerfile = { "dockerls" },
+		toml = { "tombi" },
 		-- Use the "*" filetype to run formatters on all filetypes.
 		["*"] = { "codespell" },
 		-- Use the "_" filetype to run formatters on filetypes that don't

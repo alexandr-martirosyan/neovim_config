@@ -29,6 +29,8 @@ M.ensure_installed = {
 	"hadolint",
 	-- zk
 	"circom-lsp",
+  -- toml
+  "tombi"
 }
 
 return M

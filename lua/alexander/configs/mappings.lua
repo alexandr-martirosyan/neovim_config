@@ -37,7 +37,8 @@ end, { desc = "general format file" })
 -- global lsp mappings
 map("n", "<leader>ds", vim.diagnostic.setloclist, { desc = "LSP diagnostic loclist" })
 
--- barbar
+-- NOTE: Disabled BarBar in favor of Bufferline + Mini.icons
+--
 -- Move to previous/next
 -- map('n', '<A-,>', '<Cmd>BufferPrevious<CR>', { desc = "buffer goto previous" })
 -- map('n', '<A-.>', '<Cmd>BufferNext<CR>', { desc = "buffer goto next" })
@@ -81,9 +82,34 @@ map("n", "<leader>bd", "<Cmd>BufferOrderByDirectory<CR>", { desc = "buffer order
 map("n", "<leader>bl", "<Cmd>BufferOrderByLanguage<CR>", { desc = "buffer order by language" })
 map("n", "<leader>bw", "<Cmd>BufferOrderByWindowNumber<CR>", { desc = "buffer order by window number" })
 
--- Other:
--- :BarbarEnable - enables barbar (enabled by default)
--- :BarbarDisable - very bad command, should never be used
+-- NOTE: Bufferline test mappings
+-- 
+-- -- Navigation: Move between tabs
+-- map("n", "<S-h>", "<Cmd>BufferLineCyclePrev<CR>", { desc = "buffer goto previous" })
+-- map("n", "<S-l>", "<Cmd>BufferLineCycleNext<CR>", { desc = "buffer goto next" })
+--
+-- -- Re-ordering: Change tab position
+-- map("n", "<A-,>", "<Cmd>BufferLineMovePrev<CR>", { desc = "buffer move previous" })
+-- map("n", "<A-.>", "<Cmd>BufferLineMoveNext<CR>", { desc = "buffer move next" })
+--
+-- -- Goto specific positions (Alt + 1 or 0)
+-- map("n", "<A-1>", "<Cmd>BufferLineGoToBuffer 1<CR>", { desc = "buffer goto 1" })
+-- map("n", "<A-0>", "<Cmd>BufferLineGoToBuffer -1<CR>", { desc = "buffer goto last" })
+--
+-- -- Pin/Unpin: Keeps buffer at the start
+-- map("n", "<A-p>", "<Cmd>BufferLineTogglePin<CR>", { desc = "buffer pin" })
+--
+-- -- Magic Pick Mode: Jump to buffer by letter (Replaces Barbar's BufferPick)
+-- map("n", "<A-S-p>", "<Cmd>BufferLinePick<CR>", { desc = "buffer pick" })
+--
+-- -- Close buffer (Using standard bdelete for compatibility with scope.nvim)
+-- map("n", "<leader>x", "<Cmd>bdelete<CR>", { desc = "buffer close" })
+--
+-- -- Sorting Commands
+-- map("n", "<leader>bb", "<Cmd>BufferLineSortByTabs<CR>", { desc = "buffer order by number" })
+-- map("n", "<leader>bn", "<Cmd>BufferLineSortByExtension<CR>", { desc = "buffer order by extension" })
+-- map("n", "<leader>bd", "<Cmd>BufferLineSortByDirectory<CR>", { desc = "buffer order by directory" })
+
 
 -- Terminal
 map("t", "<C-x>", "<C-\\><C-N>", { desc = "terminal escape terminal mode" })
