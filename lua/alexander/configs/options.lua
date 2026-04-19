@@ -88,3 +88,9 @@ o.wrap = false
 
 opt.pumheight = 12 -- Limit the popup menu height to 5 rows
 opt.equalalways = false
+
+-- Sets a subtle, dark border line between the winbar and the code
+vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#313244", bg = "NONE" })
+
+-- remove "l" foldopen functionality
+vim.opt.foldopen:remove("hor")

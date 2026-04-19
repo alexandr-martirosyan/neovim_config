@@ -37,11 +37,7 @@ end, { desc = "general format file" })
 -- global lsp mappings
 map("n", "<leader>ds", vim.diagnostic.setloclist, { desc = "LSP diagnostic loclist" })
 
--- NOTE: Disabled BarBar in favor of Bufferline + Mini.icons
---
 -- Move to previous/next
--- map('n', '<A-,>', '<Cmd>BufferPrevious<CR>', { desc = "buffer goto previous" })
--- map('n', '<A-.>', '<Cmd>BufferNext<CR>', { desc = "buffer goto next" })
 map("n", "<S-h>", "<Cmd>BufferPrevious<CR>", { desc = "buffer goto previous" })
 map("n", "<S-l>", "<Cmd>BufferNext<CR>", { desc = "buffer goto next" })
 -- Re-order to previous/next
@@ -71,8 +67,12 @@ map("n", "<leader>x", "<Cmd>BufferClose<CR>", { desc = "buffer close" })
 --                 :BufferCloseAllButCurrent
 --                 :BufferCloseAllButPinned
 --                 :BufferCloseAllButCurrentOrPinned
+--                 :BufferCloseAllButVisible
 --                 :BufferCloseBuffersLeft
 --                 :BufferCloseBuffersRight
+-- Close buffer mappings
+map("n", "<leader>ba", "<Cmd>BufferCloseAllButCurrentOrPinned<CR>", { desc = "Close every buffer except pinned or current" })
+map("n", "<leader>bv", "<Cmd>BufferCloseAllButVisible<CR>", { desc = "Close every buffer except visible" })
 -- Magic buffer-picking mode
 map("n", "<A-S-p>", "<Cmd>BufferPick<CR>", { desc = "buffer pick" })
 -- Sort automatically by...

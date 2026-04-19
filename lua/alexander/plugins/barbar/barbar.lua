@@ -15,8 +15,9 @@ M.opts = {
 		},
 
 		-- Use a preconfigured buffer appearance— can be 'default', 'powerline', or 'slanted'
-		preset = "powerline",
+		preset = "slanted",
 	},
+	filename_depth = 1,
 
 	-- Set the filetypes which barbar will offset itself for
 	sidebar_filetypes = {

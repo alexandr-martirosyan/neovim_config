@@ -1,6 +1,11 @@
+---@diagnostic disable: undefined-field
 local M = {}
 
+---@diagnostic disable-next-line: unused-local
 M.opts = function(_, opts)
+	-- Create a master group for the pill container
+	-- vim.api.nvim_set_hl(0, "LualineTroublePill", { bg = "#313244", fg = "#cdd6f4" })
+	-- vim.api.nvim_set_hl(0, "LualineNoicePill", { bg = "#313244", fg = "#ff9e64" })
 	local trouble = require("trouble")
 	local symbols = trouble.statusline({
 		mode = "lsp_document_symbols",
@@ -8,10 +13,19 @@ M.opts = function(_, opts)
 		title = false,
 		filter = { range = true },
 		format = "{kind_icon}{symbol.name:Normal}",
-		hl_group = "lualine_c_normal",
+		-- The following line is needed to fix the background color
+		-- Set it to the lualine section you want to use
+		-- hl_group = "LualinetroublePill",
+		-- hl_group = "#181926",
 	})
+	-- 1. THEME OVERRIDE: Inherit from 'auto'
+	-- We use a deep "Crust" background to make the bar stand out as a separator.
+	local custom_theme = require("lualine.themes.auto")
+	-- custom_theme.normal.c.bg = "#181926" -- Very dark active background
+	custom_theme.inactive.c.bg = "#181926" -- Very dark active background
+	custom_theme.normal.c.bg = "#11111b" -- Near-black inactive background
 
-	-- Spacer
+	-- Spacer for layout control
 	local spacer = {
 		function()
 			return "%="
@@ -23,45 +37,51 @@ M.opts = function(_, opts)
 	-- COMPONENT DEFINITIONS
 	-- ========================================================================
 
-	-- 1. LEFT SIDE: Git Branch (Now matches Right Side colors)
-	local branch_active = {
-		"branch",
-		icon = "",
-		-- REMOVED "lualine_a_normal" so it is not Blue anymore.
-		-- It now uses the default WinBar background (Gray-like).
-		colored = false,
-		separator = { left = "", right = "" },
-		padding = { left = 1, right = 1 },
-	}
-
-	local branch_inactive = {
-		"branch",
-		icon = "",
-		color = { fg = "#a5adce" }, -- Simple Grey text
-		separator = { left = "", right = "" },
-		padding = { left = 1, right = 1 },
-	}
-
-	-- 2. CENTER: Filename (Keep as the bold "Pill")
+	-- 1. FILEPATH (Straight Left, Semicircle Right)
 	local filename_active = {
 		"filename",
 		path = 1,
 		shorting_target = 30,
-		color = "lualine_a_normal", -- This stays Bold/Colorful
-		separator = { left = "", right = "" },
-		padding = 1,
+		color = {
+			bg = "#494d64",
+			fg = "#7dc4e4" --[[ , gui = "bold" ]],
+		},
+		-- color = "lualine_b",
+		-- color = "lualine_a_normal", -- Restored your Bold/Colorful primary color
+		separator = { left = "", right = "" },
+		padding = { left = 1, right = 1 },
 	}
 
 	local filename_inactive = {
 		"filename",
 		path = 1,
 		shorting_target = 30,
-		color = { bg = "#363a4f", fg = "#a5adce", gui = "bold" },
-		separator = { left = "", right = "" },
-		padding = 1,
+		color = { bg = "#363a4f", fg = "#a5adce" },
+		-- color = "lualine_c_inactive",
+		separator = { left = "", right = "" },
+		padding = { left = 1, right = 1 },
 	}
 
-	-- 3. RIGHT SIDE: Filetype (Original Gray-like look)
+	-- 2. BRANCH (Semicircle both sides, Subtle Gray background)
+	local branch_active = {
+		"branch",
+		icon = "",
+		-- RESTORED: Your preferred subtle gray highlight
+		-- color = { bg = "#45475a", fg = "#cdd6f4" },
+		color = "lualine_b_visual",
+		separator = { left = "", right = "" },
+		padding = { left = 1, right = 1 },
+	}
+
+	local branch_inactive = {
+		"branch",
+		icon = "",
+		color = { bg = "#313244", fg = "#a5adce" },
+		separator = { left = "", right = "" },
+		padding = { left = 1, right = 1 },
+	}
+
+	-- 3. FILETYPE (Semicircle Left, Straight Right)
 	local filetype_active = {
 		"filetype",
 		colored = true,
@@ -73,14 +93,16 @@ M.opts = function(_, opts)
 	local filetype_inactive = {
 		"filetype",
 		colored = false,
-		color = { fg = "#a5adce" },
+		color = { bg = "#363a4f", fg = "#a5adce" },
 		separator = { left = "", right = "" },
 		padding = { left = 1, right = 1 },
 	}
 
 	return {
 		options = {
-			theme = "auto",
+			theme = custom_theme,
+			section_separators = { left = "", right = "" },
+			component_separators = { left = "", right = "" }, -- Keeps the inside of pills clean
 			disabled_filetypes = {
 				winbar = {
 					"oil",
@@ -95,27 +117,21 @@ M.opts = function(_, opts)
 			},
 		},
 
-		-- ACTIVE WINDOW
+		-- ACTIVE WINDOW: {filepath   branch ----------------------- filetype}
 		winbar = {
 			lualine_a = {},
-			lualine_b = { branch_active }, -- LEFT (Gray-like)
-			lualine_c = {
-				spacer,
-				filename_active, -- CENTER (Blue/Bold Pill)
-			},
+			lualine_b = { filename_active, branch_active },
+			lualine_c = { spacer },
 			lualine_x = {},
-			lualine_y = { filetype_active }, -- RIGHT (Gray-like)
+			lualine_y = { filetype_active },
 			lualine_z = {},
 		},
 
 		-- INACTIVE WINDOW
 		inactive_winbar = {
 			lualine_a = {},
-			lualine_b = { branch_inactive },
-			lualine_c = {
-				spacer,
-				filename_inactive,
-			},
+			lualine_b = { filename_inactive, branch_inactive },
+			lualine_c = { spacer },
 			lualine_x = {},
 			lualine_y = { filetype_inactive },
 			lualine_z = {},
@@ -124,12 +140,20 @@ M.opts = function(_, opts)
 		sections = {
 			lualine_x = {
 				{
-					require("noice").api.status.mode.get,
-					cond = require("noice").api.status.mode.has,
-					color = { fg = "#ff9e64" },
+					-- Wrapping in a function strips Noice's internal highlights
+					require("noice").api.status.message.get_hl,
+					cond = require("noice").api.status.message.has,
+					color = "LualineMessagePill",
+					separator = { left = "", right = "" },
 				},
 			},
-			lualine_c = { { symbols.get, cond = symbols.has } },
+			lualine_c = {
+				{
+					symbols.get,
+					cond = symbols.has,
+					separator = { left = "", right = "" },
+				},
+			},
 		},
 	}
 end

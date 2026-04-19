@@ -62,28 +62,10 @@ M.disabled_servers = {
 	-- solidity_ls_nomicfoundation = true,
 }
 
-M.diagnostic_config = function()
-	local x = vim.diagnostic.severity
-
-	vim.diagnostic.config({
-		virtual_text = { prefix = "" },
-		signs = { text = { [x.ERROR] = "󰅙", [x.WARN] = "", [x.INFO] = "󰋼", [x.HINT] = "󰌵" } },
-		underline = true,
-		float = { border = "single" },
-	})
-
-	-- -- Default border style
-	-- local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
-	-- function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
-	-- 	opts = opts or {}
-	-- 	opts.border = "rounded"
-	-- 	return orig_util_open_floating_preview(contents, syntax, opts, ...)
-	-- end
-end
-
 M.config = function(_, opts)
 	local x = vim.diagnostic.severity
 	vim.diagnostic.config({
+		severity_sort = true,
 		virtual_text = { prefix = "" },
 		signs = { text = { [x.ERROR] = "󰅙", [x.WARN] = "", [x.INFO] = "󰋼", [x.HINT] = "󰌵" } },
 		underline = true,

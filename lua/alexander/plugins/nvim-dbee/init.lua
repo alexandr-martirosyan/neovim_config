@@ -7,7 +7,7 @@ local M = {
 			"MunifTanjim/nui.nvim",
 		},
 		-- lazy = false,
-		--		cmd = dbee.cmd,
+    cmd = dbee.cmd,
 		opts = dbee.opts,
 		build = dbee.build,
 		config = dbee.config,

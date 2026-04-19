@@ -1,6 +1,6 @@
 return {
 	procMacro = { enable = true },
-	checkOnSave = {
+	check = {
 		command = "clippy",
 	},
 }
