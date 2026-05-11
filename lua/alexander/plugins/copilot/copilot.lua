@@ -16,9 +16,9 @@ M.opts = {
 	-- 	auto_trigger = false,
 	-- },
 
-	server_opts_overrides = {
-		offset_encoding = "utf-16", -- Set the offset encoding same as above, see `:h vim.lsp.start` for more info
-	},
+	-- server_opts_overrides = {
+	-- 	offset_encoding = "utf-16", -- Set the offset encoding same as above, see `:h vim.lsp.start` for more info
+	-- },
 	-- Feel free to add other Copilot.lua options here (see docs)
 }
 

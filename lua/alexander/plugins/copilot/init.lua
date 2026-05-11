@@ -21,6 +21,7 @@ local M = {
 		dependencies = { "nvim-lua/plenary.nvim" },
 		cmd = { "CopilotChat", "CopilotChatOpen", "CopilotChatToggle" },
 		build = "make tiktoken", -- Builds the optional native token counter
+    opts = copilot_chat.opts,
 	},
 }
 

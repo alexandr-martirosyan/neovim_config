@@ -13,9 +13,9 @@ M.config = function(_, opts)
 	local handlers = lsp_settings.handlers
 	local disabled_servers = lsp_settings.disabled_servers
 
-	mason_lspconfig.setup({
-		automatic_enable = true,
-	})
+	-- mason_lspconfig.setup({
+	-- 	automatic_enable = true,
+	-- })
 
 	local all_servers = mason_lspconfig.get_installed_servers()
 
@@ -24,7 +24,8 @@ M.config = function(_, opts)
 	end
 
 	-- setup circom as it is not in repo
-	M.setup_server(on_attach, on_init, capabilities, handlers, disabled_servers, "circom-lsp")
+  -- NOTE: needs to be enabled while using circom
+	-- M.setup_server(on_attach, on_init, capabilities, handlers, disabled_servers, "circom-lsp")
 end
 
 M.setup_server = function(on_attach, on_init, capabilities, handlers, disabled_servers, server_name)
