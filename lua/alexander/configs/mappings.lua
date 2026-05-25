@@ -18,10 +18,13 @@ map("n", "<Esc>", "<cmd>noh<CR>", { desc = "general clear highlights" })
 map("n", "<leader>ln", "<cmd>set nu!<CR>", { desc = "toggle line number" })
 map("n", "<leader>rn", "<cmd>set rnu!<CR>", { desc = "toggle relative number" })
 -- copilot
-map({ "n", "v" }, "<leader>cc", "<cmd>CopilotChatOpen<CR>", { desc = "open copilot chat" })
 map({ "n", "v" }, "<leader>cpc", "<cmd>CopilotChatToggle<CR>", { desc = "toggle copilot chat" })
 map({ "n", "v" }, "<leader>cpo", "<cmd>CopilotChatOpen<CR>", { desc = "open copilot chat" })
 map({ "n", "v" }, "<leader>cpr", "<cmd>CopilotChatReset<CR>", { desc = "Reset copilot chat" })
+-- code companion
+map({ "n", "v" }, "<leader>cca", "<cmd>CodeCompanionActions<CR>", { desc = "open code companion actions" })
+map({ "n", "v" }, "<leader>ccc", "<cmd>CodeCompanionChat Toggle<CR>", { desc = "toggle code companion chat" })
+map("v", "ga", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
 -- map({ "n", "v" }, "<leader>ccc", "<cmd>CopilotChatToggle<CR>", { desc = "toggle copilot chat" })
 -- map({ "n", "v" }, "<leader>ccc", "<cmd>CopilotChatToggle<CR>", { desc = "toggle copilot chat" })
 -- map({ "n", "v" }, "<leader>ccc", "<cmd>CopilotChatToggle<CR>", { desc = "toggle copilot chat" })
@@ -44,7 +47,6 @@ map("n", "<S-l>", "<Cmd>BufferNext<CR>", { desc = "buffer goto next" })
 map("n", "<A-,>", "<Cmd>BufferMovePrevious<CR>", { desc = "buffer move previous" })
 map("n", "<A-.>", "<Cmd>BufferMoveNext<CR>", { desc = "buffer move next" })
 -- Goto buffer in position...
-map("n", "<A-1>", "<Cmd>BufferGoto 1<CR>", { desc = "buffer goto 1" })
 map("n", "<A-0>", "<Cmd>BufferLast<CR>", { desc = "buffer goto last" })
 -- map('n', '<A-2>', '<Cmd>BufferGoto 2<CR>', opts)
 -- map('n', '<A-3>', '<Cmd>BufferGoto 3<CR>', opts)
@@ -71,7 +73,12 @@ map("n", "<leader>x", "<Cmd>BufferClose<CR>", { desc = "buffer close" })
 --                 :BufferCloseBuffersLeft
 --                 :BufferCloseBuffersRight
 -- Close buffer mappings
-map("n", "<leader>ba", "<Cmd>BufferCloseAllButCurrentOrPinned<CR>", { desc = "Close every buffer except pinned or current" })
+map(
+	"n",
+	"<leader>ba",
+	"<Cmd>BufferCloseAllButCurrentOrPinned<CR>",
+	{ desc = "Close every buffer except pinned or current" }
+)
 map("n", "<leader>bv", "<Cmd>BufferCloseAllButVisible<CR>", { desc = "Close every buffer except visible" })
 -- Magic buffer-picking mode
 map("n", "<A-S-p>", "<Cmd>BufferPick<CR>", { desc = "buffer pick" })

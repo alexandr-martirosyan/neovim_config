@@ -6,6 +6,7 @@ local M = {
 		"olimorris/codecompanion.nvim",
 		version = "^19.0.0",
 		opts = codecompanion.opts,
+		cmd = codecompanion.cmd,
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-treesitter/nvim-treesitter",

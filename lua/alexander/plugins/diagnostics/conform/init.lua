@@ -19,18 +19,18 @@ M.opts = {
 		python = { "black" },
 		rust = { "rustfmt" },
 		http = { "kulala" },
-		dockerfile = { "dockerls" },
 		toml = { "tombi" },
-		-- Use the "*" filetype to run formatters on all filetypes.
-		["*"] = { "codespell" },
 		-- Use the "_" filetype to run formatters on filetypes that don't
 		-- have other formatters configured.
 		-- ["_"] = { "trim_whitespace" },
 	},
+	default_format_opts = {
+		lsp_format = "fallback",
+	},
 	-- format_on_save = {
 	--   -- These options will be passed to conform.format()
 	--   timeout_ms = 500,
-	--   lsp_fallback = true,
+	--   lsp_format = "fallback",
 	-- },
 }
 

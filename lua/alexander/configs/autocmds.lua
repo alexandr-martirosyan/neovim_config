@@ -4,7 +4,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
 		if arg ~= "" then
 			local stat = vim.uv.fs_stat(arg)
 			if stat and stat.type == "directory" then
-				vim.cmd("cd " .. arg)
+				vim.api.nvim_set_current_dir(arg)
 			end
 		end
 	end,
