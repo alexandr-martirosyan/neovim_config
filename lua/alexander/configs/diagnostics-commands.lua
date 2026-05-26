@@ -1,5 +1,5 @@
 -- added by user
-vim.diagnostic.config({ underline = true, virtual_text = false })
+vim.diagnostic.config({ underline = true })
 
 -- Command to toggle inline diagnostics
 vim.api.nvim_create_user_command("DiagnosticsToggleVirtualText", function()

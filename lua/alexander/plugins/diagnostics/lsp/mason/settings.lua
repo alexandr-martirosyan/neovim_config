@@ -23,7 +23,7 @@ M.ensure_installed = {
 	-- kulala rest service
 	"kulala-fmt",
 	-- spell
-	"codespell",
+	"typos-lsp",
 	-- docker
 	"dockerfile-language-server",
 	"hadolint",

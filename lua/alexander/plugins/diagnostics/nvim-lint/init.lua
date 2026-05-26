@@ -4,7 +4,6 @@ M.opts = {
 	-- Event to trigger linters
 	events = { "BufEnter", "BufWritePost", "BufReadPost", "InsertLeave" },
 	linters_by_ft = {
-		["*"] = { "typos" },
 		solidity = { "solhint" },
 		dockerfile = { "hadolint" },
 		python = { "flake8" },
@@ -16,7 +15,6 @@ M.opts = {
 		-- ['*'] = { 'global linter' },
 		-- Use the "_" filetype to run linters on filetypes that don't have other linters configured.
 		-- ['_'] = { 'fallback linter' },
-		-- ["*"] = { "typos" },
 	},
 }
 
