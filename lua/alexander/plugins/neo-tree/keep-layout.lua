@@ -9,7 +9,7 @@
 -- Windows with 'winfixwidth' (e.g. AI sidebars) keep their width. Heights are never touched.
 local M = {}
 
--- Per tab page: { tree, before, after, closing = {[win] = width}, free, free_open, free_closing }
+-- Per tab page: { tree, before, after, closing = {[win] = width}, free, free_open, free_closing, free_after }
 local state = {}
 
 local function is_sidebar(position)
@@ -20,31 +20,26 @@ local function is_neo_tree(win)
 	return vim.bo[vim.api.nvim_win_get_buf(win)].filetype == "neo-tree"
 end
 
--- Normal (non-floating) windows of a tab page that should be scaled.
+-- Normal (non-floating) window that should be scaled.
+local function is_scalable(win, tree)
+	return win ~= tree
+		and vim.api.nvim_win_get_config(win).relative == ""
+		and not is_neo_tree(win)
+		and not vim.wo[win].winfixwidth
+end
+
+-- Windows of a tab page that should be scaled.
 local function scalable_windows(tab, tree)
-	local wins = {}
-	for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tab)) do
-		if
-			win ~= tree
-			and vim.api.nvim_win_get_config(win).relative == ""
-			and not is_neo_tree(win)
-			and not vim.wo[win].winfixwidth
-		then
-			table.insert(wins, win)
-		end
-	end
-	return wins
+	return vim.tbl_filter(function(win)
+		return is_scalable(win, tree)
+	end, vim.api.nvim_tabpage_list_wins(tab))
 end
 
 -- Columns used by the windows that are not scaled (the tree and fixed-width windows), counted
--- only for windows sitting directly in the top-level row of the layout.
-local function fixed_columns(tab, tree)
-	local layout = vim.fn.winlayout(vim.api.nvim_tabpage_get_number(tab))
-	if layout[1] ~= "row" then
-		return 0
-	end
+-- only for windows sitting directly in the given `winlayout()` row.
+local function fixed_columns_in(row, tree)
 	local used = 0
-	for _, child in ipairs(layout[2]) do
+	for _, child in ipairs(row[2]) do
 		if child[1] == "leaf" then
 			local win = child[2]
 			if win == tree or is_neo_tree(win) or vim.wo[win].winfixwidth then
@@ -53,6 +48,58 @@ local function fixed_columns(tab, tree)
 		end
 	end
 	return used
+end
+
+-- Same, for the top-level row of the layout (where neo-tree opens as a full-height sidebar).
+local function fixed_columns(tab, tree)
+	local layout = vim.fn.winlayout(vim.api.nvim_tabpage_get_number(tab))
+	if layout[1] ~= "row" then
+		return 0
+	end
+	return fixed_columns_in(layout, tree)
+end
+
+-- Width of a `winlayout()` node in columns (a row adds its children plus a separator between each).
+local function node_width(node)
+	if node[1] == "leaf" then
+		return vim.api.nvim_win_get_width(node[2])
+	elseif node[1] == "col" then
+		return node_width(node[2][1])
+	end
+	local width = -1
+	for _, child in ipairs(node[2]) do
+		width = width + node_width(child) + 1
+	end
+	return width
+end
+
+-- The row that has `win` as a direct child. Not always the top level: a full-width split added
+-- while the tree is open (e.g. `<leader>sD`) puts the tree's row inside a column.
+local function parent_row(node, win)
+	if node[1] == "leaf" then
+		return nil
+	end
+	for _, child in ipairs(node[2]) do
+		if node[1] == "row" and child[1] == "leaf" and child[2] == win then
+			return node
+		end
+		local found = parent_row(child, win)
+		if found then
+			return found
+		end
+	end
+end
+
+local function leaves(node, out)
+	out = out or {}
+	if node[1] == "leaf" then
+		table.insert(out, node[2])
+	else
+		for _, child in ipairs(node[2]) do
+			leaves(child, out)
+		end
+	end
+	return out
 end
 
 local function widths_of(wins)
@@ -124,12 +171,25 @@ function M.after_open(args)
 end
 
 -- Measure the windows while the tree is still on screen (before Vim hands its space to a neighbour).
+-- Only the windows in the tree's own row get its space back; windows outside it (a full-width split
+-- below, for example) keep their width and are left alone.
 local function capture(tab)
 	local s = state[tab]
-	if s and s.tree and vim.api.nvim_win_is_valid(s.tree) and not s.closing then
-		s.closing = widths_of(scalable_windows(tab, s.tree))
-		s.free_closing = vim.o.columns - fixed_columns(tab, s.tree)
+	if not (s and s.tree and vim.api.nvim_win_is_valid(s.tree) and not s.closing) then
+		return
 	end
+	local row = parent_row(vim.fn.winlayout(vim.api.nvim_tabpage_get_number(tab)), s.tree)
+	if not row then
+		return
+	end
+	local wins = vim.tbl_filter(function(win)
+		return is_scalable(win, s.tree)
+	end, leaves(row))
+	local width, fixed = node_width(row), fixed_columns_in(row, s.tree)
+	s.closing = widths_of(wins)
+	s.free_closing = width - fixed
+	-- After closing, the row keeps its width and the tree's columns (+ separator) become free.
+	s.free_after = width - fixed + vim.api.nvim_win_get_width(s.tree) + 1
 end
 
 function M.before_close(args)
@@ -163,9 +223,8 @@ function M.restore(tab)
 			targets[win] = width
 		end
 	end
-	local free_now = vim.o.columns - fixed_columns(tab)
 	if s.free_closing > 0 then
-		apply(scale(targets, free_now / s.free_closing))
+		apply(scale(targets, s.free_after / s.free_closing))
 	end
 end
 

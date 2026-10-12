@@ -154,3 +154,10 @@ See [MIGRATION_NOTES.md](MIGRATION_NOTES.md) for implementation decisions, compa
 ### 16. Fixes after the handoff
 
 - Starting Neovim in the config folder no longer shows "Error restoring session, disabling auto save" and no longer reopens the deleted `picture.png`. The saved session had frozen the image viewer's settings; restoring them failed, and because a failed restore turns auto-save off, the broken session was never replaced. The broken session was deleted, and sessions no longer store per-window settings (file type and bars are set normally when a file opens). A session that mentions a file you deleted now just restores the rest.
+
+### 17. Review fixes (Codex review of `main`)
+
+- `<leader>fS` (find & replace in the current file) now really stays in that file: file names with spaces work, and in a buffer that isn't a saved file (e.g. an empty new buffer) it shows a warning instead of searching the whole project.
+- Neo-tree's proportional layout also works when you add a full-width split (`<leader>sD`) while the tree is open: closing the tree now gives its space back only to the windows next to it, so their proportions are kept (before: 120/79 became 95/104).
+- The empty-buffer cleanup after `nvim .` now runs only once, for the startup placeholder. Empty buffers you create yourself later are no longer deleted.
+- README updated (vim-dadbod-ui instead of Dbee, Bufferline removed, all Treesitter parsers, `.http` formatting via kulala-fmt, Comment.nvim keys); the migration notes are marked as a historical record.

@@ -25,7 +25,16 @@ M.keys = {
 	{
 		"<leader>fS",
 		function()
-			require("grug-far").open({ prefills = { paths = vim.fn.expand("%") } })
+			-- Only for a real file: an empty path would search the whole project instead.
+			local file = vim.api.nvim_buf_get_name(0)
+			if vim.bo.buftype ~= "" or file == "" or not vim.uv.fs_stat(file) then
+				vim.notify("Find & replace in current file: this buffer is not a saved file", vim.log.levels.WARN)
+				return
+			end
+			-- The paths field is space-separated; grug-far only understands "\ " as an escaped space
+			-- (fnameescape would also escape [ ] # %, which grug-far would then look for literally).
+			local path = vim.fn.fnamemodify(file, ":."):gsub(" ", "\\ ")
+			require("grug-far").open({ prefills = { paths = path } })
 		end,
 		mode = "n",
 		desc = "Find & replace in current file",

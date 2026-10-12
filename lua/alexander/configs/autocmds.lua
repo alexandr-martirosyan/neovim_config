@@ -19,13 +19,21 @@ end
 highlights()
 vim.api.nvim_create_autocmd("ColorScheme", { group = group, callback = highlights })
 
--- When a real file is opened, drop leftover empty "[No Name]" buffers that no window shows
--- (e.g. the placeholder neo-tree creates when `nvim .` opens a folder), so they don't sit in the
--- buffer list. Only unnamed, unmodified, completely empty, normal buffers are removed.
+-- `nvim <folder>` only: when the first real file is opened, drop the leftover empty "[No Name]"
+-- placeholder that no window shows (neo-tree's folder takeover leaves it), so it doesn't sit in the
+-- buffer list. Runs once; empty buffers you create yourself later are never touched.
+-- Only unnamed, unmodified, completely empty, normal buffers are removed.
+local started_in_folder = vim.fn.argc(-1) == 1
+	and (vim.uv.fs_stat(vim.fn.argv(0)) or {}).type == "directory"
 vim.api.nvim_create_autocmd("BufEnter", {
 	group = group,
 	callback = function(ev)
-		if vim.bo[ev.buf].buftype ~= "" or vim.api.nvim_buf_get_name(ev.buf) == "" then
+		if not started_in_folder then
+			return true -- remove this autocmd
+		end
+		local name = vim.api.nvim_buf_get_name(ev.buf)
+		-- (the folder's own buffer is entered at startup too; wait for a real file)
+		if vim.bo[ev.buf].buftype ~= "" or name == "" or vim.fn.isdirectory(name) == 1 then
 			return
 		end
 		vim.schedule(function()
@@ -45,6 +53,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
 				end
 			end
 		end)
+		return true -- done after the first real file
 	end,
 })
 

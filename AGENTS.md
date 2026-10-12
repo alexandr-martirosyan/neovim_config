@@ -1,11 +1,11 @@
 # Notes for AI assistants working on this Neovim config
 
-Read this first. Then `CHANGELOG.md` (user-facing, sections 1–16) and `MIGRATION_NOTES.md`
-(technical details, sections 1–8l) for anything specific.
+Read this first. Then `CHANGELOG.md` (user-facing, sections 1–17) and `MIGRATION_NOTES.md`
+(technical details, sections 1–8m) for anything specific.
 
 ## Where things stand (2026-10-12)
 
-- Config: `~/.config/nvim`, branch `main` (the only branch). All work up to CHANGELOG section 16 was
+- Config: `~/.config/nvim`, branch `main` (the only branch). All work up to CHANGELOG section 17 (and `TMUX_PLAN.md`) was
   committed and fast-forwarded into `main`; the `codex/*` branches were deleted. `lazy-lock.json` is tracked.
 - Neovim **0.12.6** via bob. bob 4.2 on macOS defaults to `~/Library/Application Support/bob`;
   `~/Library/Application Support/bob/config.json` points it at `~/.local/share/bob` (that's what PATH uses).
@@ -57,8 +57,8 @@ Read this first. Then `CHANGELOG.md` (user-facing, sections 1–16) and `MIGRATI
   (merge commit 3aa77e1) and local master fast-forwarded; **not pushed**. The config's fallback `commit`
   pin is still a49658503… (update only after a push). Upstream PR romgrk/barbar.nvim#661 awaits review.
 - Per-window buffer tabs (custom winbar feature) — user said not now.
-- tmux (+ smart-splits) or kitty: Ctrl+Shift resize keys need `extended-keys` in tmux / freeing
-  `kitty_mod` in kitty; an Alt-based resize fallback was offered.
+- **Next planned task: tmux.** The user chose tmux; research and a step-by-step plan are in
+  `TMUX_PLAN.md` (read it first when the user says to start). Nothing installed or configured yet.
 - Font: Fira Code 6.2 is current, but its Nerd Fonts patch is 3.2.1; latest is 3.5.1
   (`brew install --cask font-fira-code-nerd-font`). Alternatives discussed: Maple Mono, Monaspace.
 - blink.cmp v2 migration once 2.0.0 is released (needs blink.lib, local Rust build).

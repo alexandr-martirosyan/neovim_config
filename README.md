@@ -13,7 +13,8 @@ formatting, UFO folds, ToggleTerm, and two AI frontends (Avante, CodeCompanion) 
 - `rg` and `fd` for search. ImageMagick (`magick`) and a compatible terminal for image.nvim.
 - Language tools managed by Mason, plus the relevant project toolchains (for
   example Cargo/rustfmt and Node for JavaScript tooling).
-- `lazygit` for the LazyGit UI; database drivers/configuration for Dbee as needed.
+- `lazygit` for the LazyGit UI; the database's command-line client (e.g. `psql`, `mysql`) for
+  vim-dadbod-ui. Connections are stored outside the repo in `~/.local/share/nvim/db_ui/`.
 - `codex` and `codex-acp` on PATH for the configured Codex integrations. The local
   Ollama model is `deepseek-r1-70b-32k:latest`.
 - Kulala Core license access for the upgraded HTTP backend; see below.
@@ -34,8 +35,9 @@ The existing folder layout is preserved:
 A shared dependency keeps one configuration owner. Each consumer lists it as a
 Lazy dependency; consumers do not depend on another consumer merely to get it
 configured. Repeated dependency declarations refer to the same Lazy plugin.
-Unused components are retained with `cond = false`. Existing disabled
-Bufferline/Winshift and the commented LazyDocker alternative remain available.
+Unused components are retained with `cond = false` (currently nvim-cmp and its sources, Dbee,
+Winshift and, during the dimming trial, Colorful Winsep); the commented LazyDocker alternative
+remains available. Bufferline was removed on request.
 
 ## Useful behavior and shortcuts
 
@@ -57,7 +59,8 @@ Bufferline/Winshift and the commented LazyDocker alternative remain available.
 - `<leader>pt`: select a ToggleTerm terminal. Alt-v/h/i/t retains terminal 1's
   vertical/horizontal/floating/tab views; Alt-1/2 retains exclusive tab terminals.
 - `<leader>?`: buffer-local WhichKey view; `<leader>wK`: all keymaps.
-- `gc`: native commenting with ts-comments support.
+- `gc`: native commenting with ts-comments support; Comment.nvim adds `gb`/`gbc` block comments
+  and `gco`/`gcO`/`gcA`.
 - `<leader>ia…`, `ic…`: Avante, CodeCompanion. Avante buffer
   `gR` opens a file reference safely in a code window.
 
@@ -74,8 +77,8 @@ migration notes.
 
 ## Kulala backend activation
 
-Kulala.nvim is upgraded to 6.33.1. This release requires Kulala Core 1.3.1;
-the older installed 0.7.0 backend is not used as a compatibility substitute.
+Kulala.nvim follows its default branch and needs Kulala Core (1.3.1 installed and activated on
+this machine; the old 0.7.0 backend is not used). The steps below are for a new machine.
 
 1. Obtain a valid Kulala Core license token from the maintainers. The
    [official license site](https://core.kulala.app/) did not expose public pricing
@@ -87,9 +90,9 @@ the older installed 0.7.0 backend is not used as a compatibility substitute.
    `~/Library/Application Support/kulala-core/license-token` and reused later.
    Alternatively pass `KULALA_CORE_LICENSE_TOKEN` through the environment of the
    process launching Neovim. Never commit a token in this configuration.
-4. After activation, check a local request with `<leader>Rs`, HTTP formatting
-   with `<leader>fm`, and the response window's tabs/winbar. Backend execution
-   and HTTP LSP formatting remain pending this step.
+4. After activation, check a local request with `<leader>Rs` and the response window's
+   tabs/winbar. `<leader>fm` formats `.http` files with `kulala-fmt` (installed by
+   `:MasonInstallAll`); Kulala's language server does not format.
 
 The public demo's response assertions were corrected without executing its
 POST/PATCH/DELETE requests. A script-only mock check is documented in the notes.
@@ -99,15 +102,16 @@ POST/PATCH/DELETE requests. A script-only mock check is documented in the notes.
 `lazy-lock.json` records the selected revisions, including retained disabled
 components. `:Lazy update` updates active plugin tracks and invokes their build
 hooks. Avoid `:Lazy clean` if retaining installed disabled plugins is desired.
-Treesitter's build hook installs the explicit language list and updates it; its
-current API uses `:TSInstall`/`:TSUpdate`, rather than the removed module toggles.
+Treesitter (main branch) installs every available parser and updates them from its build hook;
+its current API uses `:TSInstall`/`:TSUpdate`, rather than the removed module toggles.
 
 Barbar uses `~/projects/lua/barbar.nvim` when present. That development checkout
 is deliberately not updated by this migration or Lazy. Other machines use the
 user's remote fork pinned in the spec. The fallback is not a claim that the local
 fork has the same HEAD. Keep that distinction when updating.
 
-See [CHANGELOG.md](CHANGELOG.md) for conceptual changes and
+See [AGENTS.md](AGENTS.md) for the current state and open items,
+[CHANGELOG.md](CHANGELOG.md) for conceptual changes and
 [MIGRATION_NOTES.md](MIGRATION_NOTES.md) for exact revisions, compatibility,
 validation, deferred suggestions, and the complete pre-migration backup path.
 Switching a Git branch alone does not restore installed plugins/native binaries;

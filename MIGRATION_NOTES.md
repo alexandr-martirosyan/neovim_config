@@ -1,5 +1,9 @@
 # Neovim migration notes
 
+> **Historical record.** Sections are kept in the order the work happened; later sections override
+> earlier ones (e.g. section 8j replaces the version policy of 8d, removed plugins mentioned early on are
+> gone). The current state and rules are in `AGENTS.md`.
+
 This document is a technical handoff for future maintainers and AI assistants. `CHANGELOG.md` explains changes in terms of editor behavior. Entries below are maintained as each conceptual change is implemented, including corrections made during validation.
 
 ## Scope and invariants
@@ -363,6 +367,13 @@ Method: (A) version fields of every spec in the pre-Codex backup, (B) each repo'
 - Cause: `sessionoptions` contained `localoptions`, so the session stored `setlocal filetype=image_nvim`, `nomodifiable`, `buftype=nowrite` and rendered lualine `statusline`/`winbar` strings (one embedded an image.nvim traceback with a literal tab). `default_restore_error_handler` returns false on any non-fold/help error, which disables auto-save, so the bad session file was never overwritten.
 - Fix: `localoptions` removed from `sessionoptions` (`auto-session/auto-session.lua` `M.init`); stale `~/.local/share/nvim/sessions/%2FUsers%2F...%2Fnvim.vim` deleted.
 - Test (pty): session saved with `a.lua` + `pic.png` split, image deleted, restart → no restore error, `a.lua` restored, session re-saved on quit.
+
+## 8m. Review fixes (Codex review of 137031f)
+
+- `grug-far.lua` `<leader>fS`: refuses buffers with `buftype ~= ""`, no name, or no file on disk (an empty `paths` prefill searched the whole cwd). Escapes only spaces (`\ `): `utils.splitPaths` unescapes only `\ `, so `fnameescape` would break names with `[ ] # %` (e.g. `[id].tsx`). Path is `:.`-relative.
+- `neo-tree/keep-layout.lua`: closing used the top-level row only (`fixed_columns` returned 0 when the top level was a `col`, e.g. after `botright split`), so free width was wrong and `apply` gave the remainder to the last window. `capture` now finds the tree's parent row in `winlayout()` (`parent_row`), scales only that row's scalable leaves, and stores `free_after = row width - fixed + tree width + 1`; `restore` uses it. Open path unchanged (neo-tree opens as a top-level sidebar). pty test, 200 cols: 120/79 → tree 95/63 → `botright split` → close → 120/79 (old code: 95/104); plain open/close still exact.
+- `autocmds.lua` placeholder cleanup: only when started with one directory argument, waits past the directory buffer itself, and removes its autocmd after the first real file (`return true`). pty test: `nvim .` placeholder reused/removed, a later `nvim_create_buf(true, false)` buffer survives.
+- README: Dbee → dadbod requirements, Bufferline removed, all parsers, kulala-fmt, Comment.nvim keys, link to AGENTS.md. MIGRATION_NOTES header marks the file as historical.
 
 ## 9. Prompt for the next AI
 
