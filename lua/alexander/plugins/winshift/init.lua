@@ -4,6 +4,7 @@ local M = {
 	{
 		"sindrets/winshift.nvim",
 		event = "BufEnter",
+		keys = winshift.keys,
 		opts = winshift.opts,
 		enabled = false,
 	},

@@ -4,7 +4,7 @@ local M = {
 	{
 		"nvim-neo-tree/neo-tree.nvim",
 		event = "VeryLazy",
-		branch = "v3.x",
+		branch = "v3.x", -- docs (and your original setting)
 		cmd = { "Neotree" },
 		dependencies = {
 			"nvim-lua/plenary.nvim",
@@ -12,6 +12,8 @@ local M = {
 			"MunifTanjim/nui.nvim",
 			"3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
 		},
+		init = neo_tree.init,
+		keys = neo_tree.keys,
 		opts = neo_tree.opts,
 	},
 }

@@ -5,7 +5,7 @@ local M = {
 	-- nvim v0.8.0
 	{
 		"kdheepak/lazygit.nvim",
-		lazy = false,
+		lazy = true,
 		cmd = {
 			"LazyGit",
 			"LazyGitConfig",
@@ -18,6 +18,7 @@ local M = {
 			"nvim-telescope/telescope.nvim",
 			"nvim-lua/plenary.nvim",
 		},
+		keys = lazygit.keys,
 		config = lazygit.config,
 	},
 	-- {

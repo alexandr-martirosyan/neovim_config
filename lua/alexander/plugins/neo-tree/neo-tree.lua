@@ -1,12 +1,8 @@
 local M = {}
 
--- If you want icons for diagnostic errors, you'll need to define them somewhere:
-vim.fn.sign_define("DiagnosticSignError", { text = " ", texthl = "DiagnosticSignError" })
-vim.fn.sign_define("DiagnosticSignWarn", { text = " ", texthl = "DiagnosticSignWarn" })
-vim.fn.sign_define("DiagnosticSignInfo", { text = " ", texthl = "DiagnosticSignInfo" })
-vim.fn.sign_define("DiagnosticSignHint", { text = "󰌵", texthl = "DiagnosticSignHint" })
-
 M.opts = {
+	-- Keep window width proportions when the tree opens/closes (see keep-layout.lua).
+	event_handlers = require("alexander.plugins.neo-tree.keep-layout").event_handlers,
 	filesystem = {
 		-- This is the key setting to keep neo-tree in sync with your active buffer
 		follow_current_file = {
@@ -25,5 +21,22 @@ M.opts = {
 	},
 }
 
+-- `nvim <folder>`: load neo-tree during startup instead of on VeryLazy. Its folder takeover then runs
+-- immediately. Loaded late, the takeover ran when you first opened a file from the tree and swapped
+-- that window to a new empty buffer, leaving an extra "[No Name]" buffer focused.
+M.init = function()
+	if vim.fn.argc(-1) == 1 then
+		local stat = vim.uv.fs_stat(vim.fn.argv(0))
+		if stat and stat.type == "directory" then
+			require("neo-tree")
+		end
+	end
+end
+
 -- TODO: need to be configured after, it is just initial config
+M.keys = {
+	{ "<C-n>", "<cmd>Neotree toggle<CR>", mode = "n", desc = "neotree toggle window" },
+	{ "<leader>e", "<cmd>Neotree focus<CR>", mode = "n", desc = "neotree focus window" },
+}
+
 return M

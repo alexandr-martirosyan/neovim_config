@@ -1,56 +1,29 @@
 local M = {}
 
-M.opts = {}
+M.config = function()
+	local settings = require("alexander.plugins.diagnostics.lsp.mason.settings")
+	local lsp = require("alexander.plugins.diagnostics.lsp.lspconfig")
+	local enabled = {}
 
-M.config = function(_, opts)
-	local mason_lspconfig = require("mason-lspconfig")
-
-	local lsp_settings = require("alexander.plugins.diagnostics.lsp.lspconfig")
-
-	local on_attach = lsp_settings.on_attach
-	local on_init = lsp_settings.on_init
-	local capabilities = lsp_settings.capabilities
-	local handlers = lsp_settings.handlers
-	local disabled_servers = lsp_settings.disabled_servers
-
-	-- mason_lspconfig.setup({
-	-- 	automatic_enable = true,
-	-- })
-
-	local all_servers = mason_lspconfig.get_installed_servers()
-
-	for _, server_name in ipairs(all_servers) do
-		M.setup_server(on_attach, on_init, capabilities, handlers, disabled_servers, server_name)
+	for _, server in ipairs(settings.servers) do
+		if not lsp.disabled_servers[server] then
+			local module = "alexander.plugins.diagnostics.lsp.lspconfig." .. server
+			if #vim.api.nvim_get_runtime_file("lua/" .. module:gsub("%.", "/") .. ".lua", false) > 0 then
+				-- Configuration errors should be visible, not mistaken for absent overrides.
+				vim.lsp.config(server, require(module))
+			end
+			table.insert(enabled, server)
+		end
 	end
 
-	-- setup circom as it is not in repo
-  -- NOTE: needs to be enabled while using circom
-	-- M.setup_server(on_attach, on_init, capabilities, handlers, disabled_servers, "circom-lsp")
-end
+	-- This bridge is the single owner of activation for installed, approved servers.
+	-- It also enables newly installed servers without restarting Neovim.
+	require("mason-lspconfig").setup({ ensure_installed = {}, automatic_enable = enabled })
 
-M.setup_server = function(on_attach, on_init, capabilities, handlers, disabled_servers, server_name)
-	-- disable if lsp was disabled
-	if disabled_servers[server_name] then
-		print(server_name .. " is disabled")
-		return
+	if settings.enable_circom and not lsp.disabled_servers["circom-lsp"] then
+		vim.lsp.config("circom-lsp", require("alexander.plugins.diagnostics.lsp.lspconfig.circom-lsp"))
+		vim.lsp.enable("circom-lsp")
 	end
-
-	local options = {
-		on_attach = on_attach,
-		on_init = on_init,
-		capabilities = capabilities,
-		handlers = handlers,
-	}
-
-	local require_ok, conf_opts = pcall(require, "alexander.plugins.diagnostics.lsp.lspconfig." .. server_name)
-	if require_ok then
-		options = vim.tbl_deep_extend("force", conf_opts, options)
-	end
-
-	vim.lsp.config(server_name, options)
-	vim.lsp.enable(server_name)
-	-- lspconfig[server_name].setup(options)
-	print(server_name .. " is installed")
 end
 
 return M

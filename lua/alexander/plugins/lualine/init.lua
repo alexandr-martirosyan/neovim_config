@@ -6,7 +6,7 @@ local M = {
 		lazy = false,
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		opts = lualine.opts,
-		-- config = lualine.config,
+		config = lualine.config,
 	},
 }
 

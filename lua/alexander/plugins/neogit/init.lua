@@ -10,9 +10,10 @@ local M = {
 
 			-- Only one of these is needed.
 			"nvim-telescope/telescope.nvim", -- optional
+			-- TODO: configure fzf-lua (own spec/keys); Neogit keeps using Telescope (integrations.fzf_lua = false)
 			"ibhagwan/fzf-lua", -- optional
-			"echasnovski/mini.pick", -- optional
 		},
+		keys = neogit.keys,
 		opts = neogit.opts,
 	},
 }

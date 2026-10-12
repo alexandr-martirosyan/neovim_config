@@ -8,9 +8,31 @@ M.config = function(_, opts)
 
 	require("ufo").setup({
 		provider_selector = function(bufnr, filetype, buftype)
+			if filetype == "bigfile" then
+				return "" -- no folds for huge files (see big-file protection in configs/autocmds.lua)
+			end
 			return { "treesitter", "indent" }
 		end,
 	})
 end
+
+M.keys = {
+	{
+		"zR",
+		function()
+			require("ufo").openAllFolds()
+		end,
+		mode = "n",
+		desc = "Open all folds",
+	},
+	{
+		"zM",
+		function()
+			require("ufo").closeAllFolds()
+		end,
+		mode = "n",
+		desc = "Close all folds",
+	},
+}
 
 return M

@@ -1,5 +1,12 @@
 local lazy_config = {
-	defaults = { lazy = true },
+	defaults = {
+		lazy = true,
+		-- Version rule: each plugin uses what its own docs recommend (version/branch set in its spec);
+		-- plugins whose docs give none follow their default branch (newest commit), as below.
+		version = false,
+	},
+	checker = { enabled = true },
+	install = { colorscheme = { "habamax" } },
 	rocks = {
 		hererocks = true, -- recommended if you do not have global installation of Lua 5.1.
 	},
@@ -56,17 +63,5 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Make sure to setup `mapleader` and `maplocalleader` before
--- loading lazy.nvim so that mappings are correct.
--- This is also a good place to setup other settings (vim.opt)
-vim.g.mapleader = " "
-vim.g.maplocalleader = "\\"
-
-vim.opt.termguicolors = true
-
 -- Setup lazy.nvim
-require("lazy").setup({
-	import = "alexander.plugins",
-	checker = { enabled = true },
-	install = { colorscheme = { "habamax" } },
-}, lazy_config)
+require("lazy").setup({ { import = "alexander.plugins" } }, lazy_config)

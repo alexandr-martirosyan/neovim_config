@@ -28,10 +28,11 @@ M.config = function(_, opts)
 			:find()
 	end
 
-	map("n", "<leader>hi", function()
+	-- <leader>j… = Harpoon ("jump"); was <leader>hi (menu) and <leader>a (add)
+	map("n", "<leader>jj", function()
 		harpoon.ui:toggle_quick_menu(harpoon:list())
 	end, { desc = "open harpoon ui" })
-	map("n", "<leader>a", function()
+	map("n", "<leader>ja", function()
 		harpoon:list():add()
 	end, { desc = "harpoon list add" })
 	map("n", "<leader>fp", function()
@@ -44,9 +45,18 @@ M.config = function(_, opts)
 	end, { desc = "harpoon list prev" })
 	map("n", "<C-S-N>", function()
 		harpoon:list():next()
-	end, { desc = "harpoon list prev" })
+	end, { desc = "harpoon list next" })
 end
 
 -- TODO: Maybe add harpoon ui too
+
+-- Key stubs load this plugin before its existing config installs the callbacks.
+M.keys = {
+	{ "<leader>jj", desc = "Open Harpoon UI" },
+	{ "<leader>ja", desc = "Add file to Harpoon" },
+	{ "<leader>fp", desc = "Telescope Harpoon files" },
+	{ "<C-S-P>", desc = "Previous Harpoon file" },
+	{ "<C-S-N>", desc = "Next Harpoon file" },
+}
 
 return M

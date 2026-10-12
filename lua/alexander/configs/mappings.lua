@@ -1,197 +1,35 @@
+-- Core editor mappings. Plugin mappings live in their existing plugin modules.
 local map = vim.keymap.set
 -- local nomap = vim.keymap.del
 
 -- map("i", "<C-b>", "<ESC>^i", { desc = "move beginning of line" })
 -- map("i", "<C-e>", "<End>", { desc = "move end of line" })
-map("i", "<C-h>", "<Left>", { desc = "move left" })
-map("i", "<C-l>", "<Right>", { desc = "move right" })
-map("i", "<C-j>", "<Down>", { desc = "move down" })
-map("i", "<C-k>", "<Up>", { desc = "move up" })
+-- Disabled: never used; restores built-in <C-h> backspace, <C-j> new line, <C-k> digraphs
+-- map("i", "<C-h>", "<Left>", { desc = "move left" })
+-- map("i", "<C-l>", "<Right>", { desc = "move right" })
+-- map("i", "<C-j>", "<Down>", { desc = "move down" })
+-- map("i", "<C-k>", "<Up>", { desc = "move up" })
 
-map({ "n", "v" }, "<C-h>", "<C-w>h", { desc = "switch window left" })
-map({ "n", "v" }, "<C-l>", "<C-w>l", { desc = "switch window right" })
-map({ "n", "v" }, "<C-j>", "<C-w>j", { desc = "switch window down" })
-map({ "n", "v" }, "<C-k>", "<C-w>k", { desc = "switch window up" })
+map({ "n", "x" }, "<C-h>", "<C-w>h", { desc = "switch window left" })
+map({ "n", "x" }, "<C-l>", "<C-w>l", { desc = "switch window right" })
+map({ "n", "x" }, "<C-j>", "<C-w>j", { desc = "switch window down" })
+map({ "n", "x" }, "<C-k>", "<C-w>k", { desc = "switch window up" })
 
 map("n", "<Esc>", "<cmd>noh<CR>", { desc = "general clear highlights" })
 
 map("n", "<leader>ln", "<cmd>set nu!<CR>", { desc = "toggle line number" })
-map("n", "<leader>rn", "<cmd>set rnu!<CR>", { desc = "toggle relative number" })
--- copilot
-map({ "n", "v" }, "<leader>ipc", "<cmd>CopilotChatToggle<CR>", { desc = "toggle copilot chat" })
-map({ "n", "v" }, "<leader>ipo", "<cmd>CopilotChatOpen<CR>", { desc = "open copilot chat" })
-map({ "n", "v" }, "<leader>ipr", "<cmd>CopilotChatReset<CR>", { desc = "reset copilot chat" })
--- code companion
-map({ "n", "v" }, "<leader>ica", "<cmd>CodeCompanionActions<CR>", { desc = "open code companion actions" })
-map({ "n", "v" }, "<leader>icc", "<cmd>CodeCompanionChat Toggle<CR>", { desc = "toggle code companion chat" })
-map({ "n", "v" }, "<leader>icx", function()
-	require("codecompanion").toggle_cli()
-end, { desc = "toggle code companion cli" })
-map({ "n", "v" }, "<leader>icp", function()
-	require("codecompanion").cli({ prompt = true })
-end, { desc = "prompt code companion cli" })
-map({ "n", "v" }, "<leader>ics", function()
-	require("codecompanion").cli("#{this}", { focus = false })
-end, { desc = "send current context to code companion cli" })
-map("n", "<leader>icd", function()
-	require("codecompanion").cli("#{diagnostics} Can you fix these?", { focus = false, submit = true })
-end, { desc = "send diagnostics to code companion cli" })
-map("v", "<leader>icg", "<cmd>CodeCompanionChat Add<cr>", { desc = "add selection to code companion chat" })
--- avante
-map("n", "<leader>iaa", "<cmd>AvanteAsk<CR>", { desc = "avante ask" })
-map("v", "<leader>iaa", ":AvanteAsk<CR>", { desc = "avante ask selection" })
-map("v", "<leader>iae", ":AvanteEdit<CR>", { desc = "avante edit selection" })
-map("n", "<leader>iac", "<cmd>AvanteChat<CR>", { desc = "avante chat" })
-map("n", "<leader>ian", "<cmd>AvanteChatNew<CR>", { desc = "avante new chat" })
-map("n", "<leader>iat", "<cmd>AvanteToggle<CR>", { desc = "toggle avante sidebar" })
-map("n", "<leader>iaf", "<cmd>AvanteFocus<CR>", { desc = "focus avante sidebar" })
-map("n", "<leader>iar", "<cmd>AvanteRefresh<CR>", { desc = "refresh avante" })
-map("n", "<leader>ias", "<cmd>AvanteStop<CR>", { desc = "stop avante request" })
-map("n", "<leader>iah", "<cmd>AvanteHistory<CR>", { desc = "avante history" })
-map("n", "<leader>iam", "<cmd>AvanteModels<CR>", { desc = "avante models" })
-map("n", "<leader>iaM", "<cmd>AvanteACPModels<CR>", { desc = "avante acp models" })
-map("n", "<leader>iao", "<cmd>AvanteACPModes<CR>", { desc = "avante acp mode" })
-map("n", "<leader>iaR", "<cmd>AvanteShowRepoMap<CR>", { desc = "avante repo map" })
-map("n", "<leader>iap", "<cmd>AvanteSwitchProvider<CR>", { desc = "switch avante provider" })
-
-map("n", "<leader>fm", function()
-	require("conform").format({
-		lsp_format = "fallback",
-		stop_after_first = true,
-	})
-end, { desc = "general format file" })
+-- moved from <leader>rn, which is LSP rename in LSP buffers
+map("n", "<leader>lr", "<cmd>set rnu!<CR>", { desc = "toggle relative number" })
 
 -- global lsp mappings
 map("n", "<leader>ds", vim.diagnostic.setloclist, { desc = "LSP diagnostic loclist" })
 
--- Move to previous/next
-map("n", "<S-h>", "<Cmd>BufferPrevious<CR>", { desc = "buffer goto previous" })
-map("n", "<S-l>", "<Cmd>BufferNext<CR>", { desc = "buffer goto next" })
--- Re-order to previous/next
-map("n", "<A-,>", "<Cmd>BufferMovePrevious<CR>", { desc = "buffer move previous" })
-map("n", "<A-.>", "<Cmd>BufferMoveNext<CR>", { desc = "buffer move next" })
--- Goto buffer in position...
-map("n", "<A-0>", "<Cmd>BufferLast<CR>", { desc = "buffer goto last" })
--- map('n', '<A-2>', '<Cmd>BufferGoto 2<CR>', opts)
--- map('n', '<A-3>', '<Cmd>BufferGoto 3<CR>', opts)
--- map('n', '<A-4>', '<Cmd>BufferGoto 4<CR>', opts)
--- map('n', '<A-5>', '<Cmd>BufferGoto 5<CR>', opts)
--- map('n', '<A-6>', '<Cmd>BufferGoto 6<CR>', opts)
--- map('n', '<A-7>', '<Cmd>BufferGoto 7<CR>', opts)
--- map('n', '<A-8>', '<Cmd>BufferGoto 8<CR>', opts)
--- map('n', '<A-9>', '<Cmd>BufferGoto 9<CR>', opts)
--- Pin/unpin buffer
-map("n", "<A-p>", "<Cmd>BufferPin<CR>", { desc = "buffer pin" })
--- Goto pinned/unpinned buffer
---                 :BufferGotoPinned
---                 :BufferGotoUnpinned
--- Close buffer
-map("n", "<leader>x", "<Cmd>BufferClose<CR>", { desc = "buffer close" })
--- Wipeout buffer
---                 :BufferWipeout
--- Close commands
---                 :BufferCloseAllButCurrent
---                 :BufferCloseAllButPinned
---                 :BufferCloseAllButCurrentOrPinned
---                 :BufferCloseAllButVisible
---                 :BufferCloseBuffersLeft
---                 :BufferCloseBuffersRight
--- Close buffer mappings
-map(
-	"n",
-	"<leader>ba",
-	"<Cmd>BufferCloseAllButCurrentOrPinned<CR>",
-	{ desc = "Close every buffer except pinned or current" }
-)
-map("n", "<leader>bv", "<Cmd>BufferCloseAllButVisible<CR>", { desc = "Close every buffer except visible" })
--- Magic buffer-picking mode
-map("n", "<A-S-p>", "<Cmd>BufferPick<CR>", { desc = "buffer pick" })
--- Sort automatically by...
-map("n", "<leader>bb", "<Cmd>BufferOrderByBufferNumber<CR>", { desc = "buffer order by buffer number" })
-map("n", "<leader>bn", "<Cmd>BufferOrderByName<CR>", { desc = "buffer order by name" })
-map("n", "<leader>bd", "<Cmd>BufferOrderByDirectory<CR>", { desc = "buffer order by directory" })
-map("n", "<leader>bl", "<Cmd>BufferOrderByLanguage<CR>", { desc = "buffer order by language" })
-map("n", "<leader>bw", "<Cmd>BufferOrderByWindowNumber<CR>", { desc = "buffer order by window number" })
-
--- NOTE: Bufferline test mappings
---
--- -- Navigation: Move between tabs
--- map("n", "<S-h>", "<Cmd>BufferLineCyclePrev<CR>", { desc = "buffer goto previous" })
--- map("n", "<S-l>", "<Cmd>BufferLineCycleNext<CR>", { desc = "buffer goto next" })
---
--- -- Re-ordering: Change tab position
--- map("n", "<A-,>", "<Cmd>BufferLineMovePrev<CR>", { desc = "buffer move previous" })
--- map("n", "<A-.>", "<Cmd>BufferLineMoveNext<CR>", { desc = "buffer move next" })
---
--- -- Goto specific positions (Alt + 1 or 0)
--- map("n", "<A-1>", "<Cmd>BufferLineGoToBuffer 1<CR>", { desc = "buffer goto 1" })
--- map("n", "<A-0>", "<Cmd>BufferLineGoToBuffer -1<CR>", { desc = "buffer goto last" })
---
--- -- Pin/Unpin: Keeps buffer at the start
--- map("n", "<A-p>", "<Cmd>BufferLineTogglePin<CR>", { desc = "buffer pin" })
---
--- -- Magic Pick Mode: Jump to buffer by letter (Replaces Barbar's BufferPick)
--- map("n", "<A-S-p>", "<Cmd>BufferLinePick<CR>", { desc = "buffer pick" })
---
--- -- Close buffer (Using standard bdelete for compatibility with scope.nvim)
--- map("n", "<leader>x", "<Cmd>bdelete<CR>", { desc = "buffer close" })
---
--- -- Sorting Commands
--- map("n", "<leader>bb", "<Cmd>BufferLineSortByTabs<CR>", { desc = "buffer order by number" })
--- map("n", "<leader>bn", "<Cmd>BufferLineSortByExtension<CR>", { desc = "buffer order by extension" })
--- map("n", "<leader>bd", "<Cmd>BufferLineSortByDirectory<CR>", { desc = "buffer order by directory" })
-
 -- Terminal
 map("t", "<C-x>", "<C-\\><C-N>", { desc = "terminal escape terminal mode" })
-map({ "n", "t" }, "<A-v>", "<cmd>1ToggleTerm direction=vertical<cr>", { desc = "terminal vertical term" })
-map({ "n", "t" }, "<A-h>", "<cmd>1ToggleTerm direction=horizontal<cr>", { desc = "terminal horizontal term" })
-map({ "n", "t" }, "<A-i>", "<cmd>1ToggleTerm direction=float<cr>", { desc = "terminal float term" })
-map({ "n", "t" }, "<A-t>", "<cmd>1ToggleTerm direction=tab<cr>", { desc = "terminal tab term" })
-map({ "n", "t" }, "<A-1>", function()
-	require("alexander.plugins.toggleterm.toggleterm").toggle_exclusive(2)
-end, { desc = "tab terminal #2" })
-map({ "n", "t" }, "<A-2>", function()
-	require("alexander.plugins.toggleterm.toggleterm").toggle_exclusive(3)
-end, { desc = "tab terminal #3" })
-
--- neotree
-map("n", "<C-n>", "<cmd>Neotree toggle<CR>", { desc = "neotree toggle window" })
-map("n", "<leader>e", "<cmd>Neotree focus<CR>", { desc = "neotree focus window" })
-
--- telescope
-map("n", "<leader>fw", "<cmd>Telescope live_grep<CR>", { desc = "telescope live grep" })
-map("n", "<leader>fb", "<cmd>Telescope buffers<CR>", { desc = "telescope find buffers" })
-map("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", { desc = "telescope help page" })
-map("n", "<leader>ma", "<cmd>Telescope marks<CR>", { desc = "telescope find marks" })
-map("n", "<leader>fo", "<cmd>Telescope oldfiles<CR>", { desc = "telescope find oldfiles" })
-map("n", "<leader>fz", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { desc = "telescope find in current buffer" })
-map("n", "<leader>cm", "<cmd>Telescope git_commits<CR>", { desc = "telescope git commits" })
-map("n", "<leader>gt", "<cmd>Telescope git_status<CR>", { desc = "telescope git status" })
-map("n", "<leader>pt", "<cmd>Telescope terms<CR>", { desc = "telescope pick hidden term" })
-map("n", "<leader>fg", "<cmd>lua require('telescope').extensions.lazygit.lazygit()<CR>", { desc = "telescope lazygit" })
-map("n", "<leader>ft", "<cmd>TodoTelescope<CR>", { desc = 'telescope find "TODO"-s' })
-
-map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "telescope find files" })
-map(
-	"n",
-	"<leader>fa",
-	"<cmd>Telescope find_files follow=true no_ignore=true hidden=true<CR>",
-	{ desc = "telescope find all files" }
-)
-
--- whichkey
-map("n", "<leader>wK", "<cmd>WhichKey <CR>", { desc = "whichkey all keymaps" })
-
-map("n", "<leader>wk", function()
-	vim.cmd("WhichKey " .. vim.fn.input("WhichKey: "))
-end, { desc = "whichkey query lookup" })
 
 -------------------------------------- User ------------------------------------------
 
 -- added maps
-map("n", "<leader>ll", function()
-	require("lint").try_lint()
-end, { desc = "Trigger linting for current file" })
 map("n", "<leader>dh", vim.diagnostic.open_float, { desc = "Open diagnostic window" })
 map("n", "<leader>dt", "<cmd>DiagnosticsToggleVirtualText<CR>", { desc = "Toggle inline diagnostics" })
 
@@ -207,112 +45,31 @@ map("n", "<A-k>", ":m .-2<CR>==", { desc = "Move text up" })
 
 -- Visual --
 -- Stay in indent mode
-map("v", "<", "<gv^", { desc = "Stay in indent mode left" })
-map("v", ">", ">gv^", { desc = "Stay in indent mode right" })
+map("x", "<", "<gv^", { desc = "Stay in indent mode left" })
+map("x", ">", ">gv^", { desc = "Stay in indent mode right" })
 
 -- Move text up and down
-map("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move text down" })
-map("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move text up" })
-map("v", "p", '"_dP', { desc = "Paste from 'other' register" })
+-- Same as the Visual Block <A-j>/<A-k> below ("x" covers every Visual mode, but not Select mode)
+-- map("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move text down" })
+-- map("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move text up" })
+-- Disabled: use built-in Visual P (paste without overwriting the register, Neovim 0.7+)
+-- map("v", "p", '"_dP', { desc = "Paste from 'other' register" })
 
 -- Visual Block --
 -- Move text up and down
-map("x", "J", ":m '>+1<CR>gv=gv", { desc = "Move text down" })
-map("x", "K", ":m '<-2<CR>gv=gv", { desc = "Move text up" })
+-- Disabled: restores built-in Visual J (join lines) and K (look up keyword); <A-j>/<A-k> still move
+-- map("x", "J", ":m '>+1<CR>gv=gv", { desc = "Move text down" })
+-- map("x", "K", ":m '<-2<CR>gv=gv", { desc = "Move text up" })
 map("x", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move text down" })
 map("x", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move text up" })
 
 -- Window split
 map("n", "<leader>ss", "<cmd>vsplit<CR>", { desc = "Split window vertically" })
 map("n", "<leader>sd", "<cmd>split<CR>", { desc = "Split window horizontally" })
+-- Same, but across the whole screen instead of only the current window
+map("n", "<leader>sD", "<cmd>botright split<CR>", { desc = "Split full width at the bottom" })
+map("n", "<leader>sS", "<cmd>botright vsplit<CR>", { desc = "Split full height on the far right" })
 
 -- Insert new line without entering insert mode
 map("n", "<leader>o", 'o<ESC>0"_D', { desc = "New line without insert mode" })
 map("n", "<leader>O", 'O<ESC>0"_D', { desc = "New line without insert mode" })
-
--- gitsigns
-map("n", "]c", function()
-	if vim.wo.diff then
-		vim.cmd.normal({ "]c", bang = true })
-	else
-		require("gitsigns").nav_hunk("next")
-	end
-end, { desc = "Gitsigns prev hunk" })
-
-map("n", "[c", function()
-	if vim.wo.diff then
-		vim.cmd.normal({ "[c", bang = true })
-	else
-		require("gitsigns").nav_hunk("prev")
-	end
-end, { desc = "Gitsigns prev hunk" })
-
--- Actions
-map("n", "<leader>hs", ":Gitsigns stage_hunk<CR>", { desc = "Gitsigns stage hunk [n]" })
-map("n", "<leader>hr", ":Gitsigns reset_hunk<CR>", { desc = "Gitsigns reset hunk [n]" })
-map("v", "<leader>hs", function()
-	require("gitsigns").stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
-end, { desc = "Gitsigns stage hunk [v]" })
-map("v", "<leader>hr", function()
-	require("gitsigns").reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
-end, { desc = "Gitsigns reset hunk [v]" })
-map("n", "<leader>hS", "<cmd>Gitsigns stage_buffer<CR>", { desc = "Gitsigns stage buffer" })
-map("n", "<leader>hu", "<cmd>Gitsigns undo_stage_hunk<CR>", { desc = "Gitsigns undo stake hunk" })
-map("n", "<leader>hR", "<cmd>Gitsigns reset_buffer<CR>", { desc = "Gitsigns reset buffer" })
-map("n", "<leader>hp", "<cmd>Gitsigns preview_hunk<CR>", { desc = "Gitsigns preview hunk" })
-map("n", "<leader>hb", '<cmd>lua require"gitsigns".blame_line{full=true}<CR>', { desc = "Gitsigns blame line" })
-map("n", "<leader>tb", "<cmd>Gitsigns toggle_current_line_blame<CR>", { desc = "Gitsigns toggle current line blame" })
-map("n", "<leader>hd", "<cmd>Gitsigns diffthis<CR>", { desc = "Gitsigns Gitsigns diff this" })
-map("n", "<leader>hD", '<cmd>lua require"gitsigns".diffthis("~")<CR>', { desc = "Gitsigns diff this" })
-map("n", "<leader>td", "<cmd>Gitsigns toggle_deleted<CR>", { desc = "Gitsigns toggle deleted" })
--- Text object
-map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "Gitsigns select hunk" })
--- LazyGit
-map("n", "<leader>lg", "<cmd>LazyGit<cr>", { desc = "LazyGit Toggle" })
--- LazyDocker
-map("n", "<leader>ld", "<cmd>lua LazyDocker.toggle()<CR>", { desc = "LazyDocker Toggle" })
-
--- WhichKey
-map("n", "<leader>?", function()
-	require("which-key").show()
-end, { desc = "Buffer Local Keymaps (which-key)" })
-
--- TodoComments
-map("n", "]t", function()
-	require("todo-comments").jump_next()
-end, { desc = "Next todo comment" })
-
-map("n", "[t", function()
-	require("todo-comments").jump_prev()
-end, { desc = "Previous todo comment" })
-
--- Trouble
-map("n", "<leader>zx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnostics (Trouble)" })
-map("n", "<leader>zX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", { desc = "Buffer Diagnostics (Trouble)" })
-map("n", "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", { desc = "Symbols (Trouble)" })
-map(
-	"n",
-	"<leader>cl",
-	"<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
-	{ desc = "LSP Definitions / references / ... (Trouble)" }
-)
-map("n", "<leader>zL", "<cmd>Trouble loclist toggle<cr>", { desc = "Location List (Trouble)" })
-map("n", "<leader>zQ", "<cmd>Trouble qflist toggle<cr>", { desc = "Quickfix List (Trouble)" })
-
--- Oil
-map("n", "-", "<CMD>Oil --float<CR>", { desc = "Open parent directory" })
-
--- Neogit
-map("n", "<leader>ng", "<CMD>Neogit<CR>", { desc = "Open Neogit tab" })
-
--- winshift
-map("n", "<C-W><C-M>", "<Cmd>WinShift<CR>", { desc = "Activate WinShift" })
-map("n", "<C-W>m", "<Cmd>WinShift<CR>", { desc = "Activate WinShift" })
-map("n", "<C-W>X", "<Cmd>WinShift swap<CR>", { desc = "Activate WinShift SWAP" })
-
--- folding
-map("n", "zR", require("ufo").openAllFolds, { desc = "Open all folds" })
-map("n", "zM", require("ufo").closeAllFolds, { desc = "Close all folds" })
-
--- db
-map("n", "<leader>db", "<cmd>Dbee<cr>", { desc = "Open Dbee window" })

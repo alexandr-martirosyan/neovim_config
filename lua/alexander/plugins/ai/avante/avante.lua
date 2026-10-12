@@ -1,9 +1,30 @@
 local M = {}
 
+M.init = function()
+	local group = vim.api.nvim_create_augroup("AlexanderAvanteFileReference", { clear = true })
+
+	vim.api.nvim_create_autocmd("FileType", {
+		group = group,
+		pattern = "Avante",
+		callback = function(args)
+			vim.keymap.set("n", "gR", function()
+				require("alexander.plugins.ai.avante.file_reference").open_under_cursor()
+			end, {
+				buffer = args.buf,
+				desc = "Open Avante file reference",
+				silent = true,
+			})
+		end,
+	})
+end
+
 M.opts = {
 	provider = "codex",
 	mode = "agentic",
+	-- Preserve existing history rather than silently switching storage roots.
+	history = { storage_path = vim.fn.stdpath("data") .. "/avante" },
 
+	-- ACP providers preserved for reference
 	acp_providers = {
 		codex = {
 			command = "codex-acp",
@@ -14,15 +35,38 @@ M.opts = {
 			env = {
 				NODE_NO_WARNINGS = "1",
 			},
-			auth_method = "chatgpt",
+			auth_method = "chat-gpt",
 		},
 	},
 
+	-- providers = {
+	-- 	ollama = {
+	-- 		endpoint = "http://127.0.0.1:11434",
+	-- 		model = "qwen3-coder-next:q4_K_M",
+	--
+	-- 		-- Optional but useful for local models
+	-- 		timeout = 30000,
+	-- 		extra_request_body = {
+	-- 			options = {
+	-- 				temperature = 0,
+	-- 				num_ctx = 32768,
+	-- 				keep_alive = "10m",
+	-- 			},
+	-- 		},
+	-- 	},
+	-- },
+
 	behaviour = {
+		-- Avante's automatic keys use mode "v" (Visual + Select). All its keys are defined in M.keys
+		-- below instead, with Visual-only ("x") where they take a selection.
+		auto_set_keymaps = false,
 		auto_suggestions = false,
 		auto_apply_diff_after_generation = false,
 		minimize_diff = true,
 		auto_add_current_file = true,
+		auto_approve_tool_permissions = false,
+		confirmation_ui_style = "inline_buttons",
+		acp_follow_agent_locations = true,
 	},
 
 	mappings = {
@@ -47,12 +91,16 @@ M.opts = {
 		select_history = "<leader>iah",
 		select_acp_model = "<leader>iaM",
 		select_acp_mode = "<leader>iao",
+		zen_mode = "<leader>iaz", -- default <leader>az made <leader>a (Harpoon add) wait for a second key
 	},
 
 	windows = {
 		position = "right",
 		width = 35,
 		wrap = true,
+		ask = {
+			start_insert = false,
+		},
 	},
 
 	file_selector = {
@@ -65,6 +113,7 @@ M.opts = {
 }
 
 M.cmd = {
+	"Avante",
 	"AvanteAsk",
 	"AvanteBuild",
 	"AvanteChat",
@@ -83,6 +132,46 @@ M.cmd = {
 	"AvanteACPModes",
 	"AvanteSwitchSelectorProvider",
 	"AvanteSwitchInputProvider",
+}
+
+M.keys = {
+	{ "<leader>iaa", "<cmd>AvanteAsk<CR>", mode = "n", desc = "avante ask" },
+	{ "<leader>iaa", ":AvanteAsk<CR>", mode = "x", desc = "avante ask selection" },
+	{ "<leader>iae", ":AvanteEdit<CR>", mode = "x", desc = "avante edit selection" },
+	{ "<leader>iac", "<cmd>AvanteChat<CR>", mode = "n", desc = "avante chat" },
+	-- Same action as Avante's `mappings.new_ask`, defined here so the key also loads Avante.
+	{
+		"<leader>ian",
+		function()
+			require("avante.api").ask({ new_chat = true })
+		end,
+		mode = { "n", "x" },
+		desc = "avante new ask",
+	},
+	{ "<leader>iaN", "<cmd>AvanteChatNew<CR>", mode = "n", desc = "avante new chat" },
+	{
+		"<leader>iaz",
+		function()
+			require("avante.api").zen_mode()
+		end,
+		mode = "n",
+		desc = "avante zen mode",
+	},
+	{ "<leader>iat", "<cmd>AvanteToggle<CR>", mode = "n", desc = "toggle avante sidebar" },
+	-- Previously added by Avante's automatic keymaps (behaviour.auto_set_keymaps, now off).
+	{ "<leader>iad", "<Plug>(AvanteToggleDebug)", mode = "n", remap = true, desc = "toggle avante debug" },
+	{ "<leader>iaC", "<Plug>(AvanteToggleSelection)", mode = "n", remap = true, desc = "toggle avante selection" },
+	{ "<leader>iaS", "<Plug>(AvanteToggleSuggestion)", mode = "n", remap = true, desc = "toggle avante suggestion" },
+	{ "<leader>iaB", "<Plug>(AvanteAddAllBuffers)", mode = "n", remap = true, desc = "avante add all open buffers" },
+	{ "<leader>iaf", "<cmd>AvanteFocus<CR>", mode = "n", desc = "focus avante sidebar" },
+	{ "<leader>iar", "<cmd>AvanteRefresh<CR>", mode = "n", desc = "refresh avante" },
+	{ "<leader>ias", "<cmd>AvanteStop<CR>", mode = "n", desc = "stop avante request" },
+	{ "<leader>iah", "<cmd>AvanteHistory<CR>", mode = "n", desc = "avante history" },
+	{ "<leader>iam", "<cmd>AvanteModels<CR>", mode = "n", desc = "avante models" },
+	{ "<leader>iaM", "<cmd>AvanteACPModels<CR>", mode = "n", desc = "avante acp models" },
+	{ "<leader>iao", "<cmd>Avante acp modes<CR>", mode = "n", desc = "avante acp mode" },
+	{ "<leader>iaR", "<cmd>AvanteShowRepoMap<CR>", mode = "n", desc = "avante repo map" },
+	{ "<leader>iap", "<cmd>AvanteSwitchProvider<CR>", mode = "n", desc = "switch avante provider" },
 }
 
 return M

@@ -4,6 +4,11 @@ local opt = vim.opt
 local o = vim.o
 local g = vim.g
 
+-- Set these before plugin specs and provider detection run.
+g.mapleader = " "
+g.maplocalleader = "\\"
+o.termguicolors = true
+
 -------------------------------------- options ------------------------------------------
 o.laststatus = 3
 o.showmode = false
@@ -19,7 +24,17 @@ o.smartindent = true
 o.tabstop = 2
 o.softtabstop = 2
 
-opt.fillchars = { eob = " " }
+opt.fillchars = {
+	eob = " ",
+	-- Thick window separators (same characters colorful-winsep uses for the focused window)
+	vert = "┃",
+	horiz = "━",
+	horizup = "┻",
+	horizdown = "┳",
+	vertleft = "┫",
+	vertright = "┣",
+	verthoriz = "╋",
+}
 o.ignorecase = true
 o.smartcase = true
 o.mouse = "a"
@@ -64,21 +79,12 @@ g.loaded_ruby_provider = 0
 
 -------------------------------------- User ------------------------------------------
 
--- disable comments
-vim.cmd("autocmd BufEnter * set formatoptions-=cro")
-vim.cmd("autocmd BufEnter * setlocal formatoptions-=cro")
-
--- the same as below
 vim.filetype.add({
 	extension = {
 		["circom"] = "circom",
 		["http"] = "http",
 	},
 })
--- Ensure Neovim treats .circom files as the "circom" filetype
-vim.cmd("autocmd BufRead,BufNewFile *.circom set filetype=circom")
--- Ensure Neovim treats .http files as the "http" filetype
-vim.cmd("autocmd BufRead,BufNewFile *.http set filetype=http")
 
 -- some options
 o.relativenumber = true
@@ -86,11 +92,8 @@ o.wrap = false
 -- o.spelllang = "en_us"
 -- o.spell = true
 
-opt.pumheight = 12 -- Limit the popup menu height to 5 rows
+opt.pumheight = 12 -- Limit the popup menu height to 12 rows
 opt.equalalways = false
-
--- Sets a subtle, dark border line between the winbar and the code
-vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#313244", bg = "NONE" })
 
 -- remove "l" foldopen functionality
 vim.opt.foldopen:remove("hor")

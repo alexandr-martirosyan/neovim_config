@@ -40,7 +40,6 @@ M.opts = function(_, opts)
 			},
 		},
 
-		extensions_list = { "themes", "terms" },
 		extensions = {
 			fzf = {
 				fuzzy = true, -- false will only do exact matching
@@ -61,12 +60,35 @@ M.config = function(_, opts)
 	telescope.setup(opts)
 	telescope.load_extension("fzf")
 	telescope.load_extension("frecency")
-	telescope.load_extension("media_files")
 	telescope.load_extension("ui-select")
 
 	-- TODO: configure when configuring debugger
 	-- Run the `configurations` picker from nvim-dap
 	-- require('telescope').extensions.dap.configurations()
 end
+
+M.keys = {
+	{ "<leader>fw", "<cmd>Telescope live_grep<CR>", mode = "n", desc = "telescope live grep" },
+	{ "<leader>fb", "<cmd>Telescope buffers<CR>", mode = "n", desc = "telescope find buffers" },
+	{ "<leader>fh", "<cmd>Telescope help_tags<CR>", mode = "n", desc = "telescope help page" },
+	{ "<leader>ma", "<cmd>Telescope marks<CR>", mode = "n", desc = "telescope find marks" },
+	{ "<leader>fo", "<cmd>Telescope oldfiles<CR>", mode = "n", desc = "telescope find oldfiles" },
+	{ "<leader>fr", "<cmd>Telescope frecency<CR>", mode = "n", desc = "telescope recent files by frecency" },
+	{
+		"<leader>fz",
+		"<cmd>Telescope current_buffer_fuzzy_find<CR>",
+		mode = "n",
+		desc = "telescope find in current buffer",
+	},
+	{ "<leader>cm", "<cmd>Telescope git_commits<CR>", mode = "n", desc = "telescope git commits" },
+	{ "<leader>gt", "<cmd>Telescope git_status<CR>", mode = "n", desc = "telescope git status" },
+	{ "<leader>ff", "<cmd>Telescope find_files<cr>", mode = "n", desc = "telescope find files" },
+	{
+		"<leader>fa",
+		"<cmd>Telescope find_files follow=true no_ignore=true hidden=true<CR>",
+		mode = "n",
+		desc = "telescope find all files",
+	},
+}
 
 return M

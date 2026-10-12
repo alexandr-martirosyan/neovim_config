@@ -4,6 +4,7 @@ local M = {
 	{
 		"lewis6991/gitsigns.nvim",
 		event = "BufEnter",
+		keys = gitsigns.keys,
 		opts = gitsigns.opts,
 	},
 }

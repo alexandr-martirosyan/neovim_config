@@ -92,6 +92,15 @@ M.opts = function()
 						cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
 					end
 					cmp.confirm()
+				elseif require("luasnip").expand_or_locally_jumpable() then
+					require("luasnip").expand_or_jump()
+				else
+					fallback()
+				end
+			end, { "i", "s" }),
+			["<S-Tab>"] = cmp.mapping(function(fallback)
+				if require("luasnip").locally_jumpable(-1) then
+					require("luasnip").jump(-1)
 				else
 					fallback()
 				end

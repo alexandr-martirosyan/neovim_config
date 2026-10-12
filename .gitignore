@@ -42,5 +42,6 @@ luac.out
 *.x86_64
 *.hex
 
-# Lazy
-lazy-lock.json
+# Runtime logs
+.nvimlog
+nvim.log

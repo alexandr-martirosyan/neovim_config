@@ -1,6 +1,6 @@
 local M = {}
 
-vim.g.copilot_nes_debounce = 500
+-- vim.g.copilot_nes_debounce = 500 -- only used by copilot-lsp (removed)
 
 M.opts = {
 	suggestion = {

@@ -1,0 +1,120 @@
+### httpbin: GET with query params and custom headers
+
+# @name httpbin_get
+
+GET https://httpbin.org/get?source=kulala&user=Alexandr HTTP/1.1
+Accept: application/json
+X-Demo-Client: kulala.nvim
+X-Request-Id: kulala-demo
+
+
+### httpbin: POST JSON body, variables, and response assertions
+
+# @name httpbin_post_json
+
+POST https://httpbin.org/post HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+{
+  "data": {
+    "age": 30,
+    "name": "Alexandr",
+    "occupation": "Developer"
+  }
+}
+
+> {%
+  const json = response.body.json.data;
+  
+  client.test("httpbin echoes JSON body", function () {
+    client.assert(response.status === 200, "status is 200");
+    client.assert(json.name === "Alexandr", "name is echoed");
+    client.assert(json.occupation === "Developer", "variable is expanded");
+  });
+%}
+
+
+### httpbin: Basic auth
+
+# @name httpbin_basic_auth
+
+GET https://httpbin.org/basic-auth/kulala/secret HTTP/1.1
+Accept: application/json
+Authorization: Basic a3VsYWxhOnNlY3JldA==
+
+> {%
+  client.test("basic auth succeeds", function () {
+    client.assert(response.status === 200, "status is 200");
+  });
+%}
+
+
+### JSONPlaceholder: GET a resource
+
+# @name jsonplaceholder_todo
+
+GET https://jsonplaceholder.typicode.com/todos/1 HTTP/1.1
+Accept: application/json
+
+> {%
+  const todo = response.body;
+  
+  client.test("JSONPlaceholder todo works", function () {
+    client.assert(response.status === 200, "status is 200");
+    client.assert(todo.id === 1, "todo id is 1");
+  });
+%}
+
+
+### JSONPlaceholder: Create a fake post
+
+# @name jsonplaceholder_create_post
+
+POST https://jsonplaceholder.typicode.com/posts HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+{
+  "body": "This POST is simulated by JSONPlaceholder.",
+  "title": "Kulala demo",
+  "userId": 1
+}
+
+> {%
+  const post = response.body;
+  
+  client.test("fake post creation works", function () {
+    client.assert(response.status === 201, "status is 201");
+    client.assert(post.title === "Kulala demo", "title is echoed");
+  });
+%}
+
+
+### JSONPlaceholder: Filter comments by query parameter
+
+# @name jsonplaceholder_filtered_comments
+
+GET https://jsonplaceholder.typicode.com/comments?postId=1 HTTP/1.1
+Accept: application/json
+
+
+### JSONPlaceholder: PATCH a fake post
+
+# @name jsonplaceholder_patch_post
+
+PATCH https://jsonplaceholder.typicode.com/posts/1 HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "Patched from Kulala"
+}
+
+
+### JSONPlaceholder: DELETE a fake post
+
+# @name jsonplaceholder_delete_post
+
+DELETE https://jsonplaceholder.typicode.com/posts/1 HTTP/1.1
+Accept: application/json

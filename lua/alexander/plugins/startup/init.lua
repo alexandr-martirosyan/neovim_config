@@ -4,7 +4,7 @@ local M = {
 	{
 		"goolord/alpha-nvim",
 		event = "VimEnter",
-		dependencies = { "echasnovski/mini.icons" },
+		dependencies = { "nvim-mini/mini.icons", "nvim-tree/nvim-web-devicons" },
 		config = alpha.config,
 	},
 }

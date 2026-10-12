@@ -4,6 +4,8 @@ local M = {
 	{
 		"folke/trouble.nvim",
 		cmd = { "Trouble" },
+		event = "LspAttach", -- statusline symbols become available with language support
+		keys = trouble.keys,
 		opts = trouble.opts, -- for default options, refer to the configuration section for custom setup.
 		-- config = trouble.config,
 	},

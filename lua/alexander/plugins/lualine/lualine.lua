@@ -1,26 +1,56 @@
 ---@diagnostic disable: undefined-field
 local M = {}
 
+local function is_kulala_ui_buffer()
+	return vim.api.nvim_buf_get_name(0) == "kulala://ui" or vim.bo.filetype == "kulala_ui"
+end
+
+local function preserve_kulala_winbar(lualine)
+	if lualine._alexander_preserve_kulala_winbar then
+		return
+	end
+
+	local render_winbar = lualine.winbar
+
+	lualine.winbar = function(focused)
+		if is_kulala_ui_buffer() then
+			return vim.wo.winbar
+		end
+
+		return render_winbar(focused)
+	end
+
+	lualine._alexander_preserve_kulala_winbar = true
+end
+
 ---@diagnostic disable-next-line: unused-local
 M.opts = function(_, opts)
 	-- Create a master group for the pill container
 	-- vim.api.nvim_set_hl(0, "LualineTroublePill", { bg = "#313244", fg = "#cdd6f4" })
 	-- vim.api.nvim_set_hl(0, "LualineNoicePill", { bg = "#313244", fg = "#ff9e64" })
-	local trouble = require("trouble")
-	local symbols = trouble.statusline({
-		mode = "lsp_document_symbols",
-		groups = {},
-		title = false,
-		filter = { range = true },
-		format = "{kind_icon}{symbol.name:Normal}",
-		-- The following line is needed to fix the background color
-		-- Set it to the lualine section you want to use
-		-- hl_group = "LualinetroublePill",
-		-- hl_group = "#181926",
-	})
+	local symbols
+	local function get_symbols()
+		if not symbols and package.loaded["trouble"] then
+			symbols = require("trouble").statusline({
+				mode = "lsp_document_symbols",
+				groups = {},
+				title = false,
+				filter = { range = true },
+				format = "{kind_icon}{symbol.name:Normal}",
+				-- The following line is needed to fix the background color
+				-- Set it to the lualine section you want to use
+				-- hl_group = "LualinetroublePill",
+				-- hl_group = "#181926",
+			})
+		end
+		return symbols
+	end
+	local function noice_message()
+		return package.loaded["noice"] and require("noice").api.status.message or nil
+	end
 	-- 1. THEME OVERRIDE: Inherit from 'auto'
 	-- We use a deep "Crust" background to make the bar stand out as a separator.
-	local custom_theme = require("lualine.themes.auto")
+	local custom_theme = vim.deepcopy(require("lualine.themes.auto"))
 	-- custom_theme.normal.c.bg = "#181926" -- Very dark active background
 	custom_theme.inactive.c.bg = "#181926" -- Very dark active background
 	custom_theme.normal.c.bg = "#11111b" -- Near-black inactive background
@@ -113,6 +143,14 @@ M.opts = function(_, opts)
 					"kulala_ui",
 					"kulala",
 					"toggleterm",
+					"avante",
+					"Avante",
+					"AvanteInput",
+					"AvanteSelectedFiles",
+					"avante",
+					"codecompanion",
+					"dbui",
+					"dbout",
 				},
 			},
 		},
@@ -141,21 +179,40 @@ M.opts = function(_, opts)
 			lualine_x = {
 				{
 					-- Wrapping in a function strips Noice's internal highlights
-					require("noice").api.status.message.get_hl,
-					cond = require("noice").api.status.message.has,
+					function()
+						local status = noice_message()
+						return status and status.get_hl() or ""
+					end,
+					cond = function()
+						local status = noice_message()
+						return status and status.has() or false
+					end,
 					color = "LualineMessagePill",
 					separator = { left = "", right = "" },
 				},
 			},
 			lualine_c = {
 				{
-					symbols.get,
-					cond = symbols.has,
+					function()
+						local status = get_symbols()
+						return status and status.get() or ""
+					end,
+					cond = function()
+						local status = get_symbols()
+						return status and status.has() or false
+					end,
 					separator = { left = "", right = "" },
 				},
 			},
 		},
 	}
+end
+
+M.config = function(_, opts)
+	local lualine = require("lualine")
+
+	lualine.setup(opts)
+	preserve_kulala_winbar(lualine)
 end
 
 return M

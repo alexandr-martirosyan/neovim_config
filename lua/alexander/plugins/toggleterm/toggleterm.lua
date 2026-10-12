@@ -20,7 +20,7 @@ M.opts = {
 		-- like `size`, width, height, row, and col can be a number or function which is passed the current terminal
 		-- width = math.floor(vim.o.columns * 0.6), -- 60% of the window width
 		width = function(term)
-			local ui = vim.api.nvim_list_uis()[1]
+			local ui = vim.api.nvim_list_uis()[1] or { width = vim.o.columns, height = vim.o.lines }
 			local is_vertical = ui.width < (ui.height * 1.8)
 			-- local is_vertical = vim.o.columns > vim.o.lines
 			if is_vertical then
@@ -30,7 +30,9 @@ M.opts = {
 			end
 		end,
 
-		height = math.floor(vim.o.lines * 0.61),
+		height = function()
+			return math.max(1, math.floor(vim.o.lines * 0.61))
+		end,
 		-- row = <value>,
 		-- col = <value>,
 		-- winblend = 3,
@@ -61,5 +63,29 @@ M.toggle_exclusive = function(target_id)
 	-- 3. Open the target terminal
 	toggleterm.toggle(target_id, 0, nil, "tab")
 end
+
+M.keys = {
+	{ "<A-v>", "<cmd>1ToggleTerm direction=vertical<cr>", mode = { "n", "t" }, desc = "terminal vertical term" },
+	{ "<A-h>", "<cmd>1ToggleTerm direction=horizontal<cr>", mode = { "n", "t" }, desc = "terminal horizontal term" },
+	{ "<A-i>", "<cmd>1ToggleTerm direction=float<cr>", mode = { "n", "t" }, desc = "terminal float term" },
+	{ "<A-t>", "<cmd>1ToggleTerm direction=tab<cr>", mode = { "n", "t" }, desc = "terminal tab term" },
+	{
+		"<A-1>",
+		function()
+			require("alexander.plugins.toggleterm.toggleterm").toggle_exclusive(2)
+		end,
+		mode = { "n", "t" },
+		desc = "tab terminal #2",
+	},
+	{
+		"<A-2>",
+		function()
+			require("alexander.plugins.toggleterm.toggleterm").toggle_exclusive(3)
+		end,
+		mode = { "n", "t" },
+		desc = "tab terminal #3",
+	},
+	{ "<leader>pt", "<cmd>TermSelect<CR>", mode = "n", desc = "Select terminal" },
+}
 
 return M

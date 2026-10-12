@@ -4,6 +4,7 @@ local M = {
 	{
 		"folke/which-key.nvim",
 		event = "VeryLazy",
+		keys = whichkey.keys,
 		opts = whichkey.opts,
 	},
 }

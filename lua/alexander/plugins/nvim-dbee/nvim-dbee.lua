@@ -10,4 +10,8 @@ M.config = function(_, opts)
 end
 M.cmd = { "Dbee" }
 
+M.keys = {
+	{ "<leader>db", "<cmd>Dbee<cr>", mode = "n", desc = "Open Dbee window" },
+}
+
 return M

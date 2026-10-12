@@ -6,7 +6,8 @@ M.opts = {
 		override = {
 			["vim.lsp.util.convert_input_to_markdown_lines"] = true,
 			["vim.lsp.util.stylize_markdown"] = true,
-			["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
+			-- requires hrsh7th/nvim-cmp (disabled); blink.cmp highlights its docs with Treesitter itself
+			["cmp.entry.get_documentation"] = false,
 			-- some custom logic
 			["vim.ui.select"] = false, -- 👈 Don't let Noice handle it
 			-- ["vim.ui.input"] = true,

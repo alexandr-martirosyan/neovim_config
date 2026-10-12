@@ -7,6 +7,7 @@ local M = {
 			"kevinhwang91/promise-async",
 		},
 		event = "BufEnter",
+		keys = nvim_ufo.keys,
 		config = nvim_ufo.config,
 	},
 }

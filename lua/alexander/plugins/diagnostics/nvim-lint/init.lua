@@ -2,7 +2,7 @@ local M = {}
 
 M.opts = {
 	-- Event to trigger linters
-	events = { "BufEnter", "BufWritePost", "BufReadPost", "InsertLeave" },
+	events = { "BufReadPost", "BufNewFile", "BufWritePost", "InsertLeave" },
 	linters_by_ft = {
 		solidity = { "solhint" },
 		dockerfile = { "hadolint" },
@@ -27,11 +27,25 @@ M.config = function(_, opts)
 
 	vim.api.nvim_create_autocmd(opts.events, {
 		group = lint_augroup,
-		callback = function()
+		callback = function(args)
+			if vim.bo[args.buf].buftype ~= "" or not vim.bo[args.buf].modifiable then
+				return
+			end
 			lint.try_lint()
 		end,
 	})
 	-- maybe some code needed here
 end
+
+M.keys = {
+	{
+		"<leader>ll",
+		function()
+			require("lint").try_lint()
+		end,
+		mode = "n",
+		desc = "Trigger linting for current file",
+	},
+}
 
 return M

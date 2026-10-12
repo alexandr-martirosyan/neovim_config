@@ -8,38 +8,42 @@ local M = {
 	-- lint
 	{
 		"mfussenegger/nvim-lint",
-		event = "BufReadPre",
+		event = { "BufReadPre", "BufNewFile" },
+		keys = nvim_lint.keys,
 		opts = nvim_lint.opts,
 		config = nvim_lint.config,
 	},
 	-- conform
 	{
 		"stevearc/conform.nvim",
+		cmd = { "ConformInfo" },
+		keys = conform.keys,
 		opts = conform.opts,
 		config = conform.config,
 	},
 	-- lsp stuff
 	{
-		"williamboman/mason.nvim",
-		cmd = { "Mason", "MasonInstall", "MasonInstallAll", "MasonUpdate" },
+		"mason-org/mason.nvim",
+		cmd = { "Mason", "MasonInstall", "MasonInstallAll", "MasonReinstallAll", "MasonUpdate" },
 		opts = mason.opts,
 		config = mason.config,
 	},
 	{
 		"neovim/nvim-lspconfig",
-		event = "BufReadPre",
+		event = { "BufReadPre", "BufNewFile" },
 		dependencies = {
-			"hrsh7th/nvim-cmp",
-			"hrsh7th/cmp-nvim-lsp",
+			-- Completion capabilities come from blink.cmp (configured in its own folder).
+			"saghen/blink.cmp",
+			{ "hrsh7th/cmp-nvim-lsp", cond = false }, -- nvim-cmp's capabilities source, replaced by blink
 		},
 		config = lspconfig.config,
 	},
 	{
-		"williamboman/mason-lspconfig.nvim",
-		event = "BufReadPre",
+		"mason-org/mason-lspconfig.nvim",
+		event = { "BufReadPre", "BufNewFile" },
 		dependencies = {
 			"neovim/nvim-lspconfig",
-			"williamboman/mason.nvim",
+			"mason-org/mason.nvim",
 		},
 		config = mason_lspconfig.config,
 	},

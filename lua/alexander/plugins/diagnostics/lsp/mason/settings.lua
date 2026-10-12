@@ -33,4 +33,19 @@ M.ensure_installed = {
 	"tombi",
 }
 
+-- Installing a package does not silently opt its LSP into every project.
+M.servers = {
+	"lua_ls",
+	"solidity_ls_nomicfoundation",
+	"rust_analyzer",
+	"pyright",
+	"denols",
+	"eslint",
+	"ts_ls",
+	"typos_lsp",
+	"dockerls",
+	"tombi",
+}
+M.enable_circom = false -- Keep the custom server opt-in.
+
 return M
