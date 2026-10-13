@@ -375,6 +375,11 @@ Method: (A) version fields of every spec in the pre-Codex backup, (B) each repo'
 - `autocmds.lua` placeholder cleanup: only when started with one directory argument, waits past the directory buffer itself, and removes its autocmd after the first real file (`return true`). pty test: `nvim .` placeholder reused/removed, a later `nvim_create_buf(true, false)` buffer survives.
 - README: Dbee → dadbod requirements, Bufferline removed, all parsers, kulala-fmt, Comment.nvim keys, link to AGENTS.md. MIGRATION_NOTES header marks the file as historical.
 
+## 8n. CONFIG_GUIDE.md and lost private-use icons
+
+- `CONFIG_GUIDE.md` written from a full read of every file plus a pty session dump (`nvim_get_keymap` per mode with callback `debug.getinfo` sources, buffer-local maps on Lua/HTTP/SQL buffers, loaded plugins after VeryLazy, user commands, config augroups) and lazy's plugin table (80 plugins: 68 on, 11 off, image.nvim conditional). AGENTS.md: keep it current before each commit.
+- Found while verifying: BMP private-use glyphs (U+E000–U+F8FF) were dropped when files were written by the assistant. `blink-cmp.lua` had `copilot = ""`, `lsp = ""`, lspkind `Copilot = ""` (nvim-cmp.lua still had U+F113 / U+EB50). `alpha.lua` had 9 empty button icons. Restored by code point: blink copilot/Copilot U+F113, lsp U+EB50; alpha e U+F15B, r U+F06D, s U+F0E2, n U+E702, l U+F126, c U+F013, m U+F0AD, h U+F21E, q U+F011 (4-byte U+F0000+ icons were intact). Per-file non-ASCII byte counts vs e70dfa0 checked: other differences are moves (diagnostic signs → diagnostics-commands.lua) or API migrations (winsep `symbols` → `border = "bold"`), not losses.
+
 ## 9. Prompt for the next AI
 
 > Read AGENTS.md first: it has the current state, the user's rules, and what is pending. The prompt below is from the original migration and is partly outdated.

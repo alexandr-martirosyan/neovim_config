@@ -2,8 +2,8 @@ local M = {}
 
 -- Same per-source menu icons as the previous nvim-cmp `formatting.format`.
 local source_icons = {
-	copilot = "",
-	lsp = "",
+	copilot = "",
+	lsp = "",
 	snippets = "󰩫",
 	buffer = "󰂔",
 	path = "󰉋",
@@ -35,7 +35,7 @@ end
 
 M.opts = function()
 	require("lspkind").init({
-		symbol_map = { Copilot = "" },
+		symbol_map = { Copilot = "" },
 	})
 
 	return {

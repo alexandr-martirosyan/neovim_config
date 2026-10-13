@@ -110,7 +110,8 @@ is deliberately not updated by this migration or Lazy. Other machines use the
 user's remote fork pinned in the spec. The fallback is not a claim that the local
 fork has the same HEAD. Keep that distinction when updating.
 
-See [AGENTS.md](AGENTS.md) for the current state and open items,
+See [CONFIG_GUIDE.md](CONFIG_GUIDE.md) for a full description of the config (every plugin,
+shortcut and feature), [AGENTS.md](AGENTS.md) for the current state and open items,
 [CHANGELOG.md](CHANGELOG.md) for conceptual changes and
 [MIGRATION_NOTES.md](MIGRATION_NOTES.md) for exact revisions, compatibility,
 validation, deferred suggestions, and the complete pre-migration backup path.

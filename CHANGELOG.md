@@ -161,3 +161,9 @@ See [MIGRATION_NOTES.md](MIGRATION_NOTES.md) for implementation decisions, compa
 - Neo-tree's proportional layout also works when you add a full-width split (`<leader>sD`) while the tree is open: closing the tree now gives its space back only to the windows next to it, so their proportions are kept (before: 120/79 became 95/104).
 - The empty-buffer cleanup after `nvim .` now runs only once, for the startup placeholder. Empty buffers you create yourself later are no longer deleted.
 - README updated (vim-dadbod-ui instead of Dbee, Bufferline removed, all Treesitter parsers, `.http` formatting via kulala-fmt, Comment.nvim keys); the migration notes are marked as a historical record.
+
+### 18. Config guide and lost icons
+
+- New `CONFIG_GUIDE.md`: a full description of the config — folder structure, startup order, every option, every plugin (enabled, disabled, removed) and what it does here, every shortcut with its mode and the file that defines it (including LSP, Kulala, database and plugin-panel keys and the Neovim built-ins you rely on), how each feature works, and where data lives outside the repo. Its top says which commit it matches and how to check whether it is still current. `AGENTS.md` now requires updating it with every change.
+- Completion menu: the Copilot and LSP source icons (and the Copilot kind icon) are back; they had become empty during the blink migration.
+- Start screen: 9 of the 14 buttons had lost their icons (new file, recent, session, Neogit, LazyGit, config, Mason, health, quit); they have icons again.

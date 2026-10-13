@@ -7,20 +7,20 @@ M.config = function(_, opts)
 	-- Press the letter on the start screen (or move to a line and press Enter).
 	-- The default theme's buttons pointed at someone else's keys (SPC f h / SPC f m / SPC s l).
 	dashboard.section.buttons.val = {
-		button("e", "  New file", "<cmd>ene <BAR> startinsert<CR>"),
+		button("e", "  New file", "<cmd>ene <BAR> startinsert<CR>"),
 		button("f", "󰈞  Find file", "<cmd>Telescope find_files<CR>"),
-		button("r", "  Recent files (frequent first)", "<cmd>Telescope frecency<CR>"),
+		button("r", "  Recent files (frequent first)", "<cmd>Telescope frecency<CR>"),
 		button("o", "󰋚  Recent files (latest first)", "<cmd>Telescope oldfiles<CR>"),
 		button("g", "󰈬  Find text in project", "<cmd>Telescope live_grep<CR>"),
-		button("s", "  Restore session for this folder", "<cmd>AutoSession restore<CR>"),
+		button("s", "  Restore session for this folder", "<cmd>AutoSession restore<CR>"),
 		button("t", "󰙅  File tree", "<cmd>Neotree focus<CR>"),
-		button("n", "  Git (Neogit)", "<cmd>Neogit<CR>"),
-		button("l", "  Git (LazyGit)", "<cmd>LazyGit<CR>"),
-		button("c", "  Neovim config", "<cmd>Telescope find_files cwd=" .. vim.fn.stdpath("config") .. "<CR>"),
+		button("n", "  Git (Neogit)", "<cmd>Neogit<CR>"),
+		button("l", "  Git (LazyGit)", "<cmd>LazyGit<CR>"),
+		button("c", "  Neovim config", "<cmd>Telescope find_files cwd=" .. vim.fn.stdpath("config") .. "<CR>"),
 		button("L", "󰒲  Plugins (Lazy)", "<cmd>Lazy<CR>"),
-		button("m", "  Language tools (Mason)", "<cmd>Mason<CR>"),
-		button("h", "  Check health", "<cmd>checkhealth<CR>"),
-		button("q", "  Quit", "<cmd>qa<CR>"),
+		button("m", "  Language tools (Mason)", "<cmd>Mason<CR>"),
+		button("h", "  Check health", "<cmd>checkhealth<CR>"),
+		button("q", "  Quit", "<cmd>qa<CR>"),
 	}
 
 	local v = vim.version()

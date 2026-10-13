@@ -1,17 +1,19 @@
 # Notes for AI assistants working on this Neovim config
 
-Read this first. Then `CHANGELOG.md` (user-facing, sections 1–17) and `MIGRATION_NOTES.md`
-(technical details, sections 1–8m) for anything specific.
+Read this first. `CONFIG_GUIDE.md` describes the whole config as it is now (structure, every plugin, every
+shortcut and where it is defined, features, files outside the repo); its top has a freshness check.
+`CHANGELOG.md` (user-facing, sections 1–18) and `MIGRATION_NOTES.md` (technical details, sections 1–8n)
+hold the history.
 
 ## Where things stand (2026-10-12)
 
-- Config: `~/.config/nvim`, branch `main` (the only branch). All work up to CHANGELOG section 17 (and `TMUX_PLAN.md`) was
+- Config: `~/.config/nvim`, branch `main` (the only branch). All work up to CHANGELOG section 18 (incl. `TMUX_PLAN.md`, `CONFIG_GUIDE.md`) was
   committed and fast-forwarded into `main`; the `codex/*` branches were deleted. `lazy-lock.json` is tracked.
 - Neovim **0.12.6** via bob. bob 4.2 on macOS defaults to `~/Library/Application Support/bob`;
   `~/Library/Application Support/bob/config.json` points it at `~/.local/share/bob` (that's what PATH uses).
   0.11.7 stays installed for rollback.
 - Completion: **blink.cmp** (`1.*`, v2 is unreleased/breaking). nvim-cmp family is `cond = false` and kept
-  until the user says he is comfortable with blink, then he will ask to remove it.
+  until the user says they are comfortable with blink; then they will ask to remove it.
 - Colorscheme: catppuccin-macchiato with `auto_integrations = false` and the pre-update integration list
   pinned (Barbar slanted separators). Thick grey window separators (`fillchars`, `WinSeparator` and
   `NeoTreeWinSeparator` = `#6e738d`).
@@ -32,6 +34,8 @@ Read this first. Then `CHANGELOG.md` (user-facing, sections 1–17) and `MIGRATI
   actively fixed → follow main (applied to telescope, telescope-frecency, lazydev). blink.cmp stays `1.*`.
 - Visual mappings use mode `"x"` (not `"v"`), so they don't fire in snippet Select mode.
 - Update `CHANGELOG.md` (plain-language behaviour) and `MIGRATION_NOTES.md` (technical) after each change.
+- **Keep `CONFIG_GUIDE.md` up to date with every change** (plugins, keys, options, features, files),
+  at the latest before each commit, and update its snapshot line (commit + CHANGELOG section).
 - Test changes before reporting (headless Neovim; a pseudo-terminal harness for UI-only behaviour).
   Don't run huge repeated checks — the user is token-conscious.
 - Explain in plain language, step by step; the user often replies inline to parts of a message.
@@ -69,6 +73,10 @@ Read this first. Then `CHANGELOG.md` (user-facing, sections 1–17) and `MIGRATI
   built-in (an alternative mapping is commented out in `lspconfig/init.lua`).
 
 ## Testing tips
+
+- Nerd Font icons in the Basic Multilingual Plane private-use range (U+E000–U+F8FF, 3 UTF-8 bytes) can be
+  dropped when an assistant writes a file (this emptied icons in `blink-cmp.lua` and `alpha.lua` once).
+  Write such icons by code point (e.g. Python `"\uf113"`) and check the bytes afterwards.
 
 - Headless: `nvim --headless -c "luafile probe.lua"` with deferred functions writing results to a file.
 - VeryLazy and UIEnter only fire with a UI: run Neovim in a Python `pty` and read the screen or a results file.
