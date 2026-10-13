@@ -5,7 +5,9 @@ local lazy_config = {
 		-- plugins whose docs give none follow their default branch (newest commit), as below.
 		version = false,
 	},
-	checker = { enabled = true },
+	-- Check for plugin updates in the background, but without a notification on every start: most
+	-- plugins follow their newest commits, so there is almost always something new. `:Lazy` shows them.
+	checker = { enabled = true, notify = false },
 	install = { colorscheme = { "habamax" } },
 	rocks = {
 		hererocks = true, -- recommended if you do not have global installation of Lua 5.1.

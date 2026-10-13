@@ -5,7 +5,7 @@ every shortcut and where it is defined, every plugin and what it does here, and 
 the repository. It is a reference for people and AI assistants working on this config.
 
 > **Snapshot.** Written against commit `3abb37c` (2026-10-12) and committed together with the
-> changes listed in CHANGELOG section 18. Verified by reading every file and by inspecting a running
+> changes listed in CHANGELOG sections 18–20. Verified by reading every file and by inspecting a running
 > Neovim (loaded plugins, real key mappings, buffer-local LSP/Kulala mappings).
 >
 > **Freshness check.** Compare the last commit that changed this file with the last commit that
@@ -175,7 +175,8 @@ Fold options are set by nvim-ufo's config (section 7.10): `foldcolumn=1`, `foldl
 
 - `defaults = { lazy = true, version = false }`: every plugin is lazy unless its spec says otherwise;
   plugins without a `version`/`branch` follow their default branch (latest commit).
-- `checker = { enabled = true }`: lazy checks for plugin updates in the background and notifies.
+- `checker = { enabled = true, notify = false }`: lazy checks for plugin updates in the background
+  (hourly) without a notification; `:Lazy` shows available updates.
 - `install.colorscheme = { "habamax" }` (only used while installing on a fresh machine).
 - `rocks.hererocks = true` (lazy builds its own Lua 5.1 for luarocks plugins).
 - `performance.rtp.disabled_plugins`: 2html_plugin, tohtml, getscript(+Plugin), gzip, logipat, netrw,
@@ -732,8 +733,12 @@ Main branch (rewrite; no `ensure_installed`/module toggles). Build hook installs
 parsers. On interactive starts it also builds any missing parsers in the background, until one run
 succeeds; then a stamp file `stdpath("state")/treesitter-install-all.done` (delete it to retry). A FileType
 autocmd starts Treesitter highlighting for normal buffers (and for `Avante`, `codecompanion`,
-`kulala_ui`, which are registered as Markdown) and sets the Treesitter `indentexpr` when an indents
-query exists. Parsers live in `stdpath("data")/site/parser` (321 installed on 2026-10-12).
+`kulala_ui`, which are registered as Markdown) **only when the language has a `highlights` query**;
+otherwise Vim's regex syntax stays on (e.g. tmux, prolog, muttrc, zathurarc, robots, norg: support
+dropped by nvim-treesitter main, but old parsers remain in `lazy/nvim-treesitter/parser/`). It sets the
+Treesitter `indentexpr` when an indents query exists. `jsonc` uses the `json` parser (mapping provided
+by nvim-treesitter). The old master-branch parser folder `lazy/nvim-treesitter/parser/` is kept because
+Kulala's `kulala_http` parser lives only there. Parsers live in `stdpath("data")/site/parser` (321 installed on 2026-10-12).
 
 ### 7.9 Text objects and pinned context
 

@@ -380,6 +380,17 @@ Method: (A) version fields of every spec in the pre-Codex backup, (B) each repo'
 - `CONFIG_GUIDE.md` written from a full read of every file plus a pty session dump (`nvim_get_keymap` per mode with callback `debug.getinfo` sources, buffer-local maps on Lua/HTTP/SQL buffers, loaded plugins after VeryLazy, user commands, config augroups) and lazy's plugin table (80 plugins: 68 on, 11 off, image.nvim conditional). AGENTS.md: keep it current before each commit.
 - Found while verifying: BMP private-use glyphs (U+E000–U+F8FF) were dropped when files were written by the assistant. `blink-cmp.lua` had `copilot = ""`, `lsp = ""`, lspkind `Copilot = ""` (nvim-cmp.lua still had U+F113 / U+EB50). `alpha.lua` had 9 empty button icons. Restored by code point: blink copilot/Copilot U+F113, lsp U+EB50; alpha e U+F15B, r U+F06D, s U+F0E2, n U+E702, l U+F126, c U+F013, m U+F0AD, h U+F21E, q U+F011 (4-byte U+F0000+ icons were intact). Per-file non-ASCII byte counts vs e70dfa0 checked: other differences are moves (diagnostic signs → diagnostics-commands.lua) or API migrations (winsep `symbols` → `border = "bold"`), not losses.
 
+## 8o. Treesitter start requires highlight queries
+
+- Symptom: `~/.tmux.conf` had no colours. `lazy/nvim-treesitter/parser/` (untracked, 249 MB) holds 320 parsers built by the old master branch; nvim-treesitter main installs to `site/parser`, which comes first on the runtimepath, so most languages use the new parsers. Only-old parsers: blueprint, fusion, hlsplaylist, ipkg, jsonc, kulala_http, muttrc, norg, problog, prolog, robots, tmux, verilog, zathurarc. main dropped hlsplaylist/muttrc/tmux/zathurarc in 78bebef1 (2026-07-18, upstream removed generated files). For those, `language.add` succeeded and `vim.treesitter.start` disabled regex syntax although no `highlights` query exists.
+- Fix (`nvim-treesitter/nvim-treesitter.lua`): skip `vim.treesitter.start` when `#vim.treesitter.query.get_files(lang, "highlights") == 0`, so `syntax/<ft>.vim` stays active. Not affected: jsonc (`get_lang("jsonc") == "json"` via nvim-treesitter), verilog (→ systemverilog), kulala_http (Kulala installs its queries into `site/queries`).
+- The old parser folder is kept: Kulala's `kulala_http.so` exists only there.
+- Test: `.tmux.conf` → treesitter off, `b:current_syntax = tmux`; `.jsonc`, `.lua`, `.http` → treesitter on.
+
+## 8p. Lazy checker without notifications
+
+- `configs/lazy.lua`: `checker = { enabled = true, notify = false }` (was `{ enabled = true }` since the first commit). Since the version rule moved most plugins to their default branch (sections 8d/8j), the hourly check (`frequency = 3600`) found updates on nearly every start and notified. Verified: `require("lazy.core.config").options.checker` → enabled true, notify false.
+
 ## 9. Prompt for the next AI
 
 > Read AGENTS.md first: it has the current state, the user's rules, and what is pending. The prompt below is from the original migration and is partly outdated.

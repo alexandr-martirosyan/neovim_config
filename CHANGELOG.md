@@ -167,3 +167,11 @@ See [MIGRATION_NOTES.md](MIGRATION_NOTES.md) for implementation decisions, compa
 - New `CONFIG_GUIDE.md`: a full description of the config — folder structure, startup order, every option, every plugin (enabled, disabled, removed) and what it does here, every shortcut with its mode and the file that defines it (including LSP, Kulala, database and plugin-panel keys and the Neovim built-ins you rely on), how each feature works, and where data lives outside the repo. Its top says which commit it matches and how to check whether it is still current. `AGENTS.md` now requires updating it with every change.
 - Completion menu: the Copilot and LSP source icons (and the Copilot kind icon) are back; they had become empty during the blink migration.
 - Start screen: 9 of the 14 buttons had lost their icons (new file, recent, session, Neogit, LazyGit, config, Mason, health, quit); they have icons again.
+
+### 19. Colours for languages Treesitter no longer supports
+
+- `~/.tmux.conf` (and other files whose Treesitter support was dropped: Prolog, muttrc, robots.txt, Neorg, zathurarc, …) is coloured again, using Neovim's classic syntax colours. An old leftover Treesitter parser without colour rules used to switch the classic colours off and colour nothing. Languages with full Treesitter support (Lua, HTTP, JSON/JSONC, …) are unchanged.
+
+### 20. No plugin-update popup on every start
+
+- Lazy still checks for plugin updates in the background, but no longer shows a notification on every start. Most plugins follow their newest code, so there was almost always something new. Open `:Lazy` to see and install updates (`U` updates all).

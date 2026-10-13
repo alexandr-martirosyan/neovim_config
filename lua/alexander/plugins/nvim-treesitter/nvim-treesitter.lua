@@ -62,6 +62,11 @@ M.config = function(_, opts)
 			if not ok or not available then
 				return
 			end
+			-- A parser without highlight rules (old leftovers from the master branch, e.g. tmux, jsonc)
+			-- would switch off Vim's regex syntax and colour nothing; keep the regex syntax instead.
+			if #vim.treesitter.query.get_files(lang, "highlights") == 0 then
+				return
+			end
 			vim.treesitter.start(args.buf, lang)
 			if vim.bo[args.buf].buftype == "" and vim.treesitter.query.get(lang, "indents") then
 				vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"

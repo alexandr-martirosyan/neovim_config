@@ -2,13 +2,15 @@
 
 Read this first. `CONFIG_GUIDE.md` describes the whole config as it is now (structure, every plugin, every
 shortcut and where it is defined, features, files outside the repo); its top has a freshness check.
-`CHANGELOG.md` (user-facing, sections 1–18) and `MIGRATION_NOTES.md` (technical details, sections 1–8n)
+`CHANGELOG.md` (user-facing, sections 1–20) and `MIGRATION_NOTES.md` (technical details, sections 1–8p)
 hold the history.
 
 ## Where things stand (2026-10-12)
 
-- Config: `~/.config/nvim`, branch `main` (the only branch). All work up to CHANGELOG section 18 (incl. `TMUX_PLAN.md`, `CONFIG_GUIDE.md`) was
+- Config: `~/.config/nvim`, branch `main` (the only branch). All work up to CHANGELOG section 20 (incl. `TMUX_PLAN.md`, `CONFIG_GUIDE.md`) was
   committed and fast-forwarded into `main`; the `codex/*` branches were deleted. `lazy-lock.json` is tracked.
+- Terminal: iTerm2 with **Cmd and Ctrl swapped** (physical Cmd sends Ctrl to programs). Keep writing keys as
+  `Ctrl+…`/`<C-…>`; mention the physical key only when ergonomics or iTerm2/macOS shortcuts matter.
 - Neovim **0.12.6** via bob. bob 4.2 on macOS defaults to `~/Library/Application Support/bob`;
   `~/Library/Application Support/bob/config.json` points it at `~/.local/share/bob` (that's what PATH uses).
   0.11.7 stays installed for rollback.
@@ -61,8 +63,16 @@ hold the history.
   (merge commit 3aa77e1) and local master fast-forwarded; **not pushed**. The config's fallback `commit`
   pin is still a49658503… (update only after a push). Upstream PR romgrk/barbar.nvim#661 awaits review.
 - Per-window buffer tabs (custom winbar feature) — user said not now.
-- **Next planned task: tmux.** The user chose tmux; research and a step-by-step plan are in
-  `TMUX_PLAN.md` (read it first when the user says to start). Nothing installed or configured yet.
+- **In progress: tmux** (plan in `TMUX_PLAN.md`; the user types most config themselves to learn it,
+  the assistant may edit `~/.tmux.conf` when asked). Done (2026-10-13): steps 1–5 — tmux 3.8 (brew),
+  `~/.tmux.conf` (outside the repo): prefix **Ctrl+\\**, splits `prefix s/d/S/D`, panes `prefix h/j/k/l`,
+  detach `prefix q`, reload `prefix R`, status toggle `prefix b`, prev/next window **Alt+Shift+h/l** (bound
+  as M-S-H, M-H and M-S-h — iTerm2 with extended keys sends `ESC[27;4;72~` = M-S-H), TPM, catppuccin/tmux
+  v2.3.1 macchiato (session pill left, rounded tabs with folder names), tmux-resurrect (manual). Next:
+  step 6 smart-splits (bind resize keys as C-S-H etc. and test with the real codes), 7 Ctrl+Shift keys,
+  8 images in tmux (`image/init.lua` must also accept `LC_TERMINAL == "iTerm2"`), 9 session test,
+  10 extras (tmux-which-key: change its Ctrl+Space root key first; LazyGit popup). Key debugging:
+  `tmux -vv -L keydebug new` in a non-tmux tab, then grep `extended key` in tmux-server-*.log.
 - Font: Fira Code 6.2 is current, but its Nerd Fonts patch is 3.2.1; latest is 3.5.1
   (`brew install --cask font-fira-code-nerd-font`). Alternatives discussed: Maple Mono, Monaspace.
 - blink.cmp v2 migration once 2.0.0 is released (needs blink.lib, local Rust build).
