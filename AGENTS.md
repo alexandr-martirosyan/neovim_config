@@ -63,8 +63,9 @@ hold the history.
   (merge commit 3aa77e1) and local master fast-forwarded; **not pushed**. The config's fallback `commit`
   pin is still a49658503… (update only after a push). Upstream PR romgrk/barbar.nvim#661 awaits review.
 - Per-window buffer tabs (custom winbar feature) — user said not now.
-- **tmux: set up (2026-10-13), see `TMUX_PLAN.md` § Final state.** Files in `tmux/` of this repo (`~/.tmux.conf` and
-  `~/.tmux/scripts/tmux-project.sh` are symlinks to them; `tmux/README.md`). The user
+- **tmux: set up (2026-10-13), see `TMUX_PLAN.md` § Final state.** tmux files live outside this repo (`~/.tmux.conf`,
+  `~/.tmux/scripts/tmux-project.sh`) — **user rule: tmux is a separate app; never put its config into, or link it
+  to, the Neovim folder.** The user
   types most tmux config themselves (to learn it), the assistant may edit it when asked. Summary: tmux 3.8, prefix
   **Ctrl+\\**, splits `prefix s/d/S/D`, panes `prefix h/j/k/l`, smart-splits `Ctrl+h/j/k/l` + `Ctrl+Shift+h/j/k/l`
   (bound as `C-S-H` etc.), windows Alt+Shift+h/l and sessions Alt+Shift+j/k without prefix (bound in three

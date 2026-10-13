@@ -67,7 +67,6 @@ Related files: `AGENTS.md` (current state, the owner's rules for changes, open i
 │   └── other-user/.gitkeep       -- placeholder: another user folder can be selected in init.lua
 ├── lazy-lock.json                -- exact plugin commits (tracked)
 ├── kulala-demo.http              -- Kulala example requests (public httpbin/jsonplaceholder demos)
-├── tmux/                         -- tmux config (linked from ~/.tmux.conf), project-switcher script, README
 ├── typos.toml                    -- typos-lsp: allows the word "noice"
 ├── .stylua.toml                  -- Lua formatting: tabs, width 2, 120 columns, double quotes, always parens
 ├── .gitignore                    -- build artefacts, .DS_Store, .nvimlog/nvim.log (lazy-lock.json is tracked)
@@ -908,9 +907,8 @@ are kept.
 
 ## 7.25 tmux companion setup (outside the repo)
 
-The config is used inside tmux 3.8. Its files live in `tmux/` of this repo (`~/.tmux.conf` and
-`~/.tmux/scripts/tmux-project.sh` are links to them; `tmux/README.md` = setup on a new Mac; all settings in
-`TMUX_PLAN.md` § Final state). What matters for Neovim:
+The config is used inside tmux 3.8. tmux's own files are outside this repo (`~/.tmux.conf`,
+`~/.tmux/scripts/tmux-project.sh`; all settings in `TMUX_PLAN.md` § Final state). What matters for Neovim:
 - Prefix is **Ctrl+\\**, so Neovim's built-in `Ctrl+\\ Ctrl+n` (terminal escape) needs the prefix pressed twice;
   this config uses `Ctrl+x` for that anyway.
 - tmux takes these keys without a prefix, everywhere: Alt+Shift+h/l (windows), Alt+Shift+j/k (sessions). In Neovim
@@ -935,7 +933,7 @@ The config is used inside tmux 3.8. Its files live in `tmux/` of this repo (`~/.
 | Frecency database | `~/.local/state/nvim/file_frecency_v2.bin` |
 | Logs | `~/.local/state/nvim/` (lsp.log, mason.log, conform.log, noice.log, …) |
 | Treesitter install stamp | `~/.local/state/nvim/treesitter-install-all.done` |
-| tmux config (links into this repo) | `~/.tmux.conf` → `tmux/tmux.conf`, `~/.tmux/scripts/tmux-project.sh` → `tmux/scripts/`; plugins in `~/.tmux/plugins` (TPM) |
+| tmux config (separate app, not in this repo) | `~/.tmux.conf`, `~/.tmux/scripts/tmux-project.sh`; plugins in `~/.tmux/plugins` (TPM) |
 | Barbar fork checkout | `~/projects/lua/barbar.nvim` (branch `configurable-filename-depth`, local merge 3aa77e1 not pushed) |
 
 ---

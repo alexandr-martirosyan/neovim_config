@@ -117,8 +117,10 @@ Ask before installing anything (`brew install tmux`, TPM clone) and before creat
 
 ## Final state (2026-10-13)
 
-What was actually set up (differs from the plan where noted). The files live in `tmux/` of this repo;
-`~/.tmux.conf` and `~/.tmux/scripts/tmux-project.sh` are symlinks to them (see `tmux/README.md`).
+What was actually set up (differs from the plan where noted). tmux's files live outside this repo:
+`~/.tmux.conf` and `~/.tmux/scripts/tmux-project.sh` (the user keeps tmux separate from the Neovim config).
+On a new Mac: `brew install tmux lazygit fzf zoxide fd`, clone TPM to `~/.tmux/plugins/tpm`, restore those two
+files, start tmux, `prefix I`.
 
 | Area | Setting |
 |---|---|
