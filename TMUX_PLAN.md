@@ -1,4 +1,6 @@
-# tmux integration — research and plan (prepared 2026-10-12, not started)
+# tmux integration — research, plan and final state
+
+Status: **done (2026-10-13)**. Sections 1–3 are the original research and plan; the final state is at the end.
 
 The user asked for this research and will do the setup on another day. Nothing below is applied yet.
 Ask before installing anything (`brew install tmux`, TPM clone) and before creating `~/.tmux.conf`.
@@ -112,3 +114,26 @@ Ask before installing anything (`brew install tmux`, TPM clone) and before creat
 - Neovim TUI keys: https://neovim.io/doc/user/tui/
 - tmux-resurrect: https://github.com/tmux-plugins/tmux-resurrect
 - Neovim health check source: `$VIMRUNTIME/lua/vim/health/health.lua` (`check_tmux`)
+
+## Final state (2026-10-13)
+
+What was actually set up (differs from the plan where noted). The files live in `tmux/` of this repo;
+`~/.tmux.conf` and `~/.tmux/scripts/tmux-project.sh` are symlinks to them (see `tmux/README.md`).
+
+| Area | Setting |
+|---|---|
+| tmux | 3.8 (Homebrew, built with Sixel), TPM in `~/.tmux/plugins/tpm` |
+| Prefix | **Ctrl+\\** (`prefix Ctrl+\\` sends a real Ctrl+\\) |
+| Basics | `default-terminal tmux-256color`, RGB, `escape-time 10`, `focus-events on`, extended keys (`csi-u`, `extkeys`), Sixel + `allow-passthrough on`, `visual-activity off`, mouse, base-index 1, renumber, history 50000, vi copy mode (`v` select, `y` copy to pbcopy) |
+| Splits / panes | `prefix s` / `d` (side by side / top-bottom), `prefix S` / `D` (full height / full width), `prefix h/j/k/l` select pane, `prefix q` detach, `prefix R` reload, `prefix b` toggle status bar |
+| Neovim + tmux | smart-splits: `Ctrl+h/j/k/l` move, `Ctrl+Shift+h/j/k/l` resize by 1 across Neovim splits and panes (`@pane-is-vim`); copy-mode `Ctrl+h/j/k/l`; `prefix Ctrl+l` clears the shell |
+| No-prefix keys | Alt+Shift+h/l previous/next window, Alt+Shift+j/k next/previous session; each bound as `M-S-H`, `M-H` and `M-S-h` (iTerm2 with extended keys sends `M-S-H`) |
+| Look | catppuccin/tmux v2.3.1 macchiato; session pill on the left (square edge, blue, red while prefix is pressed), rounded window tabs with the folder name, running program on the right |
+| Plugins | tmux-resurrect (manual: `prefix Ctrl+s` save, `prefix Ctrl+r` restore, pane contents captured), tmux-which-key (`prefix Space`) |
+| Extras | `prefix g` LazyGit popup in the current folder; `prefix f` project switcher (zoxide + `~/projects`, fzf) → `~/.tmux/scripts/tmux-project.sh` |
+
+Notes:
+- Ctrl+Shift and Alt+Shift keys: iTerm2 sends the capital letter plus an explicit Shift (`ESC[27;6;72~` → `C-S-H`, `ESC[27;4;72~` → `M-S-H`), so bindings use those spellings.
+- Images: Neovim (image.nvim) shows pictures in tmux but tmux drops them on the next redraw (accepted limitation). Yazi previews work.
+- Session restore: windows, panes and folders come back; Neovim is not restarted unless `set -g @resurrect-processes '"~nvim->nvim"'` is added (offered, not applied).
+- Not done from the plan: tmux-continuum (automatic saving) — the user chose manual sessions.

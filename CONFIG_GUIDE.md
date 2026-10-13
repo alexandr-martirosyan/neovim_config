@@ -5,7 +5,7 @@ every shortcut and where it is defined, every plugin and what it does here, and 
 the repository. It is a reference for people and AI assistants working on this config.
 
 > **Snapshot.** Written against commit `3abb37c` (2026-10-12) and committed together with the
-> changes listed in CHANGELOG sections 18–22. Verified by reading every file and by inspecting a running
+> changes listed in CHANGELOG sections 18–23. Verified by reading every file and by inspecting a running
 > Neovim (loaded plugins, real key mappings, buffer-local LSP/Kulala mappings).
 >
 > **Freshness check.** Compare the last commit that changed this file with the last commit that
@@ -67,6 +67,7 @@ Related files: `AGENTS.md` (current state, the owner's rules for changes, open i
 │   └── other-user/.gitkeep       -- placeholder: another user folder can be selected in init.lua
 ├── lazy-lock.json                -- exact plugin commits (tracked)
 ├── kulala-demo.http              -- Kulala example requests (public httpbin/jsonplaceholder demos)
+├── tmux/                         -- tmux config (linked from ~/.tmux.conf), project-switcher script, README
 ├── typos.toml                    -- typos-lsp: allows the word "noice"
 ├── .stylua.toml                  -- Lua formatting: tabs, width 2, 120 columns, double quotes, always parens
 ├── .gitignore                    -- build artefacts, .DS_Store, .nvimlog/nvim.log (lazy-lock.json is tracked)
@@ -905,6 +906,17 @@ are kept.
 
 ---
 
+## 7.25 tmux companion setup (outside the repo)
+
+The config is used inside tmux 3.8. Its files live in `tmux/` of this repo (`~/.tmux.conf` and
+`~/.tmux/scripts/tmux-project.sh` are links to them; `tmux/README.md` = setup on a new Mac; all settings in
+`TMUX_PLAN.md` § Final state). What matters for Neovim:
+- Prefix is **Ctrl+\\**, so Neovim's built-in `Ctrl+\\ Ctrl+n` (terminal escape) needs the prefix pressed twice;
+  this config uses `Ctrl+x` for that anyway.
+- tmux takes these keys without a prefix, everywhere: Alt+Shift+h/l (windows), Alt+Shift+j/k (sessions). In Neovim
+  panes, `Ctrl+h/j/k/l` and `Ctrl+Shift+h/j/k/l` are passed to Neovim (smart-splits decides).
+- image.nvim inside tmux: see 7.19 (pictures are dropped on redraw).
+
 ## 8. Outside the repository
 
 | What | Where |
@@ -923,6 +935,7 @@ are kept.
 | Frecency database | `~/.local/state/nvim/file_frecency_v2.bin` |
 | Logs | `~/.local/state/nvim/` (lsp.log, mason.log, conform.log, noice.log, …) |
 | Treesitter install stamp | `~/.local/state/nvim/treesitter-install-all.done` |
+| tmux config (links into this repo) | `~/.tmux.conf` → `tmux/tmux.conf`, `~/.tmux/scripts/tmux-project.sh` → `tmux/scripts/`; plugins in `~/.tmux/plugins` (TPM) |
 | Barbar fork checkout | `~/projects/lua/barbar.nvim` (branch `configurable-filename-depth`, local merge 3aa77e1 not pushed) |
 
 ---

@@ -186,3 +186,8 @@ See [MIGRATION_NOTES.md](MIGRATION_NOTES.md) for implementation decisions, compa
 - Opening a picture directly (`nvim picture.png`) shows the image instead of raw bytes, in tmux and outside. image.nvim used to load only together with the file tree, after the picture had already been read; it now loads as soon as an image file is opened. (`:e picture.png` inside Neovim already worked.)
 - Inside tmux, pictures are drawn by tmux itself (tmux 3.8 from Homebrew supports Sixel images), so they appear in the right pane. Before, image.nvim sent them past tmux straight to iTerm2, which drew them in the wrong place and tmux painted over them (empty buffer).
 - Known limitation inside tmux (left as is, you rarely view pictures in Neovim): a picture disappears after almost any screen refresh — a popup closing (e.g. the "'modifiable' is off" notification when pressing `i`), switching buffers, or opening a picture after another file — and stays gone until Neovim is restarted. Outside tmux pictures work normally. Yazi shows pictures fine inside tmux.
+
+### 23. tmux setup finished and backed up in this repo
+
+- tmux is fully set up (prefix Ctrl+\, Neovim-style split/pane keys, smart-splits, Alt+Shift keys for windows and sessions, Catppuccin bar, manual session saving, which-key menu `prefix Space`, LazyGit popup `prefix g`, project switcher `prefix f`). Everything is listed in `TMUX_PLAN.md` § Final state.
+- The tmux config and the project-switcher script now live in this repo (`tmux/`); `~/.tmux.conf` and `~/.tmux/scripts/tmux-project.sh` are links to them, so your edits are saved here. `tmux/README.md` explains how to set it up on a new Mac.

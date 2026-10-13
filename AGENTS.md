@@ -2,7 +2,7 @@
 
 Read this first. `CONFIG_GUIDE.md` describes the whole config as it is now (structure, every plugin, every
 shortcut and where it is defined, features, files outside the repo); its top has a freshness check.
-`CHANGELOG.md` (user-facing, sections 1–22) and `MIGRATION_NOTES.md` (technical details, sections 1–8r)
+`CHANGELOG.md` (user-facing, sections 1–23) and `MIGRATION_NOTES.md` (technical details, sections 1–8s)
 hold the history.
 
 ## Where things stand (2026-10-12)
@@ -63,20 +63,17 @@ hold the history.
   (merge commit 3aa77e1) and local master fast-forwarded; **not pushed**. The config's fallback `commit`
   pin is still a49658503… (update only after a push). Upstream PR romgrk/barbar.nvim#661 awaits review.
 - Per-window buffer tabs (custom winbar feature) — user said not now.
-- **In progress: tmux** (plan in `TMUX_PLAN.md`; the user types most config themselves to learn it,
-  the assistant may edit `~/.tmux.conf` when asked). Done (2026-10-13): steps 1–5 — tmux 3.8 (brew),
-  `~/.tmux.conf` (outside the repo): prefix **Ctrl+\\**, splits `prefix s/d/S/D`, panes `prefix h/j/k/l`,
-  detach `prefix q`, reload `prefix R`, status toggle `prefix b`, prev/next window **Alt+Shift+h/l** (bound
-  as M-S-H, M-H and M-S-h — iTerm2 with extended keys sends `ESC[27;4;72~` = M-S-H), TPM, catppuccin/tmux
-  v2.3.1 macchiato (session pill left, rounded tabs with folder names), tmux-resurrect (manual). Step 6 Neovim side done (smart-splits, CHANGELOG 21);
-  tmux side added by the user and verified; 7 Ctrl+Shift keys verified; 8 images in tmux done and verified by
-  the user (LC_TERMINAL detection, load on BufReadPre, unwrapped sixel so tmux draws it; known limitation:
-  tmux drops the picture on almost any Neovim redraw; user chose to leave it).
-  9 session test done: windows/panes/folders restore; Neovim is NOT restarted because resurrect saved
-  `…/bob/v0.12.6/bin/nvim` — fix offered, not applied: `set -g @resurrect-processes '"~nvim->nvim"'`.
-  Yazi works in tmux (iTerm2 inline images) even without `update-environment` lines. Next:
-  10 extras (tmux-which-key: change its Ctrl+Space root key first; LazyGit popup). Key debugging:
-  `tmux -vv -L keydebug new` in a non-tmux tab, then grep `extended key` in tmux-server-*.log.
+- **tmux: set up (2026-10-13), see `TMUX_PLAN.md` § Final state.** Files in `tmux/` of this repo (`~/.tmux.conf` and
+  `~/.tmux/scripts/tmux-project.sh` are symlinks to them; `tmux/README.md`). The user
+  types most tmux config themselves (to learn it), the assistant may edit it when asked. Summary: tmux 3.8, prefix
+  **Ctrl+\\**, splits `prefix s/d/S/D`, panes `prefix h/j/k/l`, smart-splits `Ctrl+h/j/k/l` + `Ctrl+Shift+h/j/k/l`
+  (bound as `C-S-H` etc.), windows Alt+Shift+h/l and sessions Alt+Shift+j/k without prefix (bound in three
+  spellings; iTerm2 with extended keys sends `ESC[27;4;72~` = `M-S-H`), Catppuccin macchiato, resurrect (manual),
+  which-key `prefix Space`, LazyGit popup `prefix g`, project switcher `prefix f` (`~/.tmux/scripts/tmux-project.sh`).
+  Not applied (user's choice): `@resurrect-processes '"~nvim->nvim"'` (bob's launcher starts the real nvim as a
+  child, so resurrect saves `…/v0.12.6/bin/nvim`). Images in Neovim inside tmux: known limitation (tmux drops
+  them on redraw). Yazi works in tmux. Key debugging: `tmux -vv -L keydebug new` in a non-tmux tab, then grep
+  `extended key` in tmux-server-*.log.
 - Font: Fira Code 6.2 is current, but its Nerd Fonts patch is 3.2.1; latest is 3.5.1
   (`brew install --cask font-fira-code-nerd-font`). Alternatives discussed: Maple Mono, Monaspace.
 - blink.cmp v2 migration once 2.0.0 is released (needs blink.lib, local Rust build).
