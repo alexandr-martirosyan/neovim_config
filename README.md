@@ -15,8 +15,9 @@ formatting, UFO folds, ToggleTerm, and two AI frontends (Avante, CodeCompanion) 
   example Cargo/rustfmt and Node for JavaScript tooling).
 - `lazygit` for the LazyGit UI; the database's command-line client (e.g. `psql`, `mysql`) for
   vim-dadbod-ui. Connections are stored outside the repo in `~/.local/share/nvim/db_ui/`.
-- `codex` and `codex-acp` on PATH for the configured Codex integrations. The local
-  Ollama model is `deepseek-r1-70b-32k:latest`.
+- `codex` and `codex-acp` on PATH for the configured Codex integrations; `claude` and `claude-agent-acp`
+  (`npm i -g @agentclientprotocol/claude-agent-acp`) for Claude, logged in with `claude auth login --claudeai`. No local AI is
+  configured; commented templates for oMLX, llama.cpp and LM Studio are in the Avante and CodeCompanion configs.
 - Kulala Core license access for the upgraded HTTP backend; see below.
 
 ## Layout and ownership

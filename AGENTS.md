@@ -2,7 +2,7 @@
 
 Read this first. `CONFIG_GUIDE.md` describes the whole config as it is now (structure, every plugin, every
 shortcut and where it is defined, features, files outside the repo); its top has a freshness check.
-`CHANGELOG.md` (user-facing, sections 1–23) and `MIGRATION_NOTES.md` (technical details, sections 1–8s)
+`CHANGELOG.md` (user-facing, sections 1–25) and `MIGRATION_NOTES.md` (technical details, sections 1–8u)
 hold the history.
 
 ## Where things stand (2026-10-12)
@@ -42,6 +42,12 @@ hold the history.
   Don't run huge repeated checks — the user is token-conscious.
 - Explain in plain language, step by step; the user often replies inline to parts of a message.
 - Ask before outward actions (pushing to GitHub, installing system software, downloading).
+- **AI:** only Codex and Claude (subscriptions, via ACP) are configured. No local AI: the user does not use Ollama;
+  for local models they use oMLX (:8000), llama.cpp (:8080) or LM Studio (:1234) and will ask — commented
+  templates are in `ai/avante/avante.lua` and `ai/codecompanion/codecompanion.lua`.
+  Not yet tested by the user in real use: Claude in Neovim (needs `claude auth login --claudeai` in iTerm2 once;
+  if a plugin rejects the CLI login, fall back to `claude setup-token` stored in the macOS Keychain and read via
+  CodeCompanion's `cmd:` env value — never write the token into a file).
 
 ## Waiting on the user / not tested by the user yet
 

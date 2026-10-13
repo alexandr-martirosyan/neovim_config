@@ -37,22 +37,38 @@ M.opts = {
 			},
 			auth_method = "chat-gpt",
 		},
+		-- Claude (Pro subscription) through Zed's ACP adapter: npm i -g @agentclientprotocol/claude-agent-acp.
+		-- It uses the `claude` CLI's own login (once: `claude auth login --claudeai`); no API key.
+		-- Switch with <leader>iap (:AvanteSwitchProvider claude-code). Permissions are asked in Avante
+		-- (Avante's default ACP_PERMISSION_MODE=bypassPermissions is not read by claude-agent-acp 0.89+).
+		["claude-code"] = {
+			command = "claude-agent-acp",
+			args = {},
+			env = {
+				NODE_NO_WARNINGS = "1",
+			},
+		},
 	},
 
+	-- Local AI servers (none configured; uncomment one and set the model to use it with :AvanteSwitchProvider).
+	-- oMLX http://localhost:8000, llama.cpp server http://localhost:8080, LM Studio http://localhost:1234;
+	-- all three offer an OpenAI-style (/v1/chat/completions) and an Anthropic-style (/v1/messages) API.
 	-- providers = {
-	-- 	ollama = {
-	-- 		endpoint = "http://127.0.0.1:11434",
-	-- 		model = "qwen3-coder-next:q4_K_M",
-	--
-	-- 		-- Optional but useful for local models
-	-- 		timeout = 30000,
-	-- 		extra_request_body = {
-	-- 			options = {
-	-- 				temperature = 0,
-	-- 				num_ctx = 32768,
-	-- 				keep_alive = "10m",
-	-- 			},
-	-- 		},
+	-- 	-- OpenAI-style API
+	-- 	["local-openai"] = {
+	-- 		__inherited_from = "openai",
+	-- 		endpoint = "http://localhost:1234/v1", -- LM Studio; oMLX :8000/v1, llama.cpp :8080/v1
+	-- 		model = "model-id-from-the-server",
+	-- 		api_key_name = "cmd:echo local", -- local servers need no key; a dummy stops Avante asking
+	-- 		timeout = 120000,
+	-- 	},
+	-- 	-- Anthropic-style API (Avante adds /v1/messages)
+	-- 	["local-anthropic"] = {
+	-- 		__inherited_from = "claude",
+	-- 		endpoint = "http://localhost:1234", -- LM Studio; oMLX :8000, llama.cpp :8080
+	-- 		model = "model-id-from-the-server",
+	-- 		api_key_name = "cmd:echo local",
+	-- 		timeout = 120000,
 	-- 	},
 	-- },
 

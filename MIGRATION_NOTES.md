@@ -412,6 +412,22 @@ Method: (A) version fields of every spec in the pre-Codex backup, (B) each repo'
 - New folder `tmux/` (user approved): `tmux/tmux.conf` (moved from `~/.tmux.conf`), `tmux/scripts/tmux-project.sh` (moved from `~/.tmux/scripts/`), `tmux/README.md` (setup on a new Mac). Symlinks: `~/.tmux.conf` → `~/.config/nvim/tmux/tmux.conf`, `~/.tmux/scripts/tmux-project.sh` → repo script. tmux config contains no secrets (checked). Verified: config loads through the link on a private server; `sh -n` on the script. The `FZF_TEST_PICK` test hook was removed from the script. Plugins (`~/.tmux/plugins`) are not in the repo; TPM installs them.
 - **Reverted the same day (user):** tmux is a separate app, its config must not live in or link to the Neovim folder. Links replaced by real files again (`cmp`-verified identical), `tmux/` removed with `git rm` (still in history at 7d6085b; no secrets).
 
+## 8t. Claude via claude-agent-acp in Avante and CodeCompanion
+
+- Installed `npm i -g @agentclientprotocol/claude-agent-acp` 0.89.1 (the renamed `@zed-industries/claude-code-acp` / `claude-agent-acp`; both old names are deprecated). Codex was already set up (`codex-acp` 1.13.1, `codex login status` = ChatGPT).
+- Auth: claude-agent-acp only advertises terminal login methods to clients that support terminal auth; Avante and CodeCompanion get `authMethods: []` (verified with an ACP `initialize` handshake in a clean env), so CodeCompanion's `_authenticate` falls through and the agent uses the `claude` CLI credentials (Claude Pro after `claude auth login --claudeai`). Its `authenticate` throws for non-gateway methods, so no method is sent. CodeCompanion's `claude_code` adapter would also take `CLAUDE_CODE_OAUTH_TOKEN` (from `claude setup-token`) — not used.
+- Avante `acp_providers["claude-code"] = { command = "claude-agent-acp", env = { NODE_NO_WARNINGS = "1" } }` (merged with Avante's defaults; its `ACP_PERMISSION_MODE`/`ACP_PATH_TO_CLAUDE_CODE_EXECUTABLE` env are not read by 0.89.1, so permissions go through ACP requests; `auto_approve_tool_permissions = false`). Default provider unchanged (`codex`).
+- CodeCompanion: `adapters.acp.claude_code = extend("claude_code", {})`, `interactions.chat.adapter = "claude_code"` (was `deepseek_ollama`, kept commented); inline/cmd/background stay `deepseek_ollama` (docs: ACP adapters work in the chat buffer only); CLI agents gain `claude_code` (`claude`), default agent stays `codex`.
+- Note for assistants: inside the Claude desktop app's shell, `ANTHROPIC_BASE_URL` and many `CLAUDE_CODE_*` variables are set by the app itself; the user's shell files and `~/.claude/settings.json` set none of them. Do not mistake them for the user's environment (`claude auth status` in that shell is not representative either).
+- Headless check: both plugins load; `resolve("claude_code")` → acp `claude-agent-acp`; Avante acp providers include `claude-code`.
+
+## 8u. Local AI removed, templates added
+
+- User: no Ollama/Qwen/any local AI configured; they run local models with oMLX, llama.cpp or LM Studio (all serve OpenAI `/v1/chat/completions` and Anthropic `/v1/messages`) and will ask when they want one.
+- CodeCompanion: removed `adapters.http.deepseek_ollama` and the commented qwen adapters; `interactions.inline/cmd/background` adapter lines removed → plugin default `copilot` (config.lua). Commented templates `local_openai` (`extend("openai_compatible", { env = { url, api_key = "local" } })`) and `local_anthropic` (`extend("anthropic", { url = ".../v1/messages", env = { api_key = "local" } })`).
+- Avante: removed the commented `providers.ollama` block; commented templates `local-openai` (`__inherited_from = "openai"`, endpoint `…/v1`) and `local-anthropic` (`__inherited_from = "claude"`, endpoint = host; Avante appends `/v1/messages`), `api_key_name = "cmd:echo local"` (an empty key name makes Avante prompt for a key).
+- Ports: oMLX 8000 (secondary sources), llama.cpp server 8080, LM Studio 1234.
+
 ## 9. Prompt for the next AI
 
 > Read AGENTS.md first: it has the current state, the user's rules, and what is pending. The prompt below is from the original migration and is partly outdated.

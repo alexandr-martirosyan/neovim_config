@@ -191,3 +191,16 @@ See [MIGRATION_NOTES.md](MIGRATION_NOTES.md) for implementation decisions, compa
 
 - tmux is fully set up (prefix Ctrl+\, Neovim-style split/pane keys, smart-splits, Alt+Shift keys for windows and sessions, Catppuccin bar, manual session saving, which-key menu `prefix Space`, LazyGit popup `prefix g`, project switcher `prefix f`). Everything is listed in `TMUX_PLAN.md` § Final state.
 - The tmux config stays outside this repo (`~/.tmux.conf`, `~/.tmux/scripts/tmux-project.sh`): tmux is a separate app. A short-lived copy in `tmux/` with links was removed again at your request.
+
+### 24. Claude (Pro plan) in Avante and CodeCompanion
+
+- Claude is available next to Codex, using your Claude Pro subscription through Zed's adapter `claude-agent-acp` (installed with npm). It uses the `claude` command's own login: run `claude auth login --claudeai` once in a terminal. No API key and no token in any file.
+- Avante: new provider `claude-code`; switch with `<leader>iap` (Codex stays the default). Claude asks before changing files, as Codex does.
+- CodeCompanion: the chat now starts with Claude (`<leader>icc`); change to Codex or Ollama inside a chat with `ga`. Inline edits and commands stay on your local Ollama model (agents only work in the chat). The terminal mode (`<leader>icx`) keeps Codex; `:CodeCompanionCLI agent=claude_code` uses Claude.
+
+### 25. No local AI configured (templates only)
+
+- Removed every local-model setting (the Ollama DeepSeek adapter in CodeCompanion and the commented Ollama/Qwen blocks in both plugins). Only Codex and Claude are configured.
+- CodeCompanion's inline edits, commands and background tasks have no adapter set any more, so they use CodeCompanion's default, GitHub Copilot (Copilot Free works with a monthly limit). Claude and Codex subscriptions can't do these (they need a plain API).
+- Both configs contain commented templates for local servers — oMLX (port 8000), llama.cpp (8080), LM Studio (1234) — for the OpenAI-style and the Anthropic-style API. Uncomment one and set the model when you want a local model.
+

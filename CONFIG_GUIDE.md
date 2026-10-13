@@ -5,7 +5,7 @@ every shortcut and where it is defined, every plugin and what it does here, and 
 the repository. It is a reference for people and AI assistants working on this config.
 
 > **Snapshot.** Written against commit `3abb37c` (2026-10-12) and committed together with the
-> changes listed in CHANGELOG sections 18–23. Verified by reading every file and by inspecting a running
+> changes listed in CHANGELOG sections 18–25. Verified by reading every file and by inspecting a running
 > Neovim (loaded plugins, real key mappings, buffer-local LSP/Kulala mappings).
 >
 > **Freshness check.** Compare the last commit that changed this file with the last commit that
@@ -43,7 +43,7 @@ Related files: `AGENTS.md` (current state, the owner's rules for changes, open i
 | Format / lint | Conform (manual only, `<leader>fm`), nvim-lint (automatic) |
 | Syntax | nvim-treesitter **main** branch, every parser installed |
 | Git | gitsigns, Neogit (+ diffview), LazyGit, Telescope git pickers |
-| AI | Avante (Codex via ACP), CodeCompanion (Ollama + Codex), Copilot completions |
+| AI | Avante (Codex or Claude via ACP), CodeCompanion (chat: Claude/Codex via ACP; inline: Copilot fallback), Copilot completions; no local AI (templates only) |
 | Other tools | Kulala (HTTP client), vim-dadbod-ui (databases), toggleterm, grug-far, auto-session, image.nvim |
 | UI | lualine (global statusline + winbar), Barbar tabs (owner's fork), Noice, which-key, alpha start screen |
 
@@ -819,14 +819,18 @@ Telescope `<leader>gt` status / `<leader>cm` commits.
   the right (width 35, wrap, ask window doesn't start in Insert), Telescope file selector and selector.
   Behaviour: automatic keymaps off (all keys defined in `avante.lua`), no auto suggestions, no auto-apply,
   minimal diffs, current file auto-added, tool permissions not auto-approved, inline confirmation buttons,
-  follows agent locations. History in `stdpath("data")/avante`. A commented Ollama provider block is
-  kept. `gR` opens file references (shared helper `file_reference.lua`, also used by CodeCompanion's
+  follows agent locations. Second ACP provider `claude-code` (`claude-agent-acp`, Claude Pro via the `claude` CLI
+  login; switch with `<leader>iap`). History in `stdpath("data")/avante`. Commented templates for local servers
+  (`local-openai`, `local-anthropic`: oMLX :8000, llama.cpp :8080, LM Studio :1234) are in `avante.lua`. `gR` opens file references (shared helper `file_reference.lua`, also used by CodeCompanion's
   "go to file": finds the path in `[](…)`, `<…>`, backticks, quotes or words; resolves relative to cwd,
   project roots and open files; opens in an existing normal code window or a vertical split).
-- **CodeCompanion** (`^19.0.0`): chat/inline/cmd/background use the HTTP adapter `deepseek_ollama`
-  (Ollama model `deepseek-r1-70b-32k:latest`); ACP adapter `codex` (`codex-acp`, chat-gpt auth); CLI agent
-  `codex` (`codex --no-alt-screen --search`, terminal). Log level ERROR. Two qwen Ollama adapters are
-  kept commented. mcphub is a dependency awaiting configuration (`TODO`).
+- **CodeCompanion** (`^19.0.0`): chat uses the ACP adapter `claude_code` (`claude-agent-acp`, Claude Pro via the
+  `claude` CLI login; `ga` in a chat switches to `codex`); inline/cmd/background have no adapter set, so
+  CodeCompanion falls back to its default GitHub Copilot (they need a plain HTTP API, which the subscriptions don't
+  include; ACP agents only work in the chat); ACP adapter `codex` (`codex-acp`, chat-gpt auth); CLI agents `codex`
+  (default, `codex --no-alt-screen --search`) and `claude_code` (`claude`; `:CodeCompanionCLI agent=claude_code`).
+  Log level ERROR. Commented templates for local servers (`local_openai` via `openai_compatible`, `local_anthropic`
+  via `anthropic`; oMLX :8000, llama.cpp :8080, LM Studio :1234) are in `codecompanion.lua`. mcphub is a dependency awaiting configuration (`TODO`).
 - **render-markdown**: Markdown rendering in `markdown`, `codecompanion`, `Avante` buffers.
 - **img-clip**: image paste into CodeCompanion (Markdown link, absolute path, no name prompt) and Avante
   (drag & drop in Insert mode, absolute path).
@@ -942,8 +946,9 @@ The config is used inside tmux 3.8. tmux's own files are outside this repo (`~/.
 
 Neovim ≥ 0.12; git, curl, C compiler, make; **tree-sitter-cli ≥ 0.26.1** (`brew install
 tree-sitter-cli`); Rust/Cargo (Avante build, LuaSnip jsregexp); `rg`, `fd`; ImageMagick (`magick`);
-a Nerd Font; `lazygit`; database clients for dadbod; `codex` and `codex-acp` on PATH; Ollama with the
-model above for CodeCompanion; Node (Copilot, JS tools); Kulala Core license.
+a Nerd Font; `lazygit`; database clients for dadbod; `codex` and `codex-acp` on PATH (ChatGPT login); `claude` and
+`claude-agent-acp` (`npm i -g @agentclientprotocol/claude-agent-acp`, Claude login `claude auth login --claudeai`); a GitHub
+Copilot login (completions, CodeCompanion inline fallback); Node (Copilot, JS tools); Kulala Core license.
 
 ---
 
