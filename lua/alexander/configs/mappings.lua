@@ -10,10 +10,11 @@ local map = vim.keymap.set
 -- map("i", "<C-j>", "<Down>", { desc = "move down" })
 -- map("i", "<C-k>", "<Up>", { desc = "move up" })
 
-map({ "n", "x" }, "<C-h>", "<C-w>h", { desc = "switch window left" })
-map({ "n", "x" }, "<C-l>", "<C-w>l", { desc = "switch window right" })
-map({ "n", "x" }, "<C-j>", "<C-w>j", { desc = "switch window down" })
-map({ "n", "x" }, "<C-k>", "<C-w>k", { desc = "switch window up" })
+-- Moved to smart-splits (plugins/smart-splits): same keys, but they also cross into tmux panes
+-- map({ "n", "x" }, "<C-h>", "<C-w>h", { desc = "switch window left" })
+-- map({ "n", "x" }, "<C-l>", "<C-w>l", { desc = "switch window right" })
+-- map({ "n", "x" }, "<C-j>", "<C-w>j", { desc = "switch window down" })
+-- map({ "n", "x" }, "<C-k>", "<C-w>k", { desc = "switch window up" })
 
 map("n", "<Esc>", "<cmd>noh<CR>", { desc = "general clear highlights" })
 
@@ -34,10 +35,12 @@ map("n", "<leader>dh", vim.diagnostic.open_float, { desc = "Open diagnostic wind
 map("n", "<leader>dt", "<cmd>DiagnosticsToggleVirtualText<CR>", { desc = "Toggle inline diagnostics" })
 
 -- Resize with arrows
-map("n", "<C-S-j>", ":resize -1<CR>", { desc = "Decrease window size" })
-map("n", "<C-S-k>", ":resize +1<CR>", { desc = "Increase windows size" })
-map("n", "<C-S-h>", ":vertical resize -1<CR>", { desc = "Decrease window size (vertical)" })
-map("n", "<C-S-l>", ":vertical resize +1<CR>", { desc = "Increase window size (vertical)" })
+-- Moved to smart-splits (plugins/smart-splits): same keys, they move the border in that direction
+-- and also resize tmux panes
+-- map("n", "<C-S-j>", ":resize -1<CR>", { desc = "Decrease window size" })
+-- map("n", "<C-S-k>", ":resize +1<CR>", { desc = "Increase windows size" })
+-- map("n", "<C-S-h>", ":vertical resize -1<CR>", { desc = "Decrease window size (vertical)" })
+-- map("n", "<C-S-l>", ":vertical resize +1<CR>", { desc = "Increase window size (vertical)" })
 
 -- Move text up and down
 map("n", "<A-j>", ":m .+1<CR>==", { desc = "Move text down" })

@@ -175,3 +175,14 @@ See [MIGRATION_NOTES.md](MIGRATION_NOTES.md) for implementation decisions, compa
 ### 20. No plugin-update popup on every start
 
 - Lazy still checks for plugin updates in the background, but no longer shows a notification on every start. Most plugins follow their newest code, so there was almost always something new. Open `:Lazy` to see and install updates (`U` updates all).
+
+### 21. One set of window keys for Neovim and tmux (smart-splits)
+
+- New plugin smart-splits.nvim (with its tmux backend). `Ctrl+h/j/k/l` still move between Neovim splits, and at the edge they continue into the neighbouring tmux pane (and back). `Ctrl+Shift+h/j/k/l` still resize by 1, but now move the border in the direction of the key, and also resize tmux panes. Outside tmux everything works as before, without warnings. Needs a matching block in `~/.tmux.conf`. The old mappings stay commented in `mappings.lua`.
+
+### 22. Images inside tmux
+
+- Images (image.nvim) now also work when Neovim runs inside tmux in iTerm2. Inside tmux the terminal name is "tmux", so the image setup used to switch itself off; it now also recognises iTerm2 by the `LC_TERMINAL` variable that tmux passes on. Requires `allow-passthrough on` in `~/.tmux.conf` (already set).
+- Opening a picture directly (`nvim picture.png`) shows the image instead of raw bytes, in tmux and outside. image.nvim used to load only together with the file tree, after the picture had already been read; it now loads as soon as an image file is opened. (`:e picture.png` inside Neovim already worked.)
+- Inside tmux, pictures are drawn by tmux itself (tmux 3.8 from Homebrew supports Sixel images), so they appear in the right pane. Before, image.nvim sent them past tmux straight to iTerm2, which drew them in the wrong place and tmux painted over them (empty buffer).
+- Known limitation inside tmux (left as is, you rarely view pictures in Neovim): a picture disappears after almost any screen refresh — a popup closing (e.g. the "'modifiable' is off" notification when pressing `i`), switching buffers, or opening a picture after another file — and stays gone until Neovim is restarted. Outside tmux pictures work normally. Yazi shows pictures fine inside tmux.

@@ -5,7 +5,7 @@ every shortcut and where it is defined, every plugin and what it does here, and 
 the repository. It is a reference for people and AI assistants working on this config.
 
 > **Snapshot.** Written against commit `3abb37c` (2026-10-12) and committed together with the
-> changes listed in CHANGELOG sections 18–20. Verified by reading every file and by inspecting a running
+> changes listed in CHANGELOG sections 18–22. Verified by reading every file and by inspecting a running
 > Neovim (loaded plugins, real key mappings, buffer-local LSP/Kulala mappings).
 >
 > **Freshness check.** Compare the last commit that changed this file with the last commit that
@@ -33,7 +33,7 @@ Related files: `AGENTS.md` (current state, the owner's rules for changes, open i
 | Owner / platform | Alexandr Martirosyan, macOS, iTerm2 (Option key sends `Esc+`), Fira Code Nerd Font |
 | Repository | `github.com/alexandr-martirosyan/neovim_config`, single branch `main` |
 | Neovim | 0.12.6 managed by **bob** (`~/.local/share/bob`); 0.11.7 kept for rollback (`bob use 0.11.7`) |
-| Plugin manager | lazy.nvim; 80 plugins incl. lazy.nvim: 68 enabled, 11 disabled, 1 conditional (image.nvim, on in iTerm2) |
+| Plugin manager | lazy.nvim; 82 plugins incl. lazy.nvim: 70 enabled, 11 disabled, 1 conditional (image.nvim, on in iTerm2) |
 | Leader / local leader | `<Space>` / `\` |
 | Colorscheme | catppuccin **macchiato** |
 | Completion | blink.cmp 1.x (+ LuaSnip, Copilot, lazydev, dadbod, Avante sources) |
@@ -118,7 +118,7 @@ Related files: `AGENTS.md` (current state, the owner's rules for changes, open i
    - vim-dadbod-ui: `db_ui_use_nerd_fonts = 1`, `db_ui_save_location = stdpath("data")/db_ui`.
    - auto-session: sets `sessionoptions` (section 7.17).
 4. Start plugins (`lazy = false`): catppuccin (priority 1000, applies `catppuccin-macchiato`), lualine,
-   barbar, nvim-treesitter, auto-session.
+   barbar, nvim-treesitter, auto-session, smart-splits (+ backend-tmux).
 5. `VimEnter`: alpha start screen (only when Neovim starts without file arguments; alpha also skips
    when `-c` is in `v:argv`), auto-session restore, and the config's `cd <folder>` for a folder argument.
 6. `VeryLazy`: neo-tree, noice (+ nvim-notify), which-key, Comment.nvim, ts-comments, nvim-surround,
@@ -245,6 +245,7 @@ telescope-frecency, lazydev). Exact installed commits: `lazy-lock.json`.
 | barbar.nvim (owner's fork) | start | local dir or `commit=a4965850…` | `barbar/` | buffer tabs (slanted), offset for neo-tree |
 | nvim-treesitter | start | `branch=main` | `nvim-treesitter/` | parsers (all), highlighting, indent |
 | auto-session | start | default | `auto-session/` | per-folder sessions |
+| smart-splits.nvim (+ backend-tmux) | start (must not be lazy) | `^3.0.0` (backend: default) | `smart-splits/` | `Ctrl+h/j/k/l` / `Ctrl+Shift+h/j/k/l` across Neovim splits and tmux panes |
 | alpha-nvim | VimEnter | default | `startup/` | start screen |
 | mini.icons | dependency | `*` | `mini-icons/` | icon provider; mocks nvim-web-devicons |
 | nvim-web-devicons | dependency | default | `nvim-web-devicons/` | declared dependency; replaced by mini.icons' mock |
@@ -297,7 +298,7 @@ telescope-frecency, lazydev). Exact installed commits: `lazy-lock.json`.
 | codecompanion.nvim | commands, keys | `^19.0.0` | `ai/codecompanion/` | AI chat/inline/CLI |
 | render-markdown.nvim | ft=markdown/codecompanion/Avante | default | `ai/init.lua` | renders Markdown in those buffers |
 | img-clip.nvim | dependency of avante | default | `ai/init.lua` | paste images into AI chats |
-| image.nvim | conditional (terminal), dependency of neo-tree | default | `image/init.lua` | images inside Neovim |
+| image.nvim | conditional (terminal); BufReadPre of png/jpg/jpeg/gif/webp/avif; dependency of neo-tree | default | `image/init.lua` | images inside Neovim |
 | fzf-lua | dependency of neogit only | default | (none, `TODO`) | installed, not configured, not used (Neogit uses Telescope) |
 | mcphub.nvim | dependency of codecompanion | default | (none, `TODO`) | installed, not configured |
 | nvim-dap | dependency of telescope | default | (none, `TODO`) | installed, no adapters/keys configured |
@@ -507,9 +508,8 @@ Before Kulala has loaded only `<leader>Rs`, `<leader>Ra`, `<leader>Rb` exist as 
 
 | Key | Mode | Action | Defined in |
 |---|---|---|---|
-| `<C-h>` `<C-j>` `<C-k>` `<C-l>` | n, x | move to the window left / down / up / right | `configs/mappings.lua` |
-| `<C-S-h>` / `<C-S-l>` | n | window width −1 / +1 | `configs/mappings.lua` |
-| `<C-S-j>` / `<C-S-k>` | n | window height −1 / +1 | `configs/mappings.lua` |
+| `<C-h>` `<C-j>` `<C-k>` `<C-l>` | n, x | move to the split left / down / up / right; at Neovim's edge continue into the tmux pane there (smart-splits; at the far edge wrap around) | `smart-splits/smart-splits.lua` |
+| `<C-S-h>` `<C-S-j>` `<C-S-k>` `<C-S-l>` | n | move the split border left / down / up / right by 1 (count multiplies); resizes tmux panes too | `smart-splits/smart-splits.lua` |
 | `<A-j>` / `<A-k>` | n, x | move line / selection down / up (re-indents) | `configs/mappings.lua` |
 | `<` / `>` | x | indent left / right and keep the selection | `configs/mappings.lua` |
 | `<Esc>` | n | clear search highlight | `configs/mappings.lua` |
@@ -650,6 +650,7 @@ Overridden built-ins: `H`/`L` (Barbar), `<C-n>` (neo-tree), `]t`/`[t` (todo-comm
 | `gi`, `gr`, `<leader>rn`, `<leader>ca`, `<leader>D` LSP keys | `lspconfig/init.lua` | replaced by built-ins `gri`, `grr`, `grn`, `gra`, `grt` (also restores built-in `gi`) |
 | `<C-]>` → `vim.lsp.buf.definition` | `lspconfig/init.lua` | owner keeps the built-in `<C-]>` |
 | Barbar `<A-2>`…`<A-9>` BufferGoto | `barbar/barbar.lua` | unused (`<A-1>`/`<A-2>` are terminals) |
+| `<C-h/j/k/l>` → `<C-w>h/j/k/l`, `<C-S-h/j/k/l>` → `:vertical resize ±1` / `:resize ±1` | `configs/mappings.lua` | moved to smart-splits (same keys, also work with tmux panes) |
 
 ---
 
@@ -793,6 +794,10 @@ Provider Treesitter, then indent; none for `bigfile`. Fold column 1, everything 
   `:FocusToggle` / `:FocusEnable` turns it on. When on, it ignores neo-tree, toggleterm and
   nofile/prompt/popup/terminal buffers.
 - Splits: `splitright`, `splitbelow`, `equalalways = false`; keys in 6.1/6.2.
+- **smart-splits** (`smart-splits/`): moves/resizes across Neovim splits and tmux panes. Inside tmux the
+  backend sets the tmux pane option `@pane-is-vim`; `~/.tmux.conf` passes `C-h/j/k/l` and `C-S-H/J/K/L` to
+  Neovim when it is set, otherwise moves/resizes tmux panes. Resize step 1, `at_edge = "wrap"`, no warning
+  outside tmux (`warn_if_unusable = false`). Must not be lazy-loaded.
 
 ### 7.14 Terminals — `toggleterm/`
 
@@ -847,10 +852,16 @@ untouched.
 ### 7.19 Images — `image/init.lua`
 
 Backend from the terminal: `kitty` protocol for kitty, Ghostty, WezTerm; `sixel` for iTerm2
-(`TERM_PROGRAM=iTerm.app`) and Windows Terminal (`WT_SESSION`, incl. WSL); any other terminal → plugin
-not loaded. Processor `magick_cli` (ImageMagick `magick` command). Used for opening image files and
-neo-tree previews. Inside tmux `TERM_PROGRAM` is `tmux`, so images are off there until the detection is
-extended (see `TMUX_PLAN.md`).
+(`TERM_PROGRAM=iTerm.app`, or `LC_TERMINAL=iTerm2` inside tmux) and Windows Terminal (`WT_SESSION`, incl. WSL); any other terminal → plugin
+not loaded. Processor `magick_cli` (ImageMagick `magick` command). Loads when an image file is opened
+(so `nvim picture.png` works) or with neo-tree. Used for opening image files and
+neo-tree previews. Inside tmux (where `TERM_PROGRAM` is `tmux`) iTerm2 is recognised by `LC_TERMINAL`,
+and Sixel images are sent to tmux unwrapped so **tmux draws them itself** (tmux 3.4+ built with Sixel; the
+config replaces image.nvim's tmux passthrough wrapper `require("image/utils/tmux").escape` for the sixel
+backend). `~/.tmux.conf` has `terminal-features …:sixel` and `allow-passthrough on`. Picture buffers
+are read-only (`i` shows E21). Known limitation inside tmux (accepted by the owner): tmux drops a
+picture when Neovim rewrites any cell in its area (popup closing, buffer switch, opening it after another
+file) and image.nvim does not notice, so it stays gone until Neovim restarts. Yazi previews work in tmux.
 
 ### 7.20 HTTP client (Kulala) — `kulala/`
 

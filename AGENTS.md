@@ -2,7 +2,7 @@
 
 Read this first. `CONFIG_GUIDE.md` describes the whole config as it is now (structure, every plugin, every
 shortcut and where it is defined, features, files outside the repo); its top has a freshness check.
-`CHANGELOG.md` (user-facing, sections 1–20) and `MIGRATION_NOTES.md` (technical details, sections 1–8p)
+`CHANGELOG.md` (user-facing, sections 1–22) and `MIGRATION_NOTES.md` (technical details, sections 1–8r)
 hold the history.
 
 ## Where things stand (2026-10-12)
@@ -68,9 +68,13 @@ hold the history.
   `~/.tmux.conf` (outside the repo): prefix **Ctrl+\\**, splits `prefix s/d/S/D`, panes `prefix h/j/k/l`,
   detach `prefix q`, reload `prefix R`, status toggle `prefix b`, prev/next window **Alt+Shift+h/l** (bound
   as M-S-H, M-H and M-S-h — iTerm2 with extended keys sends `ESC[27;4;72~` = M-S-H), TPM, catppuccin/tmux
-  v2.3.1 macchiato (session pill left, rounded tabs with folder names), tmux-resurrect (manual). Next:
-  step 6 smart-splits (bind resize keys as C-S-H etc. and test with the real codes), 7 Ctrl+Shift keys,
-  8 images in tmux (`image/init.lua` must also accept `LC_TERMINAL == "iTerm2"`), 9 session test,
+  v2.3.1 macchiato (session pill left, rounded tabs with folder names), tmux-resurrect (manual). Step 6 Neovim side done (smart-splits, CHANGELOG 21);
+  tmux side added by the user and verified; 7 Ctrl+Shift keys verified; 8 images in tmux done and verified by
+  the user (LC_TERMINAL detection, load on BufReadPre, unwrapped sixel so tmux draws it; known limitation:
+  tmux drops the picture on almost any Neovim redraw; user chose to leave it).
+  9 session test done: windows/panes/folders restore; Neovim is NOT restarted because resurrect saved
+  `…/bob/v0.12.6/bin/nvim` — fix offered, not applied: `set -g @resurrect-processes '"~nvim->nvim"'`.
+  Yazi works in tmux (iTerm2 inline images) even without `update-environment` lines. Next:
   10 extras (tmux-which-key: change its Ctrl+Space root key first; LazyGit popup). Key debugging:
   `tmux -vv -L keydebug new` in a non-tmux tab, then grep `extended key` in tmux-server-*.log.
 - Font: Fira Code 6.2 is current, but its Nerd Fonts patch is 3.2.1; latest is 3.5.1
@@ -83,6 +87,11 @@ hold the history.
   built-in (an alternative mapping is commented out in `lspconfig/init.lua`).
 
 ## Testing tips
+
+- tmux image behaviour: a pty client that answers tmux's queries like iTerm2 (DA1/DA2/XTVERSION replies
+  recorded in MIGRATION_NOTES 8r) and sets pixel sizes in TIOCSWINSZ gets the `sixel` feature, so tmux
+  forwards images to it; `refresh-client` then shows whether tmux still holds an image. A plain pty never
+  receives images from tmux.
 
 - Nerd Font icons in the Basic Multilingual Plane private-use range (U+E000–U+F8FF, 3 UTF-8 bytes) can be
   dropped when an assistant writes a file (this emptied icons in `blink-cmp.lua` and `alpha.lua` once).
