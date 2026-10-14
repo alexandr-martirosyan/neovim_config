@@ -6,7 +6,7 @@ local M = {
 		event = "BufEnter",
 		keys = winshift.keys,
 		opts = winshift.opts,
-		enabled = false,
+		cond = false, -- was `enabled = false`; cond keeps it installed like the other disabled plugins
 	},
 }
 

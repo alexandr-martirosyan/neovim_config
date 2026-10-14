@@ -178,6 +178,21 @@ M.keys = {
 	{ "<leader>iad", "<Plug>(AvanteToggleDebug)", mode = "n", remap = true, desc = "toggle avante debug" },
 	{ "<leader>iaC", "<Plug>(AvanteToggleSelection)", mode = "n", remap = true, desc = "toggle avante selection" },
 	{ "<leader>iaS", "<Plug>(AvanteToggleSuggestion)", mode = "n", remap = true, desc = "toggle avante suggestion" },
+	-- `mappings.files.add_current` is only set by Avante's automatic keymaps (off), so it is defined here,
+	-- doing what Avante's own mapping does: add the current buffer to the open sidebar's files.
+	{
+		"<leader>iaF",
+		function()
+			local sidebar = require("avante").get()
+			if sidebar and sidebar:is_open() and sidebar.file_selector:add_current_buffer() then
+				vim.notify("Added current buffer to file selector", vim.log.levels.INFO, { title = "Avante" })
+			else
+				vim.notify("Open the Avante sidebar first to add this file", vim.log.levels.WARN, { title = "Avante" })
+			end
+		end,
+		mode = "n",
+		desc = "avante add current file",
+	},
 	{ "<leader>iaB", "<Plug>(AvanteAddAllBuffers)", mode = "n", remap = true, desc = "avante add all open buffers" },
 	{ "<leader>iaf", "<cmd>AvanteFocus<CR>", mode = "n", desc = "focus avante sidebar" },
 	{ "<leader>iar", "<cmd>AvanteRefresh<CR>", mode = "n", desc = "refresh avante" },

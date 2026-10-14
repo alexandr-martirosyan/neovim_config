@@ -52,8 +52,8 @@ M.opts = function(_, opts)
 	-- We use a deep "Crust" background to make the bar stand out as a separator.
 	local custom_theme = vim.deepcopy(require("lualine.themes.auto"))
 	-- custom_theme.normal.c.bg = "#181926" -- Very dark active background
-	custom_theme.inactive.c.bg = "#181926" -- Very dark active background
-	custom_theme.normal.c.bg = "#11111b" -- Near-black inactive background
+	custom_theme.inactive.c.bg = "#181926" -- Very dark inactive background
+	custom_theme.normal.c.bg = "#11111b" -- Near-black active background
 
 	-- Spacer for layout control
 	local spacer = {
@@ -147,7 +147,6 @@ M.opts = function(_, opts)
 					"Avante",
 					"AvanteInput",
 					"AvanteSelectedFiles",
-					"avante",
 					"codecompanion",
 					"dbui",
 					"dbout",

@@ -62,11 +62,14 @@ vim.api.nvim_create_autocmd("BufEnter", {
 -- folds, word highlighting and indent guides are switched off for that buffer below. Basic Vim syntax
 -- colours are kept. Normal files are not affected.
 local bigfile = { size = 1.5 * 1024 * 1024, avg_line_length = 1000 }
+-- True only while the handler below asks for the file's real filetype (the check must not answer "bigfile"
+-- then). Checking `filetype == "bigfile"` instead let `:e` / `:e!` turn the protection off.
+local detecting_real_ft = false
 vim.filetype.add({
 	pattern = {
 		[".*"] = {
 			function(path, buf)
-				if not path or not buf or vim.bo[buf].filetype == "bigfile" then
+				if not path or not buf or detecting_real_ft then
 					return
 				end
 				local size = vim.fn.getfsize(path)
@@ -90,7 +93,10 @@ vim.api.nvim_create_autocmd("FileType", {
 	pattern = "bigfile",
 	callback = function(ev)
 		local buf = ev.buf
-		local real_ft = vim.filetype.match({ buf = buf }) or ""
+		detecting_real_ft = true
+		local ok, real_ft = pcall(vim.filetype.match, { buf = buf })
+		detecting_real_ft = false
+		real_ft = ok and real_ft or ""
 		vim.notify(
 			("Big file (%s): language features off for this buffer"):format(vim.fn.fnamemodify(ev.file, ":t")),
 			vim.log.levels.WARN

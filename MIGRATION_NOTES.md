@@ -428,6 +428,26 @@ Method: (A) version fields of every spec in the pre-Codex backup, (B) each repo'
 - Avante: removed the commented `providers.ollama` block; commented templates `local-openai` (`__inherited_from = "openai"`, endpoint `…/v1`) and `local-anthropic` (`__inherited_from = "claude"`, endpoint = host; Avante appends `/v1/messages`), `api_key_name = "cmd:echo local"` (an empty key name makes Avante prompt for a key).
 - Ports: oMLX 8000 (secondary sources), llama.cpp server 8080, LM Studio 1234.
 
+## 8v. Review fixes (Gemini review, verified)
+
+- `configs/autocmds.lua`: the `.*` filetype detector skipped buffers whose filetype was already `bigfile` (so the
+  `FileType bigfile` handler's `vim.filetype.match({ buf })` could find the real type). On `:e`/`:e!` the filetype is
+  still `bigfile` during detection, so the detector returned nil and `:setf <real>` re-enabled Treesitter/LSP (tested:
+  `json`, 1 client, highlighter active). Now a module-local `detecting_real_ft` flag is set only around that
+  `vim.filetype.match` call (wrapped in pcall). Tested: after `:e!` still `bigfile`, 0 clients, no highlighter.
+- `which-key.lua`: `<leader>wk` ignores an empty `input()` result (Esc); `opts.spec` with 18 `group` labels, built from
+  the real `<leader>` mappings (headless dump of lazy keys + `nvim_get_keymap`).
+- `avante.lua`: `mappings.files.add_current` is only bound in `sidebar.lua` when `behaviour.auto_set_keymaps` is true;
+  added `<leader>iaF` to `M.keys` doing the same (`require("avante").get()` → `is_open()` →
+  `file_selector:add_current_buffer()`). Gemini's suggested `avante.extensions.nvim_tree` is for nvim-tree, not used.
+- gitsigns descriptions fixed; lualine duplicate `"avante"` in `disabled_filetypes.winbar` removed; the comments on
+  `custom_theme.inactive/normal.c.bg` relabelled (commented-out line kept).
+- winshift: `enabled = false` → `cond = false`. lazy.nvim docs: `cond` "behaves the same as enabled, but won't uninstall";
+  a missing `cond = false` plugin is not installed either (spec lands in `spec.disabled`), so nothing was downloaded.
+- Not changed (checked, not a bug): denols — upstream `root_dir` only calls `on_dir` with a non-nil path; neo-tree
+  `keep-layout` open path — neo-tree opens as a top-level full-height split, so top-level `fixed_columns` and scaling
+  every window (incl. a full-width bottom split) is correct; focus.nvim / dap / fzf-lua / mcphub loading — negligible.
+
 ## 9. Prompt for the next AI
 
 > Read AGENTS.md first: it has the current state, the user's rules, and what is pending. The prompt below is from the original migration and is partly outdated.

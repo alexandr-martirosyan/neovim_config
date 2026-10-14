@@ -4,8 +4,8 @@ A complete description of this Neovim configuration: what it contains, how the c
 every shortcut and where it is defined, every plugin and what it does here, and what lives outside
 the repository. It is a reference for people and AI assistants working on this config.
 
-> **Snapshot.** Written against commit `3abb37c` (2026-10-12) and committed together with the
-> changes listed in CHANGELOG sections 18–25. Verified by reading every file and by inspecting a running
+> **Snapshot.** Fully checked against commit `3abb37c` (2026-10-12), then updated with every later
+> change, up to and including CHANGELOG section 26 (2026-10-14). Verified by reading every file and by inspecting a running
 > Neovim (loaded plugins, real key mappings, buffer-local LSP/Kulala mappings).
 >
 > **Freshness check.** Compare the last commit that changed this file with the last commit that
@@ -22,7 +22,7 @@ the repository. It is a reference for people and AI assistants working on this c
 
 Related files: `AGENTS.md` (current state, the owner's rules for changes, open items),
 `CHANGELOG.md` (history in plain language), `MIGRATION_NOTES.md` (technical history),
-`TMUX_PLAN.md` (next planned task), `README.md` (short overview).
+`TMUX_PLAN.md` (tmux setup, finished; § Final state), `README.md` (short overview).
 
 ---
 
@@ -126,10 +126,11 @@ Related files: `AGENTS.md` (current state, the owner's rules for changes, open i
 7. Events and triggers for the rest: see the "Load" column in section 5.
 
 Observed in a real session started with plain `nvim` in a project (after `VeryLazy`), these plugins were
-loaded: Comment.nvim, alpha-nvim, auto-session, barbar, catppuccin, gitsigns, image.nvim (iTerm2),
+loaded: Comment.nvim, alpha-nvim, auto-session, barbar, catppuccin, gitsigns,
 indent-blankline, lualine, mini.icons, neo-tree, noice, nui, nvim-dap, nvim-notify, nvim-surround,
 nvim-treesitter, nvim-ufo, nvim-web-devicons, plenary, promise-async, scope, telescope (+ fzf-native,
-ui-select, frecency), todo-comments, trouble, ts-comments, vim-illuminate, which-key, window-picker.
+ui-select, frecency), todo-comments, trouble, ts-comments, vim-illuminate, which-key, window-picker,
+smart-splits (+ backend-tmux). image.nvim loads only when a picture file is opened (section 5).
 Opening a Lua file additionally loads the LSP stack (lspconfig, mason, mason-lspconfig, nvim-lint,
 lazydev, treesitter-context); entering Insert mode loads blink.cmp, LuaSnip, friendly-snippets,
 lspkind, blink.compat, copilot.lua, nvim-autopairs.
@@ -311,7 +312,7 @@ telescope-frecency, lazydev). Exact installed commits: `lazy-lock.json`.
 | copilot-cmp | `cond = false` | replaced by blink-copilot |
 | nvim-dbee | `cond = false` | replaced by vim-dadbod-ui (its key `<leader>db` is now dadbod's) |
 | colorful-winsep.nvim (`branch=main`) | `cond = false` | **TEMPORARY** dimming trial (catppuccin `dim_inactive` instead); do not remove |
-| winshift.nvim | `enabled = false` | unused; with `enabled = false` (unlike `cond = false`) lazy does not install it — it is currently **not installed** |
+| winshift.nvim | `cond = false` | unused; **not installed** (it was `enabled = false`; `cond = false` does not install a missing plugin either, it only keeps an installed one) |
 | image.nvim | `cond = backend ~= nil` | only loads in a supported terminal (section 7.19) |
 
 To re-enable a `cond = false` plugin, set `cond = true` (or remove the line).
@@ -332,7 +333,7 @@ i = Insert, s = Select (snippet placeholders), t = Terminal. Visual mappings del
 `v`, so they don't fire while typing in a snippet placeholder.
 
 Built-in help for keys: `<leader>?` (buffer-local keys via which-key), `<leader>wK` (all keys),
-`<leader>wk` (which-key for a typed prefix). Keys marked "(lazy)" load their plugin on first press.
+`<leader>wk` (which-key for a typed prefix; Esc/empty does nothing). Keys marked "(lazy)" load their plugin on first press.
 
 ### 6.1 Leader mappings
 
@@ -402,7 +403,7 @@ Built-in help for keys: `<leader>?` (buffer-local keys via which-key), `<leader>
 | `<leader>gp` | n | preview hunk |
 | `<leader>gb` | n | blame line (full) |
 | `<leader>gd` | n | diff against index |
-| `<leader>gD` | n | diff against last commit (`~`) |
+| `<leader>gD` | n | diff against the commit before HEAD (`~`) |
 | `<leader>tb` | n | toggle current-line blame |
 | `<leader>td` | n | toggle showing deleted lines |
 | `<leader>ng` | n | Neogit (`neogit/`) (lazy) |
@@ -432,7 +433,7 @@ Built-in help for keys: `<leader>?` (buffer-local keys via which-key), `<leader>
 | `<leader>iaC` | n | toggle selection |
 | `<leader>iaS` | n | toggle suggestion |
 | `<leader>iaB` | n | add all open buffers |
-| `<leader>iaF` | — | listed in Avante `mappings.files.add_current` only; no active mapping (auto keymaps are off) |
+| `<leader>iaF` | n | add the current buffer to the open Avante sidebar's files (warns when the sidebar is closed) |
 
 **AI: CodeCompanion (`<leader>ic…`)** — `ai/codecompanion/codecompanion.lua` (all lazy)
 
@@ -475,7 +476,7 @@ Built-in help for keys: `<leader>?` (buffer-local keys via which-key), `<leader>
 | `<leader>tc` | n | set max lines of pinned context (prompt; 0 = no limit) | `nvim-treesitter-context/…lua` |
 | `<leader>pt` | n | select a terminal (`:TermSelect`) (lazy) | `toggleterm/toggleterm.lua` |
 | `<leader>wK` | n | which-key: all keymaps | `which-key/which-key.lua` |
-| `<leader>wk` | n | which-key: prompt for a prefix | `which-key/which-key.lua` |
+| `<leader>wk` | n | which-key: prompt for a prefix (Esc or empty input: nothing) | `which-key/which-key.lua` |
 | `<leader>?` | n | which-key: buffer-local keymaps | `which-key/which-key.lua` |
 | `<leader>wa` / `wr` / `wl` | n | LSP workspace folder add / remove / list (buffer-local) | `lspconfig/init.lua` |
 
@@ -895,7 +896,10 @@ alpha dashboard theme with the buttons in 6.5; footer `Neovim vX.Y.Z · N plugin
 - **Noice**: classic bottom search, command palette (cmdline + popup menu together), long messages to a
   split, mode messages as notifications, LSP hover/markdown rendering overridden; `vim.ui.select` left to
   telescope-ui-select. Commented view tweaks kept.
-- **which-key**: defaults (no custom groups).
+- **which-key**: defaults plus names for the `<leader>` groups in `opts.spec` (b Buffers, c Code/commits,
+  d Diagnostics/database, f Find/format/replace, g Git, i AI, ia Avante, ic CodeCompanion, j Harpoon,
+  l Lines/lint/LSP/LazyGit, m Marks, n Neogit, p Terminals, R HTTP (Kulala), s Splits, t Toggles,
+  w Which-key, z Trouble lists). Labels only; the keys stay in each plugin's file.
 - **indent-blankline**: defaults; off for big files.
 - **vim-illuminate**: highlights other occurrences of the word under the cursor; paused for big files.
 - **todo-comments**: `TODO` also matches lowercase `todo`; highlights anywhere, not only in comments.
@@ -903,7 +907,8 @@ alpha dashboard theme with the buttons in 6.5; footer `Neovim vX.Y.Z · N plugin
 
 ### 7.24 Big files and startup cleanup
 
-See 4.4. Tested cases: a 2.4 MB file and a minified file are protected; normal files unchanged.
+See 4.4. Tested cases: a 2.4 MB file and a minified file are protected, also after `:e` / `:e!`
+(the detector skips only while the handler looks up the real filetype); normal files unchanged.
 After `nvim .` the leftover `[No Name]` is removed once a real file opens; empty buffers created later
 are kept.
 
@@ -974,6 +979,6 @@ which-key and load the plugin on first use.
 - fzf-lua, mcphub, nvim-dap: installed, enabled, not configured (`TODO` comments).
 - Dimming trial and colorful-winsep (7.13) are temporary.
 - nvim-cmp family kept disabled until the owner is comfortable with blink.
-- Open ideas (not decided): tmux integration (next, `TMUX_PLAN.md`), pushing the Barbar fork, Nerd Font
+- Open ideas (not decided): pushing the Barbar fork, Nerd Font
   update, blink.cmp v2 when released, Copilot next-edit suggestions via sidekick.nvim, per-window buffer
   tabs.

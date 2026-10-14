@@ -2,7 +2,7 @@
 
 Read this first. `CONFIG_GUIDE.md` describes the whole config as it is now (structure, every plugin, every
 shortcut and where it is defined, features, files outside the repo); its top has a freshness check.
-`CHANGELOG.md` (user-facing, sections 1–25) and `MIGRATION_NOTES.md` (technical details, sections 1–8u)
+`CHANGELOG.md` (user-facing, sections 1–26) and `MIGRATION_NOTES.md` (technical details, sections 1–8v)
 hold the history.
 
 ## Where things stand (2026-10-12)

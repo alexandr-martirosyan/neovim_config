@@ -196,7 +196,7 @@ See [MIGRATION_NOTES.md](MIGRATION_NOTES.md) for implementation decisions, compa
 
 - Claude is available next to Codex, using your Claude Pro subscription through Zed's adapter `claude-agent-acp` (installed with npm). It uses the `claude` command's own login: run `claude auth login --claudeai` once in a terminal. No API key and no token in any file.
 - Avante: new provider `claude-code`; switch with `<leader>iap` (Codex stays the default). Claude asks before changing files, as Codex does.
-- CodeCompanion: the chat now starts with Claude (`<leader>icc`); change to Codex or Ollama inside a chat with `ga`. Inline edits and commands stay on your local Ollama model (agents only work in the chat). The terminal mode (`<leader>icx`) keeps Codex; `:CodeCompanionCLI agent=claude_code` uses Claude.
+- CodeCompanion: the chat now starts with Claude (`<leader>icc`); change to Codex or Ollama inside a chat with `ga`. Inline edits and commands stay on your local Ollama model (agents only work in the chat). *(Ollama part superseded by section 25.)* The terminal mode (`<leader>icx`) keeps Codex; `:CodeCompanionCLI agent=claude_code` uses Claude.
 
 ### 25. No local AI configured (templates only)
 
@@ -204,3 +204,12 @@ See [MIGRATION_NOTES.md](MIGRATION_NOTES.md) for implementation decisions, compa
 - CodeCompanion's inline edits, commands and background tasks have no adapter set any more, so they use CodeCompanion's default, GitHub Copilot (Copilot Free works with a monthly limit). Claude and Codex subscriptions can't do these (they need a plain API).
 - Both configs contain commented templates for local servers — oMLX (port 8000), llama.cpp (8080), LM Studio (1234) — for the OpenAI-style and the Anthropic-style API. Uncomment one and set the model when you want a local model.
 
+### 26. Fixes from a second review (Gemini, checked by Claude)
+
+- Big files stay protected after `:e` / `:e!`. Before, reloading a big file switched Treesitter, the language server and linters back on.
+- `<leader>wk`: pressing Esc (or Enter with nothing typed) at the "WhichKey:" prompt now does nothing, instead of opening the full key list.
+- `<leader>iaF` works: adds the current file to the open Avante sidebar (it was configured but never created, because Avante's automatic keys are off).
+- The `<leader>` popup shows group names (Git, AI, Avante, Splits, …) instead of "+N keymaps".
+- Small text fixes: gitsigns key descriptions ("stake" → "stage", a doubled "Gitsigns", `<leader>gD` now says what it compares against), a duplicate entry in the lualine list, and the swapped "active"/"inactive" labels in two lualine comments.
+- winshift uses `cond = false` like the other disabled plugins (still not installed).
+- Docs: tmux no longer listed as "next", startup plugin list updated.
