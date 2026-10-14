@@ -208,8 +208,8 @@ See [MIGRATION_NOTES.md](MIGRATION_NOTES.md) for implementation decisions, compa
 
 - Big files stay protected after `:e` / `:e!`. Before, reloading a big file switched Treesitter, the language server and linters back on.
 - `<leader>wk`: pressing Esc (or Enter with nothing typed) at the "WhichKey:" prompt now does nothing, instead of opening the full key list.
-- `<leader>iaF` works: adds the current file to the open Avante sidebar (it was configured but never created, because Avante's automatic keys are off).
+- `<leader>iaF` works: adds the current file to the open Avante sidebar, or removes it if it is already in the list (it was configured but never created, because Avante's automatic keys are off). Since Avante adds the current file by itself when a chat opens, pressing it on that file removes it.
 - The `<leader>` popup shows group names (Git, AI, Avante, Splits, …) instead of "+N keymaps".
 - Small text fixes: gitsigns key descriptions ("stake" → "stage", a doubled "Gitsigns", `<leader>gD` now says what it compares against), a duplicate entry in the lualine list, and the swapped "active"/"inactive" labels in two lualine comments.
 - winshift uses `cond = false` like the other disabled plugins (still not installed).
-- Docs: tmux no longer listed as "next", startup plugin list updated.
+- Docs: tmux no longer listed as "next", startup plugin list updated (smart-splits added; image.nvim stays: neo-tree loads it on start in iTerm2).

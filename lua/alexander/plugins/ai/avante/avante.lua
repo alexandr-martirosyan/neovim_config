@@ -179,15 +179,24 @@ M.keys = {
 	{ "<leader>iaC", "<Plug>(AvanteToggleSelection)", mode = "n", remap = true, desc = "toggle avante selection" },
 	{ "<leader>iaS", "<Plug>(AvanteToggleSuggestion)", mode = "n", remap = true, desc = "toggle avante suggestion" },
 	-- `mappings.files.add_current` is only set by Avante's automatic keymaps (off), so it is defined here,
-	-- doing what Avante's own mapping does: add the current buffer to the open sidebar's files.
+	-- doing what Avante's own mapping does: add the current buffer to the open sidebar's files. It is a
+	-- toggle: a file that is already in the list (e.g. added automatically) is removed again.
 	{
 		"<leader>iaF",
 		function()
 			local sidebar = require("avante").get()
-			if sidebar and sidebar:is_open() and sidebar.file_selector:add_current_buffer() then
-				vim.notify("Added current buffer to file selector", vim.log.levels.INFO, { title = "Avante" })
-			else
+			if not (sidebar and sidebar:is_open()) then
 				vim.notify("Open the Avante sidebar first to add this file", vim.log.levels.WARN, { title = "Avante" })
+				return
+			end
+			local files = sidebar.file_selector.selected_filepaths
+			local count = #files
+			if not sidebar.file_selector:add_current_buffer() then
+				vim.notify("This buffer is not a file", vim.log.levels.WARN, { title = "Avante" })
+			elseif #files > count then
+				vim.notify("Added current file to Avante", vim.log.levels.INFO, { title = "Avante" })
+			else
+				vim.notify("Removed current file from Avante", vim.log.levels.INFO, { title = "Avante" })
 			end
 		end,
 		mode = "n",

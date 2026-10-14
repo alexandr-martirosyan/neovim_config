@@ -440,6 +440,11 @@ Method: (A) version fields of every spec in the pre-Codex backup, (B) each repo'
 - `avante.lua`: `mappings.files.add_current` is only bound in `sidebar.lua` when `behaviour.auto_set_keymaps` is true;
   added `<leader>iaF` to `M.keys` doing the same (`require("avante").get()` → `is_open()` →
   `file_selector:add_current_buffer()`). Gemini's suggested `avante.extensions.nvim_tree` is for nvim-tree, not used.
+  `add_current_buffer()` is a toggle: returns true after adding *or removing* (already listed), false for a buffer
+  without a file; the key compares `#selected_filepaths` before/after to report added/removed.
+- CONFIG_GUIDE startup list: image.nvim stays in it. It is a `dependencies` entry of neo-tree (VeryLazy), so lazy
+  loads it with neo-tree whenever its `cond` is true (tested with `TERM_PROGRAM=iTerm.app`: loaded after
+  `lazy.load({ plugins = { "neo-tree.nvim" } })`); the BufReadPre events only make it load earlier for picture files.
 - gitsigns descriptions fixed; lualine duplicate `"avante"` in `disabled_filetypes.winbar` removed; the comments on
   `custom_theme.inactive/normal.c.bg` relabelled (commented-out line kept).
 - winshift: `enabled = false` → `cond = false`. lazy.nvim docs: `cond` "behaves the same as enabled, but won't uninstall";

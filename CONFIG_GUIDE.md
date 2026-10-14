@@ -126,11 +126,12 @@ Related files: `AGENTS.md` (current state, the owner's rules for changes, open i
 7. Events and triggers for the rest: see the "Load" column in section 5.
 
 Observed in a real session started with plain `nvim` in a project (after `VeryLazy`), these plugins were
-loaded: Comment.nvim, alpha-nvim, auto-session, barbar, catppuccin, gitsigns,
+loaded: Comment.nvim, alpha-nvim, auto-session, barbar, catppuccin, gitsigns, image.nvim (iTerm2),
 indent-blankline, lualine, mini.icons, neo-tree, noice, nui, nvim-dap, nvim-notify, nvim-surround,
 nvim-treesitter, nvim-ufo, nvim-web-devicons, plenary, promise-async, scope, telescope (+ fzf-native,
 ui-select, frecency), todo-comments, trouble, ts-comments, vim-illuminate, which-key, window-picker,
-smart-splits (+ backend-tmux). image.nvim loads only when a picture file is opened (section 5).
+smart-splits (+ backend-tmux). image.nvim comes with neo-tree (a dependency); in a supported terminal it
+loads on `VeryLazy`, or earlier when a picture file is opened (section 5).
 Opening a Lua file additionally loads the LSP stack (lspconfig, mason, mason-lspconfig, nvim-lint,
 lazydev, treesitter-context); entering Insert mode loads blink.cmp, LuaSnip, friendly-snippets,
 lspkind, blink.compat, copilot.lua, nvim-autopairs.
@@ -433,7 +434,7 @@ Built-in help for keys: `<leader>?` (buffer-local keys via which-key), `<leader>
 | `<leader>iaC` | n | toggle selection |
 | `<leader>iaS` | n | toggle suggestion |
 | `<leader>iaB` | n | add all open buffers |
-| `<leader>iaF` | n | add the current buffer to the open Avante sidebar's files (warns when the sidebar is closed) |
+| `<leader>iaF` | n | add the current buffer to the open Avante sidebar's files, or remove it if it is already there (Avante's toggle; warns when the sidebar is closed) |
 
 **AI: CodeCompanion (`<leader>ic…`)** — `ai/codecompanion/codecompanion.lua` (all lazy)
 
