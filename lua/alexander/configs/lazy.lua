@@ -9,6 +9,10 @@ local lazy_config = {
 	-- plugins follow their newest commits, so there is almost always something new. `:Lazy` shows them.
 	checker = { enabled = true, notify = false },
 	install = { colorscheme = { "habamax" } },
+	-- lazy stops every git/build process after `git.timeout` seconds (default 120). Avante now compiles its
+	-- native libraries with cargo on each update; a full build took ~3 min on an M2 Max, so 120 s cut it off
+	-- (Nov 2026). 15 min leaves room for slower machines; only a hung git command waits longer.
+	git = { timeout = 900 },
 	rocks = {
 		hererocks = true, -- recommended if you do not have global installation of Lua 5.1.
 	},

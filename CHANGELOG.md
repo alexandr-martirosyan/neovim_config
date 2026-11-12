@@ -213,3 +213,15 @@ See [MIGRATION_NOTES.md](MIGRATION_NOTES.md) for implementation decisions, compa
 - Small text fixes: gitsigns key descriptions ("stake" → "stage", a doubled "Gitsigns", `<leader>gD` now says what it compares against), a duplicate entry in the lualine list, and the swapped "active"/"inactive" labels in two lualine comments.
 - winshift uses `cond = false` like the other disabled plugins (still not installed).
 - Docs: tmux no longer listed as "next", startup plugin list updated (smart-splits added; image.nvim stays: neo-tree loads it on start in iTerm2).
+
+### 27. Plugin and Mason update (2026-11-12)
+
+- All plugins (17 had updates) and Mason tools (16 had updates) updated; config adjusted where needed.
+- Avante: removed an option Avante dropped (`windows.wrap`; it wraps by itself now) and moved `<leader>iat`, `<leader>iah`, `<leader>iaM` to Avante's new command names (`:Avante toggle`, `:Avante resume`, `:Avante acp models`), so no "deprecated" warnings. Codex and Claude still connect.
+- lazy now allows builds up to 15 minutes: Avante compiles its parts on every update and 2 minutes were not enough (the cut-off build would have broken Codex/Claude in Avante); 15 minutes leaves room for slower machines.
+- Kulala: new engine 3.1.0 and an updated `.http` colouring parser (installed automatically / rebuilt). Request scripts are JavaScript-only now (your files use none).
+- Treesitter: the `cylc` language was dropped upstream and removed; updates no longer print "Parser not available" warnings for it or for Kulala's parser.
+- kulala-fmt (formats `.http` files) now comes from npm at its newest version (4.7.0): the project moved to a new npm name, and Mason's package still points at the old one, whose version can't download the engine it needs and formatted nothing. It updates with your other global npm tools. The new version is stricter about the file format (e.g. a header needs a space after the colon).
+- Removed Mason's `typos` tool (an Intel-only build that couldn't run on this Mac; Neovim doesn't use it). Homebrew's native `typos` (newest) stays.
+- Tested for real: Codex in Avante answered a prompt; Kulala sent requests to public test APIs (200) and `<leader>fm` formatted the file. After logging in to Claude again, Claude in Avante answered too.
+- Opened a fix for Mason's outdated kulala-fmt package: [mason-org/mason-registry#17992](https://github.com/mason-org/mason-registry/pull/17992).

@@ -92,8 +92,8 @@ this machine; the old 0.7.0 backend is not used). The steps below are for a new 
    Alternatively pass `KULALA_CORE_LICENSE_TOKEN` through the environment of the
    process launching Neovim. Never commit a token in this configuration.
 4. After activation, check a local request with `<leader>Rs` and the response window's
-   tabs/winbar. `<leader>fm` formats `.http` files with `kulala-fmt` (installed by
-   `:MasonInstallAll`); Kulala's language server does not format.
+   tabs/winbar. `<leader>fm` formats `.http` files with `kulala-fmt` (`npm i -g
+   @dont-be-evil-company/kulala-fmt`; Mason's package is outdated); Kulala's language server does not format.
 
 The public demo's response assertions were corrected without executing its
 POST/PATCH/DELETE requests. A script-only mock check is documented in the notes.

@@ -453,6 +453,52 @@ Method: (A) version fields of every spec in the pre-Codex backup, (B) each repo'
   `keep-layout` open path — neo-tree opens as a top-level full-height split, so top-level `fixed_columns` and scaling
   every window (incl. a full-width bottom split) is correct; focus.nvim / dap / fzf-lua / mcphub loading — negligible.
 
+## 8w. Update of 2026-11-12 (lazy + Mason)
+
+- lazy update: 17 plugins changed (avante, copilot.lua, friendly-snippets, fzf-lua, gitsigns, grug-far, kulala,
+  mason-lspconfig, neogit, nvim-lint, nvim-lspconfig, nvim-treesitter, nvim-web-devicons, render-markdown, scope,
+  telescope, vim-dadbod-completion); `hererocks` re-added to the lock (image.nvim's rock; `rocks.hererocks = true`).
+- Avante (159 commits): `windows.wrap` deprecated (warns) → commented out. Deprecated aliases `AvanteToggle`,
+  `AvanteACPModels`, `AvanteACPModes`, `AvanteHistory` → `:Avante toggle|acp models|acp modes|resume` (keys updated;
+  `M.cmd` still lists the old names, they exist as aliases). ACP moved to the official Rust SDK: new native module
+  `avante_acp` (`lua/avante_acp.so`), `make` now always builds all crates with cargo. lazy killed the build at 120 s
+  (`git.timeout`, used by lazy's Process for builds too) → ran `make` manually; `configs/lazy.lua` `git.timeout = 300`.
+  Tested: all 6 native modules load; `ACPClient:new(Config.acp_providers[x]):connect()` + `create_session()` OK for
+  `codex` and `claude-code` (no prompt).
+- gitsigns: `show`/`show_commit` reworked (`show_commit X` → `diff --commit X`); not used. `undo_stage_hunk`,
+  `toggle_deleted` are long-deprecated but still work without warnings (kept).
+- Kulala: backend 1.3.1 → 3.1.0 (auto-download with license); TS/Lua scripting removed; parser rev 630e2b8 →
+  1e238f6. `settings.json` had no `parser_rev`, so `is_parser_ver_current()` treated the dylib as externally managed
+  and never rebuilt it; removed `site/parser/kulala_http.dylib` → Kulala fetched and built the new one (tree-sitter
+  CLI 0.27.2). Tested: ft http → lang kulala_http; request to a local http.server → 200 in kulala_ui.
+- nvim-treesitter: `cylc` dropped (`uninstall` refuses unsupported languages → removed `parser/cylc.so`, dangling
+  `queries/cylc` symlink, `parser-info/cylc.revision` by hand). `M.build` now calls `update()` with
+  installed ∩ `get_available()` (old call kept as comment) — no more "Parser not available" for cylc/kulala_http.
+- Mason: 16 updates (see CHANGELOG 27). kulala-fmt 3+ uses kulala-core; Mason's package is
+  `pkg:npm/%40mistweaverco/kulala-fmt` (Renovate-bumped, last 4.5.3 on 2026-08-07) but the project moved to
+  `@dont-be-evil-company/kulala-fmt` (4.7.0); 4.5.3 downloads `github.com/mistweaverco/kulala-core/.../v0.31.1` → 404,
+  every file "Error parsing file". (A 2.11.0 rollback + pin was tried first, then reverted: the owner wants newest
+  versions.) Now: Mason kulala-fmt uninstalled, `settings.lua` entry commented, `npm i -g @dont-be-evil-company/kulala-fmt`
+  (nvm Node 26 global bin; postinstall blocked by npm's script policy, so kulala-core 1.4.1 downloads on first run into
+  the package's `dist/bin`). The new core rejects `name:value` headers without a space ("Unrecognized request block
+  line"). conform's built-in `kulala-fmt` formatter resolves it from PATH (`exepath` checked). typescript-language-server 6:
+  Node ≥ 22.22.2 (have 26.13.1). Mason's `typos` recipe ships x86_64 for darwin_arm64 (no Rosetta) → uninstalled;
+  Homebrew `typos-cli` 1.52.2 (arm64) already on PATH.
+- `git.timeout` raised 300 → 900 (cold Avante build ~180 s on M2 Max). `Lazy! build avante.nvim` completes via lazy.
+- Real prompts via `ACPClient:send_prompt` ("Reply with exactly the word OK"): codex → "OK" (end_turn, 4 s);
+  claude-code → "Authentication required" (claude CLI `loggedIn: false`, login expired); after the owner's
+  `claude auth login --claudeai`: claude-code → "OK" (6 s).
+- Mason registry PR mason-org/mason-registry#17992: `source.id` → `pkg:npm/%40dont-be-evil-company/kulala-fmt@4.7.0`,
+  new homepage; tested with `registries = { "file:<clone>" }` (+ yq) in an isolated `install_root_dir`.
+- Avante's own `:Avante claude login` uses `rig-claude-cloak` 0.46.0: OAuth against claude.ai/api.anthropic.com only
+  (local credential file, no third-party server), but it sends a Claude Code user agent (`claude-cli/2.1.307`) and
+  Claude Code billing header — i.e. presents itself as Claude Code. Anthropic's Usage Policy forbids misrepresenting
+  the client / routing through consumer subscriptions → not used. `:Avante chatgpt login` uses OpenAI's device-auth
+  (auth.openai.com); not used either (codex-acp already works).
+- Tested: hover from lua_ls, rust_analyzer, ts_ls, pyright, denols, tombi, solidity, dockerls (+ typos_lsp attach);
+  conform formats lua/py/ts/toml/http; flake8, hadolint, codespell run; UI start in a pty: no errors; Kulala GET
+  jsonplaceholder + POST httpbin → 200, `<leader>fm` formatted the file.
+
 ## 9. Prompt for the next AI
 
 > Read AGENTS.md first: it has the current state, the user's rules, and what is pending. The prompt below is from the original migration and is partly outdated.

@@ -39,7 +39,7 @@ M.opts = {
 		},
 		-- Claude (Pro subscription) through Zed's ACP adapter: npm i -g @agentclientprotocol/claude-agent-acp.
 		-- It uses the `claude` CLI's own login (once: `claude auth login --claudeai`); no API key.
-		-- Switch with <leader>iap (:AvanteSwitchProvider claude-code). Permissions are asked in Avante
+		-- Switch with <leader>iap (a picker; `:AvanteSwitchProvider --save` keeps the choice). Permissions are asked in Avante
 		-- (Avante's default ACP_PERMISSION_MODE=bypassPermissions is not read by claude-agent-acp 0.89+).
 		["claude-code"] = {
 			command = "claude-agent-acp",
@@ -113,7 +113,7 @@ M.opts = {
 	windows = {
 		position = "right",
 		width = 35,
-		wrap = true,
+		-- wrap = true, -- removed in Avante (Nov 2026): it now wraps the Avante window by itself
 		ask = {
 			start_insert = false,
 		},
@@ -173,7 +173,7 @@ M.keys = {
 		mode = "n",
 		desc = "avante zen mode",
 	},
-	{ "<leader>iat", "<cmd>AvanteToggle<CR>", mode = "n", desc = "toggle avante sidebar" },
+	{ "<leader>iat", "<cmd>Avante toggle<CR>", mode = "n", desc = "toggle avante sidebar" },
 	-- Previously added by Avante's automatic keymaps (behaviour.auto_set_keymaps, now off).
 	{ "<leader>iad", "<Plug>(AvanteToggleDebug)", mode = "n", remap = true, desc = "toggle avante debug" },
 	{ "<leader>iaC", "<Plug>(AvanteToggleSelection)", mode = "n", remap = true, desc = "toggle avante selection" },
@@ -206,9 +206,9 @@ M.keys = {
 	{ "<leader>iaf", "<cmd>AvanteFocus<CR>", mode = "n", desc = "focus avante sidebar" },
 	{ "<leader>iar", "<cmd>AvanteRefresh<CR>", mode = "n", desc = "refresh avante" },
 	{ "<leader>ias", "<cmd>AvanteStop<CR>", mode = "n", desc = "stop avante request" },
-	{ "<leader>iah", "<cmd>AvanteHistory<CR>", mode = "n", desc = "avante history" },
+	{ "<leader>iah", "<cmd>Avante resume<CR>", mode = "n", desc = "avante history" },
 	{ "<leader>iam", "<cmd>AvanteModels<CR>", mode = "n", desc = "avante models" },
-	{ "<leader>iaM", "<cmd>AvanteACPModels<CR>", mode = "n", desc = "avante acp models" },
+	{ "<leader>iaM", "<cmd>Avante acp models<CR>", mode = "n", desc = "avante acp models" },
 	{ "<leader>iao", "<cmd>Avante acp modes<CR>", mode = "n", desc = "avante acp mode" },
 	{ "<leader>iaR", "<cmd>AvanteShowRepoMap<CR>", mode = "n", desc = "avante repo map" },
 	{ "<leader>iap", "<cmd>AvanteSwitchProvider<CR>", mode = "n", desc = "switch avante provider" },

@@ -5,7 +5,7 @@ every shortcut and where it is defined, every plugin and what it does here, and 
 the repository. It is a reference for people and AI assistants working on this config.
 
 > **Snapshot.** Fully checked against commit `3abb37c` (2026-10-12), then updated with every later
-> change, up to and including CHANGELOG section 26 (2026-10-14). Verified by reading every file and by inspecting a running
+> change, up to and including CHANGELOG section 27 (2026-11-12). Verified by reading every file and by inspecting a running
 > Neovim (loaded plugins, real key mappings, buffer-local LSP/Kulala mappings).
 >
 > **Freshness check.** Compare the last commit that changed this file with the last commit that
@@ -179,6 +179,8 @@ Fold options are set by nvim-ufo's config (section 7.10): `foldcolumn=1`, `foldl
   plugins without a `version`/`branch` follow their default branch (latest commit).
 - `checker = { enabled = true, notify = false }`: lazy checks for plugin updates in the background
   (hourly) without a notification; `:Lazy` shows available updates.
+- `git = { timeout = 900 }`: lazy stops git and build processes after this many seconds (default 120,
+  too short for Avante's cargo build; 15 min leaves room for slower machines).
 - `install.colorscheme = { "habamax" }` (only used while installing on a fresh machine).
 - `rocks.hererocks = true` (lazy builds its own Lua 5.1 for luarocks plugins).
 - `performance.rtp.disabled_plugins`: 2html_plugin, tohtml, getscript(+Plugin), gzip, logipat, netrw,
@@ -419,13 +421,13 @@ Built-in help for keys: `<leader>?` (buffer-local keys via which-key), `<leader>
 | `<leader>iac` | n | chat |
 | `<leader>ian` | n, x | new ask (fresh question, current file/selection) |
 | `<leader>iaN` | n | new chat |
-| `<leader>iat` | n | toggle sidebar |
+| `<leader>iat` | n | toggle sidebar (`:Avante toggle`) |
 | `<leader>iaf` | n | focus sidebar |
 | `<leader>iar` | n | refresh |
 | `<leader>ias` | n | stop request |
-| `<leader>iah` | n | history |
+| `<leader>iah` | n | history (`:Avante resume`) |
 | `<leader>iam` | n | models |
-| `<leader>iaM` | n | ACP models |
+| `<leader>iaM` | n | ACP models (`:Avante acp models`) |
 | `<leader>iao` | n | ACP mode |
 | `<leader>iap` | n | switch provider |
 | `<leader>iaR` | n | repo map |
@@ -706,8 +708,10 @@ only as blink menu items (blink-copilot). Login: `:Copilot auth`. Next-edit sugg
   when supported, capabilities with `positionEncodings = { "utf-16" }`.
 - Mason tool list (`M.ensure_installed`, installed with `:MasonInstallAll`): stylua,
   lua-language-server, solhint, nomicfoundation-solidity-language-server, rust-analyzer, pyright,
-  flake8, black, deno, prettier, eslint-lsp, typescript-language-server, kulala-fmt, typos-lsp,
+  flake8, black, deno, prettier, eslint-lsp, typescript-language-server, typos-lsp,
   dockerfile-language-server, hadolint, circom-lsp, tombi. Mason UI: custom icons, 10 parallel installs.
+  kulala-fmt is not from Mason (its Mason package uses the abandoned `@mistweaverco` npm name, stuck at 4.5.3,
+  whose engine download is gone): global npm `@dont-be-evil-company/kulala-fmt` (commented in the list).
 - lazydev (Lua files): Neovim/plugin types, `vim.uv` types via luv, go-to-definition into the config's own
   modules (requires lazydev's main branch).
 - Observed on a Lua file: clients `lua_ls` and `typos_lsp` attach.
@@ -732,8 +736,8 @@ See 4.3. Toggles: `<leader>dt` (inline text), `:DiagnosticsToggle` (everything).
 
 ### 7.8 Treesitter — `nvim-treesitter/`
 
-Main branch (rewrite; no `ensure_installed`/module toggles). Build hook installs and updates **all**
-parsers. On interactive starts it also builds any missing parsers in the background, until one run
+Main branch (rewrite; no `ensure_installed`/module toggles). Build hook installs **all** parsers and updates
+the installed ones nvim-treesitter still provides (skips Kulala's `kulala_http` and dropped languages). On interactive starts it also builds any missing parsers in the background, until one run
 succeeds; then a stamp file `stdpath("state")/treesitter-install-all.done` (delete it to retry). A FileType
 autocmd starts Treesitter highlighting for normal buffers (and for `Avante`, `codecompanion`,
 `kulala_ui`, which are registered as Markdown) **only when the language has a `highlights` query**;
@@ -741,7 +745,8 @@ otherwise Vim's regex syntax stays on (e.g. tmux, prolog, muttrc, zathurarc, rob
 dropped by nvim-treesitter main, but old parsers remain in `lazy/nvim-treesitter/parser/`). It sets the
 Treesitter `indentexpr` when an indents query exists. `jsonc` uses the `json` parser (mapping provided
 by nvim-treesitter). The old master-branch parser folder `lazy/nvim-treesitter/parser/` is kept because
-Kulala's `kulala_http` parser lives only there. Parsers live in `stdpath("data")/site/parser` (321 installed on 2026-10-12).
+it holds old parsers. Kulala builds its own `kulala_http` parser into `stdpath("data")/site/parser`, where all
+parsers live (320 files after the 2026-11-12 update; `cylc` was dropped upstream and removed).
 
 ### 7.9 Text objects and pinned context
 
@@ -818,7 +823,9 @@ Telescope `<leader>gt` status / `<leader>cm` commits.
 
 - **Avante** (`version = false`, built with `make` — needs Rust/Cargo): provider `codex` through ACP
   (`codex-acp -c web_search="live"`, auth `chat-gpt`, `NODE_NO_WARNINGS=1`), agentic mode, sidebar on
-  the right (width 35, wrap, ask window doesn't start in Insert), Telescope file selector and selector.
+  the right (width 35; Avante wraps its window itself, `windows.wrap` was removed upstream and is commented
+  out; ask window doesn't start in Insert), Telescope file selector and selector. Avante's build compiles six
+  native libraries with cargo (incl. `avante_acp`, required for ACP since Nov 2026).
   Behaviour: automatic keymaps off (all keys defined in `avante.lua`), no auto suggestions, no auto-apply,
   minimal diffs, current file auto-added, tool permissions not auto-approved, inline confirmation buttons,
   follows agent locations. Second ACP provider `claude-code` (`claude-agent-acp`, Claude Pro via the `claude` CLI
@@ -872,9 +879,10 @@ file) and image.nvim does not notice, so it stays gone until Neovim restarts. Ya
 ### 7.20 HTTP client (Kulala) — `kulala/`
 
 `.http`/`.rest` files (filetype `http`), also loads on SessionLoadPost. Send keys are Visual-only
-(`x`), not Select. Backend Kulala Core (1.3.1 installed in `stdpath("data")/kulala.nvim/bin`) needs a
+(`x`), not Select. Backend Kulala Core (3.1.0 installed in `stdpath("data")/kulala.nvim/bin`; scripts: JavaScript only) needs a
 license token stored outside the repo in `~/Library/Application Support/kulala-core/license-token`
-(never commit it). Formatting `.http` uses kulala-fmt (Kulala's language server doesn't format).
+(never commit it). Formatting `.http` uses kulala-fmt from npm (`@dont-be-evil-company/kulala-fmt`, 4.7.0; it downloads its own
+kulala-core and is stricter: e.g. headers need `Name: value`) (Kulala's language server doesn't format).
 lualine keeps Kulala's own winbar in its UI buffer. `kulala-demo.http` holds example requests.
 
 ### 7.21 Start screen — `startup/alpha.lua`
@@ -953,7 +961,8 @@ The config is used inside tmux 3.8. tmux's own files are outside this repo (`~/.
 Neovim ≥ 0.12; git, curl, C compiler, make; **tree-sitter-cli ≥ 0.26.1** (`brew install
 tree-sitter-cli`); Rust/Cargo (Avante build, LuaSnip jsregexp); `rg`, `fd`; ImageMagick (`magick`);
 a Nerd Font; `lazygit`; database clients for dadbod; `codex` and `codex-acp` on PATH (ChatGPT login); `claude` and
-`claude-agent-acp` (`npm i -g @agentclientprotocol/claude-agent-acp`, Claude login `claude auth login --claudeai`); a GitHub
+`claude-agent-acp` (`npm i -g @agentclientprotocol/claude-agent-acp`, Claude login `claude auth login --claudeai`);
+`kulala-fmt` (`npm i -g @dont-be-evil-company/kulala-fmt`); a GitHub
 Copilot login (completions, CodeCompanion inline fallback); Node (Copilot, JS tools); Kulala Core license.
 
 ---

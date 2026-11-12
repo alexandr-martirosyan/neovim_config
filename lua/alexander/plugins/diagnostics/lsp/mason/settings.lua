@@ -21,7 +21,10 @@ M.ensure_installed = {
 	-- js, ts
 	"typescript-language-server",
 	-- kulala rest service
-	"kulala-fmt",
+	-- "kulala-fmt",
+	-- Not from Mason (Nov 2026): the project moved to npm `@dont-be-evil-company/kulala-fmt`; Mason's package
+	-- (old `@mistweaverco` name, stuck at 4.5.3) can't download its engine. Installed with
+	-- `npm i -g @dont-be-evil-company/kulala-fmt` (updated by `npm update -g`); conform finds it on PATH.
 	-- spell
 	"typos-lsp",
 	-- docker

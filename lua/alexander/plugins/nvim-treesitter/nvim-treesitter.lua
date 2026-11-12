@@ -11,7 +11,17 @@ M.build = function()
 	-- Building every parser from source takes a while on first install.
 	treesitter.install(M.parsers):wait(1800000)
 	-- With no arguments, update() refreshes every installed parser.
-	treesitter.update():wait(1800000)
+	-- treesitter.update():wait(1800000)
+	-- Update only the parsers nvim-treesitter manages. The same folder also holds Kulala's own kulala_http
+	-- parser, and update() printed "Parser not available for language kulala_http" for it on every update.
+	local available = {}
+	for _, lang in ipairs(treesitter.get_available()) do
+		available[lang] = true
+	end
+	local managed = vim.tbl_filter(function(lang)
+		return available[lang]
+	end, treesitter.get_installed())
+	treesitter.update(managed):wait(1800000)
 end
 
 -- Build every missing parser once, in the background, after an interactive start.

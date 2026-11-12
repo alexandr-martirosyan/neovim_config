@@ -2,7 +2,7 @@
 
 Read this first. `CONFIG_GUIDE.md` describes the whole config as it is now (structure, every plugin, every
 shortcut and where it is defined, features, files outside the repo); its top has a freshness check.
-`CHANGELOG.md` (user-facing, sections 1–26) and `MIGRATION_NOTES.md` (technical details, sections 1–8v)
+`CHANGELOG.md` (user-facing, sections 1–27) and `MIGRATION_NOTES.md` (technical details, sections 1–8w)
 hold the history.
 
 ## Where things stand (2026-10-12)
@@ -45,6 +45,9 @@ hold the history.
 - **AI:** only Codex and Claude (subscriptions, via ACP) are configured. No local AI: the user does not use Ollama;
   for local models they use oMLX (:8000), llama.cpp (:8080) or LM Studio (:1234) and will ask — commented
   templates are in `ai/avante/avante.lua` and `ai/codecompanion/codecompanion.lua`.
+  Uncommitted on purpose (2026-11-12, kept in the working copy until the user has tested AI in Neovim): Avante's
+  ChatGPT login provider, the CodeCompanion `claude_code` token fix, local AI (`ai/local_ai.lua`, `:LocalAI`),
+  `AVANTE_BUILTIN_LOGINS.md` — documented in the uncommitted CHANGELOG 27/28 and MIGRATION_NOTES 8w/8x parts.
   Not yet tested by the user in real use: Claude in Neovim (needs `claude auth login --claudeai` in iTerm2 once;
   if a plugin rejects the CLI login, fall back to `claude setup-token` stored in the macOS Keychain and read via
   CodeCompanion's `cmd:` env value — never write the token into a file).
